@@ -18,7 +18,6 @@ import {
   FaCheck, 
   FaTrashAlt, 
   FaFilePdf, 
-  FaCalculator,
   FaCheckCircle,
   FaTimes,
   FaArrowRight
@@ -32,11 +31,12 @@ interface MenuClientProps {
   items: DBMenuItem[];
 }
 
-// Course mapping helper for human readable titles and icons
+// Course details including titles and icons
 const COURSE_DETAILS = {
-  'breakfast': { title: 'Breakfast Specials', icon: FaCoffee },
+  'welcome-drinks': { title: 'Welcome Drinks', icon: FaCoffee },
+  'chat-items': { title: 'Chat Items', icon: FaUtensils },
   'starters': { title: 'Starters & Appetizers', icon: FaPepperHot },
-  'breads': { title: 'Indian Breads', icon: FaBreadSlice },
+  'breads': { title: "Roti's", icon: FaBreadSlice },
   'veg-main': { title: 'Vegetarian Main Course', icon: FaLeaf },
   'nonveg-main': { title: 'Non-Vegetarian Main Course', icon: FaUtensils },
   'rice-biryani': { title: 'Rice & Biryani', icon: FaUtensils },
@@ -47,13 +47,13 @@ const COURSE_DETAILS = {
 type CourseType = keyof typeof COURSE_DETAILS;
 
 export default function MenuClient({ categories, items }: MenuClientProps) {
-  // State variables
+  // State
   const [searchQuery, setSearchQuery] = useState('');
   const [dietFilter, setDietFilter] = useState<'all' | 'veg' | 'nonveg'>('all');
-  const [selectedCourseFilter, setSelectedCourseFilter] = useState<string>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [expandedCourses, setExpandedCourses] = useState<Record<string, boolean>>({
-    'breakfast': true,
+    'welcome-drinks': true,
+    'chat-items': true,
     'starters': true,
     'breads': true,
     'veg-main': true,
@@ -62,10 +62,10 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'accompaniments': true,
     'desserts': true
   });
-  
-  // Sticky sidebar groups expanded/collapsed
+
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({
-    'breakfast': true,
+    'welcome-drinks': true,
+    'chat-items': true,
     'starters': true,
     'breads': true,
     'veg-main': true,
@@ -87,9 +87,9 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  // Load selected items from localStorage on mount
+  // Load selection from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('purval_custom_menu');
+    const saved = localStorage.getItem('purval_custom_menu_v2');
     if (saved) {
       try {
         setSelectedIds(JSON.parse(saved));
@@ -99,54 +99,50 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     }
   }, []);
 
-  // Save selected items to localStorage
   const updateSelectedItems = (ids: string[]) => {
     setSelectedIds(ids);
-    localStorage.setItem('purval_custom_menu', JSON.stringify(ids));
+    localStorage.setItem('purval_custom_menu_v2', JSON.stringify(ids));
   };
 
-  // Merge database items into local mock items to ensure consistency
+  // Merge items from database if any are not in local data
   const allMenuItems = useMemo(() => {
     const dbMappedItems: LocalMenuItem[] = items.map(dbItem => {
-      // Check if it already exists in the static list by name
       const exists = MENU_ITEMS.some(item => item.name.toLowerCase() === dbItem.name.toLowerCase());
-      if (exists) return null; // Filter out duplicates
-      
+      if (exists) return null;
+
       const catName = categories.find(c => c.id === dbItem.categoryId)?.name || '';
       let course: CourseType = 'veg-main';
       let isVeg = true;
       
       const lowerCat = catName.toLowerCase();
       const lowerName = dbItem.name.toLowerCase();
-      
-      if (lowerCat.includes('starter')) course = 'starters';
-      else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'desserts';
-      else if (lowerCat.includes('south') || lowerCat.includes('breakfast')) course = 'breakfast';
+
+      if (lowerCat.includes('drink') || lowerCat.includes('beverage')) course = 'welcome-drinks';
+      else if (lowerCat.includes('chat') || lowerCat.includes('snack')) course = 'chat-items';
+      else if (lowerCat.includes('starter')) course = 'starters';
       else if (lowerCat.includes('bread') || lowerCat.includes('roti') || lowerCat.includes('naan')) course = 'breads';
       else if (lowerCat.includes('rice') || lowerCat.includes('biryani')) course = 'rice-biryani';
-      else if (lowerCat.includes('accompaniment') || lowerCat.includes('raita')) course = 'accompaniments';
-      
-      // Simple check for veg vs non-veg based on ingredients name
+      else if (lowerCat.includes('accompaniment')) course = 'accompaniments';
+      else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'desserts';
+
       if (lowerName.includes('chicken') || lowerName.includes('mutton') || lowerName.includes('fish') || lowerName.includes('lamb') || lowerName.includes('crab') || lowerName.includes('prawn') || lowerName.includes('meat') || lowerName.includes('egg')) {
         isVeg = false;
         if (course === 'veg-main') course = 'nonveg-main';
       }
-      
+
       return {
         id: dbItem.id,
         name: dbItem.name,
-        description: dbItem.description || 'Premium culinary selection prepared with traditional Indian recipes.',
         isVeg,
         course,
-        subcategory: catName || 'Chef Specials',
-        price: dbItem.price || undefined
+        subcategory: catName || 'Chef Specials'
       };
     }).filter((item): item is LocalMenuItem => item !== null);
 
     return [...MENU_ITEMS, ...dbMappedItems];
   }, [categories, items]);
 
-  // Handle toggling menu item selection
+  // Handle selection toggling
   const toggleItem = (itemId: string) => {
     if (selectedIds.includes(itemId)) {
       updateSelectedItems(selectedIds.filter(id => id !== itemId));
@@ -159,38 +155,26 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     updateSelectedItems(selectedIds.filter(id => id !== itemId));
   };
 
-  // Filtered menu items
+  // Filter items based on Search Query and Dietary Tab (All, Veg, Non-Veg)
   const filteredItems = useMemo(() => {
     return allMenuItems.filter(item => {
-      // Search text match
       const matchesSearch = searchQuery === '' || 
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        item.subcategory.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        item.description.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      // Dietary filter match
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.subcategory.toLowerCase().includes(searchQuery.toLowerCase());
+
       const matchesDiet = dietFilter === 'all' || 
         (dietFilter === 'veg' && item.isVeg) || 
         (dietFilter === 'nonveg' && !item.isVeg);
 
-      // Course filter chip match
-      const matchesCourse = selectedCourseFilter === 'all' || 
-        (selectedCourseFilter === 'breakfast' && item.course === 'breakfast') ||
-        (selectedCourseFilter === 'starters' && item.course === 'starters') ||
-        (selectedCourseFilter === 'breads' && item.course === 'breads') ||
-        (selectedCourseFilter === 'main-course' && (item.course === 'veg-main' || item.course === 'nonveg-main')) ||
-        (selectedCourseFilter === 'rice-biryani' && item.course === 'rice-biryani') ||
-        (selectedCourseFilter === 'desserts' && item.course === 'desserts') ||
-        (selectedCourseFilter === 'accompaniments' && item.course === 'accompaniments');
-
-      return matchesSearch && matchesDiet && matchesCourse;
+      return matchesSearch && matchesDiet;
     });
-  }, [allMenuItems, searchQuery, dietFilter, selectedCourseFilter]);
+  }, [allMenuItems, searchQuery, dietFilter]);
 
   // Group items by course, then by subcategory
   const groupedMenu = useMemo(() => {
     const groups: Record<CourseType, Record<string, LocalMenuItem[]>> = {
-      'breakfast': {},
+      'welcome-drinks': {},
+      'chat-items': {},
       'starters': {},
       'breads': {},
       'veg-main': {},
@@ -210,15 +194,16 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     return groups;
   }, [filteredItems]);
 
-  // List of selected items complete details
+  // Selected items detail list
   const selectedItemsDetails = useMemo(() => {
     return allMenuItems.filter(item => selectedIds.includes(item.id));
   }, [allMenuItems, selectedIds]);
 
-  // Group selected items by course for the sidebar
+  // Group selected items by course for checklist counts
   const selectedItemsByCourse = useMemo(() => {
     const groups: Record<CourseType, LocalMenuItem[]> = {
-      'breakfast': [],
+      'welcome-drinks': [],
+      'chat-items': [],
       'starters': [],
       'breads': [],
       'veg-main': [],
@@ -235,49 +220,35 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     return groups;
   }, [selectedItemsDetails]);
 
-  // Calculate statistics for selection
+  // Stats calculation
   const stats = useMemo(() => {
     const total = selectedItemsDetails.length;
     const veg = selectedItemsDetails.filter(i => i.isVeg).length;
     const nonveg = total - veg;
-    
-    const breakfast = selectedItemsDetails.filter(i => i.course === 'breakfast').length;
-    const desserts = selectedItemsDetails.filter(i => i.course === 'desserts').length;
-    const lunchDinner = total - breakfast - desserts;
-
-    return { total, veg, nonveg, breakfast, desserts, lunchDinner };
+    return { total, veg, nonveg };
   }, [selectedItemsDetails]);
 
-  // Toggle course accordion
+  // Expand / collapse accordions
   const toggleCourseAccordion = (course: string) => {
-    setExpandedCourses(prev => ({
-      ...prev,
-      [course]: !prev[course]
-    }));
+    setExpandedCourses(prev => ({ ...prev, [course]: !prev[course] }));
   };
 
-  // Toggle sidebar course accordion
   const toggleSidebarAccordion = (course: string) => {
-    setSidebarExpanded(prev => ({
-      ...prev,
-      [course]: !prev[course]
-    }));
+    setSidebarExpanded(prev => ({ ...prev, [course]: !prev[course] }));
   };
 
-  // Handle Form changes
+  // Inquiry form submit handlers
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Handle inquiry submission
   const handleSubmitInquiry = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitStatus('loading');
 
-    // Create formatted menu checklist message
-    let menuDetails = `CATERING MENU REQUEST\n\n`;
+    let menuDetails = `CUSTOM CATERING PACKAGE REQUEST\n\n`;
     menuDetails += `Total Selected Items: ${stats.total}\n`;
-    menuDetails += `Veg Items: ${stats.veg} | Non-Veg Items: ${stats.nonveg}\n\n`;
+    menuDetails += `Vegetarian: ${stats.veg} | Non-Vegetarian: ${stats.nonveg}\n\n`;
 
     Object.entries(selectedItemsByCourse).forEach(([course, items]) => {
       if (items.length > 0) {
@@ -306,7 +277,6 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
       if (response.ok) {
         setSubmitStatus('success');
-        // Clear selections
         updateSelectedItems([]);
         setFormData({ name: '', email: '', phone: '', eventType: '', guests: '', eventDate: '' });
       } else {
@@ -317,12 +287,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     }
   };
 
-  // Handle custom PDF menu proposal download (print preview layout trigger)
-  const handleDownloadPDF = () => {
-    window.print();
-  };
-
-  // Active courses count inside search results
+  // Count items inside a course
   const courseCount = (course: CourseType) => {
     const courseGroup = groupedMenu[course];
     let count = 0;
@@ -359,7 +324,6 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
                   {courseItems.map((item, idx) => (
                     <li key={item.id}>
                       <strong>{item.name}</strong> - <span>{item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}</span>
-                      <p>{item.description}</p>
                     </li>
                   ))}
                 </ul>
@@ -373,7 +337,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       </div>
 
       <div className={`container ${styles.menuLayout}`}>
-        {/* Main Selection Area */}
+        {/* Left Column Selection Area */}
         <div className={styles.menuLeft}>
           <div className={styles.header}>
             <h1 className={styles.title}>Catering Menu Builder</h1>
@@ -382,78 +346,45 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
             </p>
           </div>
 
-          {/* Search Bar */}
+          {/* Top Dietary Tabs Filters */}
+          <div className={styles.dietaryTabs}>
+            <button 
+              onClick={() => setDietFilter('all')} 
+              className={`${styles.dietTab} ${dietFilter === 'all' ? styles.dietTabActive : ''}`}
+            >
+              All Menu
+            </button>
+            <button 
+              onClick={() => setDietFilter('veg')} 
+              className={`${styles.dietTab} ${dietFilter === 'veg' ? styles.dietTabVegActive : ''}`}
+            >
+              Vegetarian
+            </button>
+            <button 
+              onClick={() => setDietFilter('nonveg')} 
+              className={`${styles.dietTab} ${dietFilter === 'nonveg' ? styles.dietTabNonVegActive : ''}`}
+            >
+              Non-Vegetarian
+            </button>
+          </div>
+
+          {/* Search Input Box */}
           <div className={styles.searchWrapper}>
             <FaSearch className={styles.searchIcon} />
             <input 
               type="text" 
-              placeholder="Search for any dish (e.g., Paneer, Chicken, Biryani, Dosa...)" 
+              placeholder="Search for any dish (e.g. Chicken, Paneer, Biryani)..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
             />
           </div>
 
-          {/* Filters Area */}
-          <div className={styles.filtersWrapper}>
-            {/* Dietary Tabs */}
-            <div className={styles.dietaryTabs}>
-              <button 
-                onClick={() => setDietFilter('all')} 
-                className={`${styles.dietTab} ${dietFilter === 'all' ? styles.dietTabActive : ''}`}
-              >
-                All Menu
-              </button>
-              <button 
-                onClick={() => setDietFilter('veg')} 
-                className={`${styles.dietTab} ${dietFilter === 'veg' ? styles.dietTabVegActive : ''}`}
-              >
-                <FaLeaf style={{ marginRight: '6px', fontSize: '0.85em' }} /> Vegetarian
-              </button>
-              <button 
-                onClick={() => setDietFilter('nonveg')} 
-                className={`${styles.dietTab} ${dietFilter === 'nonveg' ? styles.dietTabNonVegActive : ''}`}
-              >
-                <span className={styles.redDot} /> Non-Vegetarian
-              </button>
-            </div>
-
-            {/* Course Filter Chips */}
-            <div className={styles.courseFilterScroll}>
-              <div className={styles.courseChips}>
-                {[
-                  { id: 'all', label: 'All Courses' },
-                  { id: 'breakfast', label: 'Breakfast' },
-                  { id: 'starters', label: 'Starters' },
-                  { id: 'breads', label: 'Breads' },
-                  { id: 'main-course', label: 'Main Course' },
-                  { id: 'rice-biryani', label: 'Rice & Biryani' },
-                  { id: 'accompaniments', label: 'Accompaniments' },
-                  { id: 'desserts', label: 'Desserts' }
-                ].map((chip) => (
-                  <button
-                    key={chip.id}
-                    onClick={() => setSelectedCourseFilter(chip.id)}
-                    className={`${styles.chipBtn} ${selectedCourseFilter === chip.id ? styles.chipBtnActive : ''}`}
-                  >
-                    {chip.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
           {/* Accordion Menu Sections */}
           <div className={styles.accordionContainer}>
             {Object.entries(COURSE_DETAILS).map(([courseKey, details]) => {
               const count = courseCount(courseKey as CourseType);
-              // Hide accordion if course tab filter is active and doesn't match
-              if (selectedCourseFilter !== 'all' && 
-                  selectedCourseFilter !== courseKey && 
-                  !(selectedCourseFilter === 'main-course' && (courseKey === 'veg-main' || courseKey === 'nonveg-main'))) {
-                return null;
-              }
-              if (count === 0) return null; // Hide course sections with no matching items
+              if (count === 0) return null; // Hide categories that contain 0 matching items
 
               const isExpanded = expandedCourses[courseKey];
               const Icon = details.icon;
@@ -471,7 +402,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
                       </span>
                       <div>
                         <h3>{details.title}</h3>
-                        <span className={styles.itemCountText}>{count} Dishes Available</span>
+                        <span className={styles.itemCountText}>{count} items</span>
                       </div>
                     </div>
                     <span className={styles.accordionToggleIcon}>
@@ -483,7 +414,9 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
                     <div className={styles.accordionBody}>
                       {Object.entries(courseGroup).map(([subcat, subcatItems]) => (
                         <div key={subcat} className={styles.subCategoryBlock}>
-                          <h4 className={styles.subCategoryTitle}>{subcat}</h4>
+                          {subcat !== details.title && (
+                            <h4 className={styles.subCategoryTitle}>{subcat}</h4>
+                          )}
                           
                           <div className={styles.itemGrid}>
                             {subcatItems.map((item) => {
@@ -494,40 +427,15 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
                                   onClick={() => toggleItem(item.id)}
                                   className={`${styles.dishCard} ${isSelected ? styles.dishCardSelected : ''}`}
                                 >
-                                  {/* Veg / Non-Veg Indicator Badge */}
-                                  <div className={styles.dishHeader}>
-                                    <div className={`${styles.foodIndicator} ${item.isVeg ? styles.vegBorder : styles.nonVegBorder}`}>
-                                      <div className={item.isVeg ? styles.vegDotInner : styles.nonVegTriangleInner} />
-                                    </div>
-                                    <button 
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        toggleItem(item.id);
-                                      }}
-                                      className={`${styles.addButton} ${isSelected ? styles.addButtonSelected : ''}`}
-                                      aria-label={isSelected ? `Remove ${item.name}` : `Add ${item.name}`}
-                                    >
-                                      {isSelected ? (
-                                        <>
-                                          <FaCheck style={{ fontSize: '0.8em' }} />
-                                          <span>Selected</span>
-                                        </>
-                                      ) : (
-                                        <>
-                                          <FaPlus style={{ fontSize: '0.8em' }} />
-                                          <span>Add</span>
-                                        </>
-                                      )}
-                                    </button>
+                                  <div className={styles.dishCardLeft}>
+                                    <span className={`${styles.checkbox} ${isSelected ? styles.checkboxSelected : ''}`}>
+                                      {isSelected && <FaCheck className={styles.checkIcon} />}
+                                    </span>
+                                    <span className={styles.dishName}>{item.name}</span>
                                   </div>
-
-                                  <div className={styles.dishInfo}>
-                                    <h5 className={styles.dishName}>{item.name}</h5>
-                                    <p className={styles.dishDesc}>{item.description}</p>
-                                    {item.price && (
-                                      <span className={styles.dishPrice}>Est. ₹{item.price} <span className={styles.paxLabel}>/ plate</span></span>
-                                    )}
-                                  </div>
+                                  <span className={`${styles.addSign} ${isSelected ? styles.addSignSelected : ''}`}>
+                                    {isSelected ? <FaCheck /> : <FaPlus />}
+                                  </span>
                                 </div>
                               );
                             })}
@@ -543,81 +451,88 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
             {filteredItems.length === 0 && (
               <div className={styles.emptyResults}>
                 <FaUtensils className={styles.emptyIcon} />
-                <h3>No dishes match your filters</h3>
-                <p>Try adjusting your search keywords or checking a different dietary filter.</p>
+                <h3>No dishes match your search</h3>
+                <p>Try checking a different keywords or resetting filters.</p>
                 <button 
-                  onClick={() => { setSearchQuery(''); setDietFilter('all'); setSelectedCourseFilter('all'); }}
+                  onClick={() => { setSearchQuery(''); setDietFilter('all'); }}
                   className="btn btn-outline"
                   style={{ marginTop: '1rem' }}
                 >
-                  Reset All Filters
+                  Reset Search
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        {/* Right Sticky Custom Package Panel */}
+        {/* Right Sticky Catering Package Panel */}
         <div className={styles.menuRight}>
           <div className={styles.stickyPanel}>
             <div className={styles.panelHeader}>
-              <h2>Your Custom Catering Menu</h2>
-              <p>Selected Items Checklist</p>
+              <h2>Catering Package</h2>
+              <p>Package Course Selector Checklist:</p>
             </div>
 
             <div className={styles.panelContent}>
-              {selectedIds.length === 0 ? (
-                <div className={styles.sidebarEmptyState}>
-                  <FaUtensils className={styles.sidebarEmptyIcon} />
-                  <h4>Your menu is empty</h4>
-                  <p>Browse the options on the left and select dishes to build your custom catering package.</p>
-                </div>
-              ) : (
-                <div className={styles.sidebarGroups}>
-                  {Object.entries(selectedItemsByCourse).map(([courseKey, courseItems]) => {
-                    if (courseItems.length === 0) return null;
-                    const details = COURSE_DETAILS[courseKey as CourseType];
-                    const isExpanded = sidebarExpanded[courseKey];
+              {/* List counts for each course */}
+              <div className={styles.sidebarChecklist}>
+                {Object.entries(COURSE_DETAILS).map(([courseKey, details]) => {
+                  const courseItems = selectedItemsByCourse[courseKey as CourseType] || [];
+                  const isExpanded = sidebarExpanded[courseKey];
+                  const hasSelection = courseItems.length > 0;
 
-                    return (
-                      <div key={courseKey} className={styles.sidebarGroup}>
-                        <button 
-                          onClick={() => toggleSidebarAccordion(courseKey)}
-                          className={styles.sidebarGroupHeader}
-                        >
-                          <span>{details?.title} ({courseItems.length})</span>
-                          <span>{isExpanded ? <FaChevronUp /> : <FaChevronDown />}</span>
-                        </button>
+                  return (
+                    <div key={courseKey} className={styles.checklistRow}>
+                      <button 
+                        onClick={() => toggleSidebarAccordion(courseKey)}
+                        className={styles.sidebarGroupHeader}
+                      >
+                        <div className={styles.sidebarGroupHeaderLeft}>
+                          <span className={`${styles.checklistBullet} ${hasSelection ? styles.checklistBulletActive : ''}`}>
+                            {hasSelection && <FaCheck size={9} />}
+                          </span>
+                          <span className={styles.sidebarGroupName}>
+                            {details.title}
+                          </span>
+                        </div>
+                        <span className={styles.sidebarSelectedCount}>
+                          {courseItems.length} Selected
+                        </span>
+                      </button>
 
-                        {isExpanded && (
-                          <div className={styles.sidebarGroupList}>
-                            {courseItems.map(item => (
-                              <div key={item.id} className={styles.sidebarItem}>
-                                <div className={styles.sidebarItemLeft}>
-                                  <div className={`${styles.smallIndicator} ${item.isVeg ? styles.vegBg : styles.nonVegBg}`} />
-                                  <span className={styles.sidebarItemName}>{item.name}</span>
-                                </div>
-                                <button 
-                                  onClick={() => removeItem(item.id)}
-                                  className={styles.removeItemBtn}
-                                  title="Remove item"
-                                >
-                                  <FaTrashAlt />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                      {isExpanded && hasSelection && (
+                        <div className={styles.sidebarGroupList}>
+                          {courseItems.map(item => (
+                            <div key={item.id} className={styles.sidebarItem}>
+                              <span className={styles.sidebarItemName}>{item.name}</span>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  removeItem(item.id);
+                                }}
+                                className={styles.removeItemBtn}
+                                title="Remove item"
+                              >
+                                <FaTrashAlt />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Free Default Inclusion banner */}
+              <div className={styles.inclusionsBox}>
+                <h5>Included Free by Default:</h5>
+                <p>Plain Rice, Fryums & Papads, Ghee, Mirchi ka Salan, Plain Curd & Raitha, Curd Chilli, Mineral Water</p>
+              </div>
             </div>
 
-            {selectedIds.length > 0 && (
+            {selectedIds.length > 0 ? (
               <div className={styles.panelFooter}>
-                {/* Stats Breakdown */}
                 <div className={styles.statsSummary}>
                   <div className={styles.statsRow}>
                     <span>Total Selection:</span>
@@ -632,11 +547,6 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
                       <span className={styles.nonVegText}><span className={styles.smallRedDot} /> Non-Veg:</span>
                       <strong>{stats.nonveg}</strong>
                     </div>
-                  </div>
-                  <div className={styles.mealBreakdown}>
-                    <span>Breakfast: <strong>{stats.breakfast}</strong></span>
-                    <span>Mains/Sides: <strong>{stats.lunchDinner}</strong></span>
-                    <span>Desserts: <strong>{stats.desserts}</strong></span>
                   </div>
                 </div>
 
@@ -662,6 +572,10 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
                     Request Quote
                   </button>
                 </div>
+              </div>
+            ) : (
+              <div className={styles.panelFooterEmpty}>
+                <p>Please select dishes from the categories to build your custom catering package.</p>
               </div>
             )}
           </div>
