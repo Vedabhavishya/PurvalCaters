@@ -1,7 +1,6 @@
 import HeroSection from '@/components/ui/HeroSection';
 import AboutSection from '@/components/ui/AboutSection';
 import ServicesSection from '@/components/ui/ServicesSection';
-import FoodCard from '@/components/ui/FoodCard';
 import ReviewerPhoto from '@/components/ui/ReviewerPhoto';
 import styles from './page.module.css';
 import { PrismaClient } from '@prisma/client';
@@ -10,11 +9,6 @@ import { FaCrown, FaLeaf, FaHandsHelping, FaStar } from 'react-icons/fa';
 const prisma = new PrismaClient();
 
 export default async function Home() {
-  const featuredItems = await prisma.menuItem.findMany({
-    where: { isFeatured: true },
-    take: 3,
-  });
-
   const testimonials = await prisma.testimonial.findMany({
     where: { isVisible: true },
     take: 3,
@@ -25,22 +19,6 @@ export default async function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
-
-      {/* Featured Dishes */}
-      <section className={`container ${styles.section}`}>
-        <h2 className={styles.sectionTitle}>Featured Delicacies</h2>
-        <div className={styles.featuredGrid}>
-          {featuredItems.map(item => (
-            <FoodCard 
-              key={item.id}
-              name={item.name}
-              description={item.description}
-              price={item.price}
-              imageUrl={item.imageUrl}
-            />
-          ))}
-        </div>
-      </section>
 
       {/* Why Choose Us */}
       <section className={styles.whyUsSection}>
