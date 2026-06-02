@@ -40,24 +40,24 @@ export default function ServicesSection() {
 
   const services = [
     {
-      title: "Royal Weddings",
+      title: "Weddings",
       image: "/images/service_weddings.png",
-      description: "Exquisite culinary spectacles for your once-in-a-lifetime celebration. Customized royal menus, luxurious buffet presentations, and flawless service.",
-      bullets: ["Customized Theme Menus", "Luxury Buffet Presentation", "Live Culinary Counters", "Dedicated Hospitality Staff"],
+      description: "Exquisite catering for your special day. Customized wedding menus, elegant buffet setups, and professional service tailored for large-scale celebrations.",
+      bullets: ["Customized Wedding Menus", "Elegant Venue Buffet Setup", "Live Multi-Cuisine Counters", "Impeccable Service Team"],
       cardClass: styles.card1
     },
     {
-      title: "Milestone Birthdays",
+      title: "Birthdays",
       image: "/images/service_birthdays.png",
-      description: "Delightful feasts to celebrate milestones with friends and family. High-energy live stations, customized desserts, and mocktail bars.",
-      bullets: ["Interactive Food Stations", "Mocktail & Beverage Bars", "Artisanal Dessert Displays", "Hassle-Free Table Setup"],
+      description: "Fun and delicious dining setups to celebrate milestones with family and friends. Theme-matched food spreads and beverage bars.",
+      bullets: ["Interactive Food Stations", "Custom Beverage Bars", "Diverse Dessert Stations", "Hassle-Free Catering Operations"],
       cardClass: styles.card2
     },
     {
-      title: "Corporate Gatherings",
+      title: "Corporate Events",
       image: "/images/service_corporate.png",
-      description: "Sleek, compliant, and professional dining operations for business summits, product launches, or office celebrations.",
-      bullets: ["Multi-Cuisine Corporate Buffets", "Elegant High-Tea Selections", "Punctual Delivery & Layout", "Strict Safety & Hygiene Checked"],
+      description: "Sleek, compliant, and professional catering for business summits, office gatherings, corporate parties, and summits.",
+      bullets: ["Premium Corporate Buffets", "Sleek High-Tea Selections", "Punctual Delivery & Layout", "Hygiene & Safety Certified"],
       cardClass: styles.card3
     }
   ];
