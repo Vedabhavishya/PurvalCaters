@@ -104,51 +104,51 @@ export default function About() {
         </div>
       </section>
 
-      {/* Founder Spotlight */}
-      <section className={styles.chefSection}>
-        <div className="container">
-          <h2 className={styles.sectionHeading}>The Culinary Visionary</h2>
-          <p className={styles.sectionSubtitle}>
-            Our kitchen, recipes, and operations are guided by expert hands with global credentials.
-          </p>
+        {/* Founder's Note */}
+        <section className={styles.chefSection}>
+          <div className="container">
+            <h2 className={styles.sectionHeading}>Founder’s Note</h2>
+            <p className={styles.sectionSubtitle}>
+              A message from our Founder, CEO & Executive Chef, Arun Kumar Lakpath.
+            </p>
 
-          <div className={styles.chefCard}>
-            <div className={styles.chefPhotoContainer}>
-              <Image 
-                src="/images/about_kabab.png" 
-                alt="Executive Chef & Founder of Purval's Caterers" 
-                fill
-                sizes="(max-width: 992px) 100vw, 40vw"
-                style={{ objectFit: 'cover' }}
-              />
-            </div>
-            
-            <div className={styles.chefBio}>
-              <div className={styles.chefMeta}>
-                <h3 className={styles.chefName}>Executive Chef Purval</h3>
-                <p className={styles.chefTitle}>Founder, CEO & Executive Chef</p>
-                <div className={styles.chefTags}>
-                  <span className={styles.chefTag}><FaAward /> 20+ Years Global Exp</span>
-                  <span className={styles.chefTag}><FaGraduationCap /> IHM Hyderabad Alumni</span>
-                  <span className={styles.chefTag}><FaBriefcase /> Osmania University</span>
-                </div>
+            <div className={styles.chefCard}>
+              <div className={styles.chefPhotoContainer}>
+                <Image 
+                  src="/images/founder.png" 
+                  alt="Arun Kumar Lakpath - Founder, CEO & Executive Chef of Purval's Caterers" 
+                  fill
+                  sizes="(max-width: 992px) 100vw, 40vw"
+                  style={{ objectFit: 'cover' }}
+                />
               </div>
               
-              <p className={styles.chefDesc}>
-                Bringing over 20+ years of professional culinary mastery across India and abroad, including prestigious assignments in New Zealand and the United States, our Founder guides the gastronomic identity of Purval's Caterers.
-              </p>
-              
-              <p className={styles.chefDesc}>
-                After acquiring a Post Graduate Diploma in Hotel Management from the esteemed Institute of Hotel Management and Catering Technology (IHM) Hyderabad, alongside a Bachelor of Commerce from Osmania University, he worked with elite international hotels and fine dining ventures. 
-              </p>
+              <div className={styles.chefBio}>
+                <div className={styles.chefMeta}>
+                  <h3 className={styles.chefName}>Arun Kumar Lakpath</h3>
+                  <p className={styles.chefTitle}>Founder, CEO & Executive Chef</p>
+                  <div className={styles.chefTags}>
+                    <span className={styles.chefTag}><FaAward /> 20+ Years Experience</span>
+                    <span className={styles.chefTag}><FaGraduationCap /> IHM Hyderabad</span>
+                    <span className={styles.chefTag}><FaBriefcase /> Osmania University</span>
+                  </div>
+                </div>
+                
+                <p className={styles.chefDesc}>
+                  Welcome to Purval’s Caterers. Established in 1991, our journey began with a passion for authentic cuisine, exceptional hospitality, and a vision of creating memorable dining experiences for every celebration. Over the decades, we have grown into a trusted name in outdoor catering, celebrated for our uncompromising quality, consistent taste, and personalized service.
+                </p>
+                
+                <p className={styles.chefDesc}>
+                  With over 20+ years of professional culinary experience across India and abroad—including assignments in New Zealand and the United States—I guide the gastronomic identity of our team. After completing my Post Graduate Diploma in Hotel Management from the Institute of Hotel Management and Catering Technology (IHM) Hyderabad, alongside a Bachelor of Commerce degree from Osmania University, I had the privilege of working with leading international hospitality brands, gaining expertise in authentic <strong>Hyderabadi, South Indian, North Indian, Mughlai, and Tandoor</strong> cuisines.
+                </p>
 
-              <p className={styles.chefDesc}>
-                He holds exceptional expertise in authentic **Hyderabadi, South Indian, North Indian, Mughlai, and Tandoor** cuisines. Under his leadership, our team successfully executes large-scale weddings and corporate canteens catering to thousands of guests simultaneously while maintaining strict premium hygiene standards.
-              </p>
+                <p className={styles.chefDesc}>
+                  We believe food is not just about taste — it is about emotion, tradition, and bringing people together. I sincerely thank our clients, partners, and well-wishers for your continued trust and encouragement over the years, motivating us to continue delivering excellence and making every occasion truly special.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* Pax Capacity Banner */}
       <section className="container">
