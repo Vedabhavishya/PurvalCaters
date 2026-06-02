@@ -1,0 +1,279 @@
+.servicesSection {
+  padding: 6rem 0;
+  background-color: #ffffff; /* Contrast against the light-red-tinted grey of About Us */
+  overflow: hidden;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.subtitle {
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.subtitle::before,
+.subtitle::after {
+  content: '';
+  display: inline-block;
+  width: 25px;
+  height: 2px;
+  background-color: var(--accent-gold);
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.8rem;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* --- Services Card Structure --- */
+.card {
+  position: relative;
+  height: 440px;
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: var(--bg-dark); /* Fallback dark crimson background */
+  box-shadow: 0 10px 30px rgba(74, 16, 27, 0.08);
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Card raises from bottom on hover */
+.card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 22px 40px rgba(168, 43, 61, 0.2);
+  border-color: rgba(212, 175, 55, 0.3); /* Subtle gold glow border */
+}
+
+/* Image Container */
+.imageContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease;
+}
+
+.cardImage {
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Overlay gradient to keep the bottom title readable */
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top, 
+    rgba(74, 16, 27, 0.95) 0%, 
+    rgba(74, 16, 27, 0.5) 50%, 
+    rgba(0, 0, 0, 0) 100__%
+  );
+  /* Fallback formatting for Next.js CSS parser */
+  background: linear-gradient(to top, rgba(74, 16, 27, 0.98) 0%, rgba(74, 16, 27, 0.4) 60%, rgba(0,0,0,0) 100%);
+  transition: background 0.4s ease;
+  z-index: 2;
+}
+
+/* On hover, zoom the image and reduce its opacity so it's lightly visible in the background */
+.card:hover .imageContainer {
+  transform: scale(1.1);
+  opacity: 0.18; /* Lightly visible in background */
+}
+
+.card:hover .imageOverlay {
+  background: rgba(74, 16, 27, 0.9); /* Solid crimson tinted overlay for card back contrast */
+}
+
+/* --- Front-Facing Default Content --- */
+.defaultContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 3rem 2rem;
+  box-sizing: border-box;
+  z-index: 3;
+  text-align: center;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+}
+
+.cardTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  letter-spacing: 1px;
+}
+
+/* Hide front content on hover */
+.card:hover .defaultContent {
+  transform: translateY(-30px);
+  opacity: 0;
+}
+
+/* --- Back-Facing Hover Details Content --- */
+.hoverContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2.5rem 2rem;
+  box-sizing: border-box;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transform: translateY(100%); /* Start hidden below the card boundary */
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+}
+
+/* Slide up and fade in details on hover */
+.card:hover .hoverContent {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hoverTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+  border-bottom: 2px solid var(--primary-light);
+  padding-bottom: 0.5rem;
+  width: 80%;
+}
+
+.hoverText {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+}
+
+.bulletList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bulletItem {
+  font-size: 0.85rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.bulletIcon {
+  color: var(--accent-gold);
+  margin-right: 8px;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.hoverBtn {
+  font-size: 0.85rem;
+  padding: 0.6rem 1.5rem;
+  border-color: #ffffff;
+  color: #ffffff;
+  backdrop-filter: blur(5px);
+}
+
+.hoverBtn:hover {
+  background-color: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: var(--bg-dark);
+}
+
+/* --- Scroll Reveal Animations --- */
+.revealHeader {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.revealCard {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.visible .revealHeader {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.visible .revealCard {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger card reveals */
+.card1 {
+  transition-delay: 0.1s;
+}
+
+.card2 {
+  transition-delay: 0.25s;
+}
+
+.card3 {
+  transition-delay: 0.4s;
+}

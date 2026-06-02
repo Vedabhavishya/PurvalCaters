@@ -1,5 +1,6 @@
 import HeroSection from '@/components/ui/HeroSection';
 import AboutSection from '@/components/ui/AboutSection';
+import ServicesSection from '@/components/ui/ServicesSection';
 import FoodCard from '@/components/ui/FoodCard';
 import ReviewerPhoto from '@/components/ui/ReviewerPhoto';
 import styles from './page.module.css';
@@ -23,6 +24,7 @@ export default async function Home() {
     <>
       <HeroSection />
       <AboutSection />
+      <ServicesSection />
 
       {/* Featured Dishes */}
       <section className={`container ${styles.section}`}>
