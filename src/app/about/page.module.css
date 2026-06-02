@@ -1,0 +1,87 @@
+.aboutSection {
+  padding: calc(5rem + var(--nav-height)) 0 5rem 0;
+}
+
+.title {
+  text-align: center;
+  font-size: 3rem;
+  color: var(--primary-dark);
+  margin-bottom: 3rem;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.text h2 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.text p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.image {
+  width: 100%;
+  height: 500px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 20px 40px rgba(108, 43, 217, 0.2);
+}
+
+.team {
+  padding: 5rem 0;
+  background: white;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.member {
+  text-align: center;
+}
+
+.memberImg {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: var(--bg-main);
+  margin: 0 auto 1.5rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.memberName {
+  font-size: 1.5rem;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.memberRole {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}
