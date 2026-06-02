@@ -32,8 +32,10 @@ export default function Navbar() {
     return null;
   }
 
+  const isSolid = scrolled || pathname !== '/';
+
   return (
-    <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
+    <nav className={`${styles.navbar} ${isSolid ? styles.scrolled : ''}`}>
       <div className={`container ${styles.navContent}`}>
         <Link href="/" className={styles.logo}>
           <FaUtensils /> Supper Club
