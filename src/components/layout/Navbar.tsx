@@ -22,10 +22,10 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Menu', path: '/menu' },
-    { name: 'Premium Plans', path: '/plans' },
     { name: 'About Us', path: '/about' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Menu', path: '/menu' },
+    { name: 'Package', path: '/plans' },
+    { name: 'Contact Us', path: '/contact' },
   ];
 
   if (pathname?.startsWith('/admin')) {

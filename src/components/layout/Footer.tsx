@@ -29,10 +29,11 @@ export default function Footer() {
           <h4>Quick Links</h4>
           <ul>
             <li><Link href="/">Home</Link></li>
-            <li><Link href="/menu">Our Menu</Link></li>
-            <li><Link href="/plans">Premium Plans</Link></li>
             <li><Link href="/about">About Us</Link></li>
-            <li><Link href="/contact">Contact</Link></li>
+            <li><Link href="/menu">Menu</Link></li>
+            <li><Link href="/plans">Package</Link></li>
+            <li><Link href="/contact">Contact Us</Link></li>
+            <li><Link href="/contact">Book Catering</Link></li>
           </ul>
         </div>
 
