@@ -55,12 +55,30 @@ export default function About() {
   ];
 
   return (
-    <div className={styles.aboutSection}>
-      <section className="container">
-        <h1 className={styles.title}>Our Story & Heritage</h1>
-        <p className={styles.subtitle}>
-          Established in 1991, Purval’s Caterers has been crafting memories through authentic flavors, traditional recipes, and unparalleled hospitality.
-        </p>
+    <div className={styles.aboutPage}>
+      {/* Top Banner Section */}
+      <div className={styles.bannerContainer}>
+        <Image 
+          src="/images/about_banner.png" 
+          alt="About Us Banner" 
+          fill
+          sizes="100vw"
+          priority
+          className={styles.bannerImage}
+        />
+        <div className={styles.bannerOverlay}></div>
+        <div className={styles.bannerContent}>
+          <h1 className={styles.bannerTitle}>About Us</h1>
+          <p className={styles.bannerSubtitle}>Our Story, Heritage & Passion for Gastronomy</p>
+        </div>
+      </div>
+
+      <div className={styles.aboutSection}>
+        <section className="container">
+          <h2 className={styles.title}>Our Story & Heritage</h2>
+          <p className={styles.subtitle}>
+            Established in 1991, Purval’s Caterers has been crafting memories through authentic flavors, traditional recipes, and unparalleled hospitality.
+          </p>
 
         {/* Story Intro */}
         <div className={styles.content}>
@@ -78,6 +96,7 @@ export default function About() {
               src="/images/about_indian_buffet.png" 
               alt="Premium Indian Buffet Catering Showcase" 
               fill
+              sizes="(max-width: 992px) 100vw, 50vw"
               style={{ objectFit: 'cover' }}
               priority
             />
@@ -99,6 +118,7 @@ export default function About() {
                 src="/images/about_kabab.png" 
                 alt="Executive Chef & Founder of Purval's Caterers" 
                 fill
+                sizes="(max-width: 992px) 100vw, 40vw"
                 style={{ objectFit: 'cover' }}
               />
             </div>
@@ -191,6 +211,7 @@ export default function About() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }
