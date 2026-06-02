@@ -146,7 +146,7 @@
 }
 
 .accordionCard.expanded {
-  border-color: rgba(46, 125, 50, 0.12); /* Green tint border */
+  border-color: rgba(168, 43, 61, 0.12); /* Red tint border */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
 }
 
@@ -174,17 +174,17 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #e8f5e9; /* Light green box */
+  background: #faebee; /* Light red box */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #2e7d32;
+  color: var(--primary);
   font-size: 1.15rem;
   transition: all 0.3s ease;
 }
 
 .accordionCard.expanded .categoryIconCircle {
-  background: #2e7d32;
+  background: var(--primary);
   color: #ffffff;
 }
 
