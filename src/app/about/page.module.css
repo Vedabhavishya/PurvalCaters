@@ -150,11 +150,12 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
-  background: var(--bg-main);
+  background: #ffffff;
   padding: 3rem 2rem;
   border-radius: 24px;
-  border: 1px solid rgba(168, 43, 61, 0.08);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  border: 1px solid rgba(212, 175, 55, 0.15); /* Soft gold border */
+  border-left: 6px solid var(--accent-gold); /* Prominent gold highlight bar */
+  box-shadow: 0 15px 35px rgba(168, 43, 61, 0.04);
   align-items: center;
   margin-top: 3rem;
 }
@@ -185,15 +186,15 @@
 }
 
 .chefName {
-  font-size: 2.2rem;
-  color: var(--primary-dark);
+  font-size: 2rem;
+  color: var(--text-main); /* Changed from deep red to soft slate charcoal */
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
 
 .chefTitle {
-  font-size: 1.1rem;
-  color: var(--primary);
+  font-size: 1rem;
+  color: var(--primary-light);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -207,20 +208,20 @@
 }
 
 .chefTag {
-  background: rgba(168, 43, 61, 0.08);
-  color: var(--primary-dark);
+  background: rgba(212, 175, 55, 0.06);
+  color: var(--primary);
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.4rem 0.8rem;
   border-radius: 9999px;
-  border: 1px solid rgba(168, 43, 61, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.25);
 }
 
 .chefDesc {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
+  font-size: 1.08rem;
+  line-height: 1.85;
+  color: #374151; /* Dark charcoal grey for high contrast and readability */
+  margin-bottom: 1.25rem;
 }
 
 /* Pax Capacity Banner */
