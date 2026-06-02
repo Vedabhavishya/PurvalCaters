@@ -30,20 +30,31 @@
 
 .featureCard {
   text-align: center;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   background: var(--bg-main);
-  border-radius: 16px;
-  transition: transform 0.3s ease;
+  border-radius: 20px;
+  border: 1px solid rgba(168, 43, 61, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .featureCard:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(168, 43, 61, 0.08);
+  border-color: rgba(168, 43, 61, 0.2);
 }
 
 .featureIcon {
-  font-size: 3rem;
+  font-size: 3.5rem;
   color: var(--primary);
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  display: inline-block;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Spin symbol 360 degrees on card hover and return to original place */
+.featureCard:hover .featureIcon {
+  transform: rotate(360deg);
 }
 
 /* Testimonials Marquee */
