@@ -67,7 +67,6 @@ export default function ContactPage() {
               </div>
               <div className={styles.cardContent}>
                 <h3 className={styles.cardTitle}>Phone & Mobile</h3>
-                <span className={styles.cardText}>Mobile (Click to call):</span>
                 <a href="tel:+919246179757" className={styles.linkItem}>+91 92461 79757</a>
                 <a href="tel:+919849559171" className={styles.linkItem}>+91 98495 59171</a>
                 
@@ -84,7 +83,6 @@ export default function ContactPage() {
               </div>
               <div className={styles.cardContent}>
                 <h3 className={styles.cardTitle}>Email Address</h3>
-                <span className={styles.cardText}>Send us an email (Click to mail):</span>
                 <a href="mailto:purvalscaterers@yahoo.co.in" className={styles.linkItem}>
                   purvalscaterers@yahoo.co.in
                 </a>
