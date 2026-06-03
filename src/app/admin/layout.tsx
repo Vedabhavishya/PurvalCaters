@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <FaHome /> },
-    { name: 'Menu Management', path: '/admin', icon: <FaUtensils /> },
+    { name: 'Menu Management', path: '/admin/menu', icon: <FaUtensils /> },
     { name: 'Premium Plans', path: '/admin/plans', icon: <FaBoxOpen /> },
     { name: 'Inquiries', path: '/admin/inquiries', icon: <FaEnvelopeOpenText /> },
     { name: 'Testimonials', path: '/admin/testimonials', icon: <FaStar /> },
@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className={styles.adminLayout}>
       <aside className={styles.sidebar}>
-        <Link href="/admin" className={styles.brand}>
+        <Link href="/admin/dashboard" className={styles.brand}>
           <FaUtensils /> SC Admin
         </Link>
         <nav className={styles.nav}>

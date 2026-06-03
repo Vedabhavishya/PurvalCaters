@@ -6,25 +6,28 @@ export function proxy(request: NextRequest) {
 
   // Check if path is under /admin
   if (pathname.startsWith('/admin')) {
-    // Redirect old /admin/menu route to /admin
-    if (pathname === '/admin/menu') {
-      return NextResponse.redirect(new URL('/admin', request.url));
+    const authCookie = request.cookies.get('admin_auth');
+    const isLoggedIn = authCookie && authCookie.value === 'true';
+
+    // Exact "/admin" or "/admin/" path redirect
+    if (pathname === '/admin' || pathname === '/admin/') {
+      if (isLoggedIn) {
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+      } else {
+        return NextResponse.redirect(new URL('/admin/login', request.url));
+      }
     }
 
     // Exclude /admin/login from check
     if (pathname === '/admin/login') {
-      // If user is already logged in, redirect them to /admin instead of showing login again
-      const authCookie = request.cookies.get('admin_auth');
-      if (authCookie && authCookie.value === 'true') {
-        return NextResponse.redirect(new URL('/admin', request.url));
+      if (isLoggedIn) {
+        return NextResponse.redirect(new URL('/admin/dashboard', request.url));
       }
       return NextResponse.next();
     }
 
-    // Check for the admin_auth cookie
-    const authCookie = request.cookies.get('admin_auth');
-
-    if (!authCookie || authCookie.value !== 'true') {
+    // For all other routes, check if logged in
+    if (!isLoggedIn) {
       // Redirect to login page
       const loginUrl = new URL('/admin/login', request.url);
       return NextResponse.redirect(loginUrl);

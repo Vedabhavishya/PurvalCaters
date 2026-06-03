@@ -169,59 +169,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       const catSlug = category?.slug || 'starters';
       const catName = category?.name || 'Starters';
 
-      let course: CourseType = 'veg-main';
+      const course = catSlug as CourseType;
       const subcat = dbItem.subcategory || catName;
-
-      // Map to exact CourseType based on category slug
-      if (catSlug === 'desserts') {
-        const lowerSub = subcat.toLowerCase();
-        if (lowerSub.includes('halwa')) course = 'halwas';
-        else if (lowerSub.includes('kheer') || lowerSub.includes('payasam')) course = 'kheer-payasam';
-        else if (lowerSub.includes('bengali')) course = 'bengali-sweets';
-        else if (lowerSub.includes('fruit')) course = 'fruit-desserts';
-        else if (lowerSub.includes('custard') || lowerSub.includes('pudding')) course = 'custards-puddings';
-        else if (lowerSub.includes('cold')) course = 'cold-desserts';
-        else if (lowerSub.includes('milk') || lowerSub.includes('cream')) course = 'milk-cream-desserts';
-        else if (lowerSub.includes('traditional snack')) course = 'traditional-snacks';
-        else if (lowerSub.includes('hot') || lowerSub.includes('jamun')) course = 'hot-sweets';
-        else course = 'traditional-sweets';
-      } else if (catSlug === 'starters') {
-        course = 'starters';
-      } else if (catSlug === 'breads') {
-        course = 'breads';
-      } else if (catSlug === 'veg-main') {
-        course = 'veg-main';
-      } else if (catSlug === 'nonveg-main') {
-        course = 'nonveg-main';
-      } else if (catSlug === 'rice-biryani') {
-        course = 'rice-biryani';
-      } else if (catSlug === 'accompaniments') {
-        course = 'accompaniments';
-      } else if (catSlug === 'south-indian-breakfast') {
-        course = 'south-indian-breakfast';
-      } else if (catSlug === 'north-indian-breakfast') {
-        course = 'north-indian-breakfast';
-      } else if (catSlug === 'special-breakfast') {
-        course = 'special-breakfast';
-      } else if (catSlug === 'breakfast-rice') {
-        course = 'breakfast-rice';
-      } else if (catSlug === 'live-counters') {
-        course = 'live-counters';
-      } else {
-        // Fallback matching
-        const lowerCat = catName.toLowerCase();
-        if (lowerCat.includes('drink') || lowerCat.includes('beverage')) course = 'starters';
-        else if (lowerCat.includes('chat') || lowerCat.includes('snack')) course = 'starters';
-        else if (lowerCat.includes('starter')) course = 'starters';
-        else if (lowerCat.includes('bread') || lowerCat.includes('roti') || lowerCat.includes('naan')) course = 'breads';
-        else if (lowerCat.includes('rice') || lowerCat.includes('biryani')) course = 'rice-biryani';
-        else if (lowerCat.includes('accompaniment')) course = 'accompaniments';
-        else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'traditional-sweets';
-        else if (lowerCat.includes('live counter') || lowerCat.includes('live-counter') || lowerCat.includes('live_counter')) course = 'live-counters';
-        else if (lowerCat.includes('breakfast') || lowerCat.includes('south indian') || lowerCat.includes('dosa') || lowerCat.includes('idly') || lowerCat.includes('vada') || lowerCat.includes('upma') || lowerCat.includes('pongal')) {
-          course = 'south-indian-breakfast';
-        }
-      }
 
       return {
         id: dbItem.id,
