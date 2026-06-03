@@ -287,6 +287,13 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     }
   };
 
+  // Handle PDF/Print download
+  const handleDownloadPDF = () => {
+    if (typeof window !== 'undefined') {
+      window.print();
+    }
+  };
+
   // Count items inside a course
   const courseCount = (course: CourseType) => {
     const courseGroup = groupedMenu[course];
