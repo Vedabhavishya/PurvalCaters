@@ -18,6 +18,30 @@ type MenuItem = {
   category: Category;
 };
 
+const COURSE_DETAILS: Record<string, { title: string }> = {
+  'starters': { title: 'Starters & Appetizers' },
+  'breads': { title: "Roti's" },
+  'veg-main': { title: 'Vegetarian Main Course' },
+  'nonveg-main': { title: 'Non-Vegetarian Main Course' },
+  'rice-biryani': { title: 'Rice & Biryani' },
+  'accompaniments': { title: 'Accompaniments' },
+  'south-indian-breakfast': { title: 'South Indian Breakfast' },
+  'north-indian-breakfast': { title: 'North Indian Breakfast' },
+  'special-breakfast': { title: 'Special Breakfast' },
+  'breakfast-rice': { title: 'Breakfast Rice Items' },
+  'hot-sweets': { title: 'Hot Indian Sweets (Jamun Specials)' },
+  'halwas': { title: 'Halwas' },
+  'kheer-payasam': { title: 'Kheer & Payasam' },
+  'traditional-sweets': { title: 'Traditional Indian Sweets' },
+  'fruit-desserts': { title: 'Fruit-Based Desserts' },
+  'custards-puddings': { title: 'Custards & Puddings' },
+  'cold-desserts': { title: 'Cold Desserts' },
+  'bengali-sweets': { title: 'Bengali Sweets' },
+  'milk-cream-desserts': { title: 'Milk & Cream Desserts' },
+  'traditional-snacks': { title: 'Traditional Snacks / Sweets' },
+  'live-counters': { title: 'Live Counters' }
+};
+
 interface MenuManagerClientProps {
   initialItems: MenuItem[];
   initialCategories: Category[];
@@ -200,7 +224,8 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
   // Filter items based on search query and category filter
   const filteredItems = items.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
+      (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (item.subcategory && item.subcategory.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const matchesCategory = categoryFilter === 'all' || item.categoryId === categoryFilter;
 
@@ -278,118 +303,147 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
         </div>
       </div>
 
-      {/* Menu Table */}
-      <div style={{ background: 'white', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid #f0ede8', overflowX: 'auto' }}>
-        {filteredItems.length > 0 ? (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #f1f5f9' }}>
-                <th style={{ padding: '1rem', color: '#64748b', fontWeight: 600, fontSize: '0.9rem' }}>Name</th>
-                <th style={{ padding: '1rem', color: '#64748b', fontWeight: 600, fontSize: '0.9rem' }}>Category</th>
-                <th style={{ padding: '1rem', color: '#64748b', fontWeight: 600, fontSize: '0.9rem' }}>Price</th>
-                <th style={{ padding: '1rem', color: '#64748b', fontWeight: 600, fontSize: '0.9rem' }}>Featured</th>
-                <th style={{ padding: '1rem', color: '#64748b', fontWeight: 600, fontSize: '0.9rem', textAlign: 'right' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredItems.map(item => (
-                <tr key={item.id} style={{ borderBottom: '1px solid #f8fafc', transition: 'background-color 0.2s' }}>
-                  <td style={{ padding: '1.1rem 1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                      <span 
-                        style={{ 
-                          display: 'inline-flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center',
-                          width: '14px', 
-                          height: '14px', 
-                          border: `2px solid ${item.isVeg ? '#10b981' : '#a82b3d'}`, 
-                          padding: '2px',
-                          borderRadius: '2px',
-                          flexShrink: 0
-                        }} 
-                        title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}
-                      >
-                        <span style={{ 
-                          display: 'block', 
-                          width: '6px', 
-                          height: '6px', 
-                          borderRadius: '50%', 
-                          backgroundColor: item.isVeg ? '#10b981' : '#a82b3d' 
-                        }} />
-                      </span>
-                      <div style={{ fontWeight: 600, color: '#1e293b' }}>{item.name}</div>
+      {/* Grouped Menu View */}
+      {filteredItems.length > 0 ? (
+        categories.map(cat => {
+          // Find matching items for this category
+          const catItems = filteredItems.filter(item => item.categoryId === cat.id);
+          if (catItems.length === 0) return null;
+
+          // Group catItems by subcategory
+          const subcatGroups: Record<string, MenuItem[]> = {};
+          catItems.forEach(item => {
+            const subcat = item.subcategory?.trim() || 'General';
+            if (!subcatGroups[subcat]) {
+              subcatGroups[subcat] = [];
+            }
+            subcatGroups[subcat].push(item);
+          });
+
+          const sortedSubcats = Object.keys(subcatGroups).sort();
+
+          return (
+            <div key={cat.id} style={{ marginBottom: '3rem', background: 'white', borderRadius: '16px', padding: '2rem', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', border: '1px solid #f0ede8' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: 'var(--primary)', margin: 0 }}>
+                  {cat.name}
+                </h2>
+                <span style={{ fontSize: '0.85rem', color: '#475569', fontWeight: 600, background: '#f1f5f9', padding: '0.35rem 0.85rem', borderRadius: '9999px' }}>
+                  {catItems.length} {catItems.length === 1 ? 'item' : 'items'}
+                </span>
+              </div>
+
+              {sortedSubcats.map(subcatName => {
+                const subcatItems = subcatGroups[subcatName];
+                return (
+                  <div key={subcatName} style={{ marginBottom: '2.5rem' }}>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', background: '#eae6df', padding: '0.5rem 1.25rem', borderRadius: '8px', marginBottom: '1.25rem', display: 'inline-block' }}>
+                      {subcatName}
+                    </h3>
+                    
+                    <div style={{ overflowX: 'auto', border: '1px solid #f1f5f9', borderRadius: '12px' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                        <thead>
+                          <tr style={{ borderBottom: '2px solid #f1f5f9', background: '#faf9f6' }}>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '40%' }}>Name</th>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '20%' }}>Menu Tab (Course)</th>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '15%' }}>Price</th>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '15%' }}>Featured</th>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '10%', textAlign: 'right' }}>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {subcatItems.map(item => (
+                            <tr key={item.id} style={{ borderBottom: '1px solid #f8fafc', transition: 'background-color 0.2s' }}>
+                              <td style={{ padding: '0.9rem 1rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                                  <span 
+                                    style={{ 
+                                      display: 'inline-flex', 
+                                      alignItems: 'center', 
+                                      justifyContent: 'center',
+                                      width: '14px', 
+                                      height: '14px', 
+                                      border: `2px solid ${item.isVeg ? '#10b981' : '#a82b3d'}`, 
+                                      padding: '2px',
+                                      borderRadius: '2px',
+                                      flexShrink: 0
+                                    }} 
+                                    title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}
+                                  >
+                                    <span style={{ 
+                                      display: 'block', 
+                                      width: '6px', 
+                                      height: '6px', 
+                                      borderRadius: '50%', 
+                                      backgroundColor: item.isVeg ? '#10b981' : '#a82b3d' 
+                                    }} />
+                                  </span>
+                                  <div style={{ fontWeight: 600, color: '#1e293b' }}>{item.name}</div>
+                                </div>
+                                {item.description && (
+                                  <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.2rem', maxWidth: '350px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingLeft: '24px' }} title={item.description}>
+                                    {item.description}
+                                  </div>
+                                )}
+                              </td>
+                              <td style={{ padding: '0.9rem 1rem' }}>
+                                <span style={{ 
+                                  background: '#f1f5f9', 
+                                  color: '#475569', 
+                                  padding: '0.25rem 0.75rem', 
+                                  borderRadius: '9999px', 
+                                  fontSize: '0.8rem', 
+                                  fontWeight: 600 
+                                }}>
+                                  {item.course ? (COURSE_DETAILS[item.course]?.title || item.course) : 'General'}
+                                </span>
+                              </td>
+                              <td style={{ padding: '0.9rem 1rem', fontWeight: 600, color: '#0f172a' }}>
+                                {item.price ? `₹${item.price}` : '—'}
+                              </td>
+                              <td style={{ padding: '0.9rem 1rem' }}>
+                                <span style={{ 
+                                  color: item.isFeatured ? '#10b981' : '#cbd5e1', 
+                                  fontSize: '0.85rem', 
+                                  fontWeight: 600 
+                                }}>
+                                  {item.isFeatured ? '★ Featured' : 'No'}
+                                </span>
+                              </td>
+                              <td style={{ padding: '0.9rem 1rem', textAlign: 'right' }}>
+                                <button 
+                                  onClick={() => handleOpenEditModal(item)}
+                                  style={{ background: 'none', border: 'none', color: '#3b82f6', cursor: 'pointer', padding: '0.4rem', marginRight: '0.25rem' }}
+                                  title="Edit Item"
+                                >
+                                  <FaEdit size={16} />
+                                </button>
+                                <button 
+                                  onClick={() => handleOpenDeleteModal(item)}
+                                  style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0.4rem' }}
+                                  title="Delete Item"
+                                >
+                                  <FaTrash size={16} />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
-                    {item.description && (
-                      <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.2rem', maxWidth: '400px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingLeft: '24px' }}>
-                        {item.description}
-                      </div>
-                    )}
-                  </td>
-                  <td style={{ padding: '1.1rem 1rem' }}>
-                    <span style={{ 
-                      background: '#f1f5f9', 
-                      color: '#475569', 
-                      padding: '0.25rem 0.75rem', 
-                      borderRadius: '9999px', 
-                      fontSize: '0.8rem', 
-                      fontWeight: 600 
-                    }}>
-                      {item.category?.name || 'Unassigned'}
-                    </span>
-                    {item.subcategory && (
-                      <span style={{ 
-                        background: '#eae6df', 
-                        color: 'var(--text-main)', 
-                        padding: '0.25rem 0.75rem', 
-                        borderRadius: '9999px', 
-                        fontSize: '0.8rem', 
-                        fontWeight: 600,
-                        marginLeft: '0.5rem'
-                      }}>
-                        {item.subcategory}
-                      </span>
-                    )}
-                  </td>
-                  <td style={{ padding: '1.1rem 1rem', fontWeight: 600, color: '#0f172a' }}>
-                    {item.price ? `₹${item.price}` : '—'}
-                  </td>
-                  <td style={{ padding: '1.1rem 1rem' }}>
-                    <span style={{ 
-                      color: item.isFeatured ? '#10b981' : '#cbd5e1', 
-                      fontSize: '0.85rem', 
-                      fontWeight: 600 
-                    }}>
-                      {item.isFeatured ? '★ Featured' : 'No'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '1.1rem 1rem', textAlign: 'right' }}>
-                    <button 
-                      onClick={() => handleOpenEditModal(item)}
-                      style={{ background: 'none', border: 'none', color: '#3b82f6', cursor: 'pointer', padding: '0.5rem', marginRight: '0.5rem' }}
-                      title="Edit Item"
-                    >
-                      <FaEdit size={16} />
-                    </button>
-                    <button 
-                      onClick={() => handleOpenDeleteModal(item)}
-                      style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0.5rem' }}
-                      title="Delete Item"
-                    >
-                      <FaTrash size={16} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#64748b' }}>
-            <p style={{ fontSize: '1.1rem', fontWeight: 500, margin: 0 }}>No menu items found</p>
-            <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginTop: '0.25rem' }}>Try refining your search or add a new menu item.</p>
-          </div>
-        )}
-      </div>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })
+      ) : (
+        <div style={{ background: 'white', borderRadius: '16px', padding: '3rem 1rem', textAlign: 'center', color: '#64748b', border: '1px solid #f0ede8' }}>
+          <p style={{ fontSize: '1.1rem', fontWeight: 500, margin: 0 }}>No menu items found</p>
+          <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginTop: '0.25rem' }}>Try refining your search or add a new menu item.</p>
+        </div>
+      )}
 
       {/* Add/Edit Menu Item Modal */}
       {itemModalOpen && (
