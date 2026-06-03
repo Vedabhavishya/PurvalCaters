@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import PackageCard from '@/components/ui/PackageCard';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 import styles from './page.module.css';
 
 const prisma = new PrismaClient();
@@ -13,25 +14,29 @@ export default async function PlansPage() {
 
   return (
     <section className={`container ${styles.plansSection}`}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Premium Catering Packages</h1>
-        <p className={styles.subtitle}>
-          Choose the perfect catering package for your event. Each plan is crafted to deliver a complete luxury dining experience.
-        </p>
-      </div>
+      <ScrollReveal>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Premium Catering Packages</h1>
+          <p className={styles.subtitle}>
+            Choose the perfect catering package for your event. Each plan is crafted to deliver a complete luxury dining experience.
+          </p>
+        </div>
+      </ScrollReveal>
 
-      <div className={styles.plansGrid}>
-        {packages.map(pkg => (
-          <PackageCard 
-            key={pkg.id}
-            name={pkg.name}
-            description={pkg.description}
-            price={pkg.price}
-            capacity={pkg.capacity}
-            includes={pkg.includes}
-          />
-        ))}
-      </div>
+      <ScrollReveal>
+        <div className={styles.plansGrid}>
+          {packages.map(pkg => (
+            <PackageCard 
+              key={pkg.id}
+              name={pkg.name}
+              description={pkg.description}
+              price={pkg.price}
+              capacity={pkg.capacity}
+              includes={pkg.includes}
+            />
+          ))}
+        </div>
+      </ScrollReveal>
     </section>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaCalendarAlt, FaUsers } from 'react-icons/fa';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -59,7 +60,7 @@ export default function ContactPage() {
       <div className={`container ${styles.mainContainer}`}>
         <div className={styles.grid}>
           {/* Left Column: Contact Details Cards */}
-          <div className={styles.detailsColumn}>
+          <ScrollReveal className={styles.detailsColumn}>
             {/* Phone Card */}
             <div className={styles.detailCard}>
               <div className={styles.iconCircle}>
@@ -104,10 +105,10 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right Column: Send Us A Message Form */}
-          <div className={styles.formCard}>
+          <ScrollReveal className={styles.formCard}>
             <h2>Send Us a Message</h2>
             <p>Fill out the inquiry form below, and our catering coordinators will reach out to design your proposal.</p>
             
@@ -220,24 +221,26 @@ export default function ContactPage() {
                 {status === 'loading' ? 'Sending Message...' : 'Send Message'}
               </button>
             </form>
-          </div>
+          </ScrollReveal>
         </div>
 
         {/* Map Section */}
-        <div className={styles.mapSection}>
-          <h2 className={styles.mapHeading}>Our Location</h2>
-          <p className={styles.mapSubtitle}>Find us at our main kitchen and operations office</p>
-          <div className={styles.mapWrapper}>
-            <iframe 
-              src="https://maps.google.com/maps?q=Thukaramgate,%20North%20Lallaguda,%20Secunderabad,%20Hyderabad%20500017,%20Andhra%20Pradesh,%20INDIA&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-              className={styles.mapFrame} 
-              allowFullScreen 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Purval Caterers Operations Location Map"
-            ></iframe>
+        <ScrollReveal>
+          <div className={styles.mapSection}>
+            <h2 className={styles.mapHeading}>Our Location</h2>
+            <p className={styles.mapSubtitle}>Find us at our main kitchen and operations office</p>
+            <div className={styles.mapWrapper}>
+              <iframe 
+                src="https://maps.google.com/maps?q=Thukaramgate,%20North%20Lallaguda,%20Secunderabad,%20Hyderabad%20500017,%20Andhra%20Pradesh,%20INDIA&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                className={styles.mapFrame} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Purval Caterers Operations Location Map"
+              ></iframe>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   );

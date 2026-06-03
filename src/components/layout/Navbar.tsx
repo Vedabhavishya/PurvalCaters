@@ -51,9 +51,14 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Link href="/contact" className="btn btn-primary hover-lift">
+          <a 
+            href="https://wa.me/919246179757?text=Hi%20i%20need%20to%20book%20a%20catering" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="btn btn-primary hover-lift"
+          >
             Book Catering
-          </Link>
+          </a>
         </div>
       </div>
     </nav>
