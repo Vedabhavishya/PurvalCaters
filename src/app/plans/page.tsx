@@ -1,42 +1,42 @@
-import { PrismaClient } from '@prisma/client';
-import PackageCard from '@/components/ui/PackageCard';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import PlansClient from './PlansClient';
 import styles from './page.module.css';
+import Image from 'next/image';
 
-const prisma = new PrismaClient();
+export const metadata = {
+  title: "Premium Catering Packages | Purval's Caterers",
+  description: "Explore our vegetarian and non-vegetarian catering menu packages, custom live counters, and tailored setups.",
+};
 
-export const revalidate = 3600;
-
-export default async function PlansPage() {
-  const packages = await prisma.package.findMany({
-    orderBy: { price: 'asc' },
-  });
-
+export default function PlansPage() {
   return (
-    <section className={`container ${styles.plansSection}`}>
-      <ScrollReveal>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Premium Catering Packages</h1>
-          <p className={styles.subtitle}>
-            Choose the perfect catering package for your event. Each plan is crafted to deliver a complete luxury dining experience.
-          </p>
+    <div className={styles.plansPage}>
+      {/* Top Banner Section */}
+      <div className={styles.bannerContainer}>
+        <Image 
+          src="/images/hero_bg_3.png" 
+          alt="Catering Packages Banner" 
+          fill
+          sizes="100vw"
+          priority
+          className={styles.bannerImage}
+        />
+        <div className={styles.bannerOverlay}></div>
+        <div className={styles.bannerContent}>
+          <ScrollReveal>
+            <h1 className={styles.bannerTitle}>Premium Catering Packages</h1>
+            <p className={styles.bannerSubtitle}>
+              Discover our carefully curated vegetarian and non-vegetarian menu packages. Designed to bring authentic flavors and luxury hospitality to your event.
+            </p>
+          </ScrollReveal>
         </div>
-      </ScrollReveal>
+      </div>
 
-      <ScrollReveal>
-        <div className={styles.plansGrid}>
-          {packages.map(pkg => (
-            <PackageCard 
-              key={pkg.id}
-              name={pkg.name}
-              description={pkg.description}
-              price={pkg.price}
-              capacity={pkg.capacity}
-              includes={pkg.includes}
-            />
-          ))}
-        </div>
-      </ScrollReveal>
-    </section>
+      <div className={`container ${styles.plansSection}`}>
+        <ScrollReveal>
+          <PlansClient />
+        </ScrollReveal>
+      </div>
+    </div>
   );
 }
