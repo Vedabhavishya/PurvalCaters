@@ -397,6 +397,26 @@ ${Object.entries(selectedItemsByCourse)
     }
   };
 
+  // Handle WhatsApp Redirection with pretyped custom package details
+  const handleWhatsAppRedirect = () => {
+    if (selectedItemsDetails.length === 0) return;
+
+    let message = `Hi Purval's Caterers, I would like to get a quote/cost estimate for my custom catering package.\n\n`;
+    message += `Here are the selected items:\n`;
+    selectedItemsDetails.forEach((item, index) => {
+      message += `${index + 1}. ${item.name} (${item.isVeg ? 'Veg' : 'Non-Veg'})\n`;
+    });
+    message += `\nTotal Items: ${stats.total} (Veg: ${stats.veg}, Non-Veg: ${stats.nonveg})\n\n`;
+    message += `Could you please let me know the cost and options for this selection? Thank you!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsAppUrl = `https://wa.me/919246179757?text=${encodedMessage}`;
+
+    if (typeof window !== 'undefined') {
+      window.open(whatsAppUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   // Count items inside a course
   const courseCount = (course: CourseType) => {
     const courseGroup = groupedMenu[course];

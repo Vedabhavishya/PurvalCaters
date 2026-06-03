@@ -16,7 +16,7 @@
 
 @media (min-width: 992px) {
   .menuLayout {
-    grid-template-columns: 2.2fr 1fr; /* Two-column grid on desktop */
+    grid-template-columns: 1.8fr 1.2fr; /* Two-column grid on desktop - Wider right column */
   }
 }
 
