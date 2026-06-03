@@ -38,7 +38,7 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${isSolid ? styles.scrolled : ''}`}>
       <div className={`container ${styles.navContent}`}>
         <Link href="/" className={styles.logo}>
-          <FaUtensils /> Purval’s Caterers
+          <FaUtensils /> Supper Club
         </Link>
 
         <div className={styles.navLinks}>
