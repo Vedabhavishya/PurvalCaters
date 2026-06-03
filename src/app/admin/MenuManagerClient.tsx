@@ -10,6 +10,8 @@ type MenuItem = {
   description: string | null; 
   price: number | null; 
   imageUrl: string | null; 
+  isVeg: boolean;
+  subcategory: string | null;
   categoryId: string;
   isFeatured: boolean;
   category: Category;
@@ -41,6 +43,8 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
     price: '',
     categoryId: '',
     isFeatured: false,
+    isVeg: true,
+    subcategory: '',
   });
   const [newCategoryName, setNewCategoryName] = useState('');
 
@@ -57,6 +61,8 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       price: '',
       categoryId: categories[0]?.id || '',
       isFeatured: false,
+      isVeg: true,
+      subcategory: '',
     });
     setErrorMsg('');
     setItemModalOpen(true);
@@ -70,6 +76,8 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       price: item.price ? item.price.toString() : '',
       categoryId: item.categoryId,
       isFeatured: item.isFeatured,
+      isVeg: item.isVeg,
+      subcategory: item.subcategory || '',
     });
     setErrorMsg('');
     setItemModalOpen(true);
@@ -283,9 +291,33 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
               {filteredItems.map(item => (
                 <tr key={item.id} style={{ borderBottom: '1px solid #f8fafc', transition: 'background-color 0.2s' }}>
                   <td style={{ padding: '1.1rem 1rem' }}>
-                    <div style={{ fontWeight: 600, color: '#1e293b' }}>{item.name}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <span 
+                        style={{ 
+                          display: 'inline-flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center',
+                          width: '14px', 
+                          height: '14px', 
+                          border: `2px solid ${item.isVeg ? '#10b981' : '#a82b3d'}`, 
+                          padding: '2px',
+                          borderRadius: '2px',
+                          flexShrink: 0
+                        }} 
+                        title={item.isVeg ? 'Vegetarian' : 'Non-Vegetarian'}
+                      >
+                        <span style={{ 
+                          display: 'block', 
+                          width: '6px', 
+                          height: '6px', 
+                          borderRadius: '50%', 
+                          backgroundColor: item.isVeg ? '#10b981' : '#a82b3d' 
+                        }} />
+                      </span>
+                      <div style={{ fontWeight: 600, color: '#1e293b' }}>{item.name}</div>
+                    </div>
                     {item.description && (
-                      <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.2rem', maxWidth: '400px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '0.2rem', maxWidth: '400px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingLeft: '24px' }}>
                         {item.description}
                       </div>
                     )}
@@ -301,6 +333,19 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                     }}>
                       {item.category?.name || 'Unassigned'}
                     </span>
+                    {item.subcategory && (
+                      <span style={{ 
+                        background: '#eae6df', 
+                        color: 'var(--text-main)', 
+                        padding: '0.25rem 0.75rem', 
+                        borderRadius: '9999px', 
+                        fontSize: '0.8rem', 
+                        fontWeight: 600,
+                        marginLeft: '0.5rem'
+                      }}>
+                        {item.subcategory}
+                      </span>
+                    )}
                   </td>
                   <td style={{ padding: '1.1rem 1rem', fontWeight: 600, color: '#0f172a' }}>
                     {item.price ? `₹${item.price}` : '—'}
@@ -434,6 +479,19 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                 </div>
               </div>
 
+              {/* Subcategory */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Subcategory / Group (Optional)</label>
+                <input 
+                  type="text"
+                  name="subcategory"
+                  value={formData.subcategory}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Spring Rolls, Manchuria's, Tandoor, Curries"
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
+                />
+              </div>
+
               {/* Description */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Description</label>
@@ -447,19 +505,36 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                 />
               </div>
 
-              {/* Featured Checkbox */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <input 
-                  type="checkbox"
-                  id="isFeatured"
-                  name="isFeatured"
-                  checked={formData.isFeatured}
-                  onChange={handleCheckboxChange}
-                  style={{ width: '16px', height: '16px', accentColor: 'var(--primary)' }}
-                />
-                <label htmlFor="isFeatured" style={{ fontSize: '0.9rem', fontWeight: 600, color: '#475569', cursor: 'pointer' }}>
-                  Feature this item on homepage
-                </label>
+              <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+                {/* Vegetarian Checkbox */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input 
+                    type="checkbox"
+                    id="isVeg"
+                    name="isVeg"
+                    checked={formData.isVeg}
+                    onChange={handleCheckboxChange}
+                    style={{ width: '16px', height: '16px', accentColor: '#10b981' }}
+                  />
+                  <label htmlFor="isVeg" style={{ fontSize: '0.9rem', fontWeight: 600, color: '#475569', cursor: 'pointer' }}>
+                    Vegetarian (Veg) Dish
+                  </label>
+                </div>
+
+                {/* Featured Checkbox */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <input 
+                    type="checkbox"
+                    id="isFeatured"
+                    name="isFeatured"
+                    checked={formData.isFeatured}
+                    onChange={handleCheckboxChange}
+                    style={{ width: '16px', height: '16px', accentColor: 'var(--primary)' }}
+                  />
+                  <label htmlFor="isFeatured" style={{ fontSize: '0.9rem', fontWeight: 600, color: '#475569', cursor: 'pointer' }}>
+                    Feature this item on homepage
+                  </label>
+                </div>
               </div>
 
               {/* Modal Footer */}

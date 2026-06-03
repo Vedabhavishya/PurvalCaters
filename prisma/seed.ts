@@ -1,10 +1,37 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { MENU_ITEMS } from '../src/data/menuData';
 
 const prisma = new PrismaClient();
 
+const COURSE_MAPPING: Record<string, { name: string; slug: string }> = {
+  'starters': { name: 'Starters', slug: 'starters' },
+  'breads': { name: 'Breads', slug: 'breads' },
+  'veg-main': { name: 'Vegetarian Main Course', slug: 'veg-main' },
+  'nonveg-main': { name: 'Non-Vegetarian Main Course', slug: 'nonveg-main' },
+  'rice-biryani': { name: 'Rice & Biryani', slug: 'rice-biryani' },
+  'accompaniments': { name: 'Accompaniments', slug: 'accompaniments' },
+  'south-indian-breakfast': { name: 'South Indian Breakfast', slug: 'south-indian-breakfast' },
+  'north-indian-breakfast': { name: 'North Indian Breakfast', slug: 'north-indian-breakfast' },
+  'special-breakfast': { name: 'Special Breakfast', slug: 'special-breakfast' },
+  'breakfast-rice': { name: 'Breakfast Rice Items', slug: 'breakfast-rice' },
+  'hot-sweets': { name: 'Desserts', slug: 'desserts' },
+  'halwas': { name: 'Desserts', slug: 'desserts' },
+  'kheer-payasam': { name: 'Desserts', slug: 'desserts' },
+  'traditional-sweets': { name: 'Desserts', slug: 'desserts' },
+  'fruit-desserts': { name: 'Desserts', slug: 'desserts' },
+  'custards-puddings': { name: 'Desserts', slug: 'desserts' },
+  'cold-desserts': { name: 'Desserts', slug: 'desserts' },
+  'bengali-sweets': { name: 'Desserts', slug: 'desserts' },
+  'milk-cream-desserts': { name: 'Desserts', slug: 'desserts' },
+  'traditional-snacks': { name: 'Desserts', slug: 'desserts' },
+  'live-counters': { name: 'Live Counters', slug: 'live-counters' }
+};
+
 async function main() {
+  console.log('Starting seeding...');
+
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10);
   await prisma.admin.upsert({
@@ -15,105 +42,111 @@ async function main() {
       password: hashedPassword,
     },
   });
+  console.log('Admin user verified.');
 
-  // Create Categories
-  const categories = [
-    { name: 'Starters', slug: 'starters' },
-    { name: 'Main Course', slug: 'main-course' },
-    { name: 'South Indian', slug: 'south-indian' },
-    { name: 'North Indian', slug: 'north-indian' },
-    { name: 'Desserts', slug: 'desserts' },
-    { name: 'Beverages', slug: 'beverages' },
-    { name: 'Live Counters', slug: 'live-counters' },
-  ];
+  // Clean existing menu items and categories
+  console.log('Clearing existing MenuItems and Categories...');
+  await prisma.menuItem.deleteMany();
+  await prisma.category.deleteMany();
 
-  for (const cat of categories) {
-    await prisma.category.upsert({
-      where: { slug: cat.slug },
-      update: {},
-      create: cat,
+  // Create clean Category map
+  const categoryCache: Record<string, string> = {};
+  
+  // Unique categories list based on mapping values
+  const uniqueCategories = Array.from(
+    new Map(Object.values(COURSE_MAPPING).map(item => [item.slug, item])).values()
+  );
+
+  console.log('Creating database categories...');
+  for (const catConfig of uniqueCategories) {
+    const createdCat = await prisma.category.create({
+      data: {
+        name: catConfig.name,
+        slug: catConfig.slug,
+      }
     });
+    categoryCache[catConfig.slug] = createdCat.id;
+  }
+  console.log(`Created ${uniqueCategories.length} categories.`);
+
+  // Seed Menu Items
+  console.log(`Inserting ${MENU_ITEMS.length} menu items from menuData.ts...`);
+  
+  // Use a transaction/chunking to insert items efficiently
+  const menuItemsData = MENU_ITEMS.map((item) => {
+    const catConfig = COURSE_MAPPING[item.course] || { name: 'Starters', slug: 'starters' };
+    const categoryId = categoryCache[catConfig.slug];
+    
+    return {
+      id: item.id,
+      name: item.name,
+      isVeg: item.isVeg,
+      subcategory: item.subcategory,
+      categoryId,
+      isFeatured: false,
+    };
+  });
+
+  // Batch insert in chunks of 100 for SQLite limits
+  const chunkSize = 100;
+  for (let i = 0; i < menuItemsData.length; i += chunkSize) {
+    const chunk = menuItemsData.slice(i, i + chunkSize);
+    await prisma.menuItem.createMany({
+      data: chunk,
+    });
+    console.log(`Inserted items ${i + 1} to ${Math.min(i + chunkSize, menuItemsData.length)}...`);
   }
 
-  const startersCategory = await prisma.category.findUnique({ where: { slug: 'starters' } });
-  const mainCourseCategory = await prisma.category.findUnique({ where: { slug: 'main-course' } });
-  const southIndianCategory = await prisma.category.findUnique({ where: { slug: 'south-indian' } });
-
-  if (startersCategory && mainCourseCategory && southIndianCategory) {
-    // Add Menu Items
-    const menuItems = [
+  // Create Packages if none exist
+  const pkgCount = await prisma.package.count();
+  if (pkgCount === 0) {
+    console.log('Seeding default packages...');
+    const packages = [
       {
-        name: 'Paneer Tikka',
-        description: 'Cubes of paneer marinated in spices and grilled in a tandoor.',
-        price: 250,
-        categoryId: startersCategory.id,
-        isFeatured: true,
+        name: 'Silver Package',
+        description: 'Ideal for small gatherings and intimate parties.',
+        price: 1000,
+        capacity: 50,
+        includes: JSON.stringify(['2 Starters', '2 Main Courses', '1 Dessert', 'Standard Cutlery']),
       },
       {
-        name: 'Butter Chicken',
-        description: 'Chicken cooked in a smooth buttery and creamy tomato based gravy.',
-        price: 450,
-        categoryId: mainCourseCategory.id,
-        isFeatured: true,
+        name: 'Gold Package',
+        description: 'Perfect for corporate events and medium sized parties.',
+        price: 2000,
+        capacity: 100,
+        includes: JSON.stringify(['4 Starters', '4 Main Courses', '2 Desserts', 'Welcome Drink', 'Premium Cutlery']),
       },
       {
-        name: 'Masala Dosa',
-        description: 'Crispy rice batter crepe stuffed with a spiced potato mash.',
-        price: 150,
-        categoryId: southIndianCategory.id,
-        isFeatured: false,
+        name: 'Royal Wedding Package',
+        description: 'The ultimate luxury dining experience for weddings.',
+        price: 5000,
+        capacity: 500,
+        includes: JSON.stringify(['Live Counters', 'Unlimited Premium Starters', 'Exotic Main Courses', 'Gourmet Desserts', 'Dedicated Serving Staff', 'Luxury Setup']),
       },
     ];
 
-    for (const item of menuItems) {
-      await prisma.menuItem.create({
-        data: item,
+    for (const pkg of packages) {
+      await prisma.package.create({
+        data: pkg,
       });
     }
   }
 
-  // Create Packages
-  const packages = [
-    {
-      name: 'Silver Package',
-      description: 'Ideal for small gatherings and intimate parties.',
-      price: 1000,
-      capacity: 50,
-      includes: JSON.stringify(['2 Starters', '2 Main Courses', '1 Dessert', 'Standard Cutlery']),
-    },
-    {
-      name: 'Gold Package',
-      description: 'Perfect for corporate events and medium sized parties.',
-      price: 2000,
-      capacity: 100,
-      includes: JSON.stringify(['4 Starters', '4 Main Courses', '2 Desserts', 'Welcome Drink', 'Premium Cutlery']),
-    },
-    {
-      name: 'Royal Wedding Package',
-      description: 'The ultimate luxury dining experience for weddings.',
-      price: 5000,
-      capacity: 500,
-      includes: JSON.stringify(['Live Counters', 'Unlimited Premium Starters', 'Exotic Main Courses', 'Gourmet Desserts', 'Dedicated Serving Staff', 'Luxury Setup']),
-    },
-  ];
-
-  for (const pkg of packages) {
-    await prisma.package.create({
-      data: pkg,
+  // Create Testimonials if none exist
+  const testimonialCount = await prisma.testimonial.count();
+  if (testimonialCount === 0) {
+    console.log('Seeding default testimonial...');
+    await prisma.testimonial.create({
+      data: {
+        name: 'Rajesh Sharma',
+        role: 'Event Host',
+        content: 'The Royal Wedding Package exceeded our expectations. The food was exquisite and the service was truly premium.',
+        rating: 5,
+      },
     });
   }
 
-  // Create Testimonial
-  await prisma.testimonial.create({
-    data: {
-      name: 'Rajesh Sharma',
-      role: 'Event Host',
-      content: 'The Royal Wedding Package exceeded our expectations. The food was exquisite and the service was truly premium.',
-      rating: 5,
-    },
-  });
-
-  console.log('Database seeded successfully!');
+  console.log('Database seeded successfully with all static menu items!');
 }
 
 main()

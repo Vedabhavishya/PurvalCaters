@@ -33,6 +33,8 @@ model MenuItem {
   description String?
   price       Float?
   imageUrl    String?
+  isVeg       Boolean  @default(true)
+  subcategory String?
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   isFeatured  Boolean  @default(false)

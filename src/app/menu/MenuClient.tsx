@@ -24,7 +24,16 @@ import {
 } from 'react-icons/fa';
 
 type DBCategory = { id: string; name: string; slug: string };
-type DBMenuItem = { id: string; name: string; description: string | null; price: number | null; imageUrl: string | null; categoryId: string };
+type DBMenuItem = { 
+  id: string; 
+  name: string; 
+  description: string | null; 
+  price: number | null; 
+  imageUrl: string | null; 
+  isVeg: boolean;
+  subcategory: string | null;
+  categoryId: string;
+};
 
 interface MenuClientProps {
   categories: DBCategory[];
@@ -151,44 +160,77 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
   // Merge items from database if any are not in local data
   const allMenuItems = useMemo(() => {
-    const dbMappedItems = items.map((dbItem): LocalMenuItem | null => {
-      const exists = MENU_ITEMS.some(item => item.name.toLowerCase() === dbItem.name.toLowerCase());
-      if (exists) return null;
+    if (items.length === 0) {
+      return MENU_ITEMS;
+    }
 
-      const catName = categories.find(c => c.id === dbItem.categoryId)?.name || '';
+    return items.map((dbItem): LocalMenuItem => {
+      const category = categories.find(c => c.id === dbItem.categoryId);
+      const catSlug = category?.slug || 'starters';
+      const catName = category?.name || 'Starters';
+
       let course: CourseType = 'veg-main';
-      let isVeg = true;
-      
-      const lowerCat = catName.toLowerCase();
-      const lowerName = dbItem.name.toLowerCase();
+      const subcat = dbItem.subcategory || catName;
 
-      if (lowerCat.includes('drink') || lowerCat.includes('beverage')) course = 'starters';
-      else if (lowerCat.includes('chat') || lowerCat.includes('snack')) course = 'starters';
-      else if (lowerCat.includes('starter')) course = 'starters';
-      else if (lowerCat.includes('bread') || lowerCat.includes('roti') || lowerCat.includes('naan')) course = 'breads';
-      else if (lowerCat.includes('rice') || lowerCat.includes('biryani')) course = 'rice-biryani';
-      else if (lowerCat.includes('accompaniment')) course = 'accompaniments';
-      else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'traditional-sweets';
-      else if (lowerCat.includes('live counter') || lowerCat.includes('live-counter') || lowerCat.includes('live_counter')) course = 'live-counters';
-      else if (lowerCat.includes('breakfast') || lowerCat.includes('south indian') || lowerCat.includes('dosa') || lowerCat.includes('idly') || lowerCat.includes('vada') || lowerCat.includes('upma') || lowerCat.includes('pongal')) {
+      // Map to exact CourseType based on category slug
+      if (catSlug === 'desserts') {
+        const lowerSub = subcat.toLowerCase();
+        if (lowerSub.includes('halwa')) course = 'halwas';
+        else if (lowerSub.includes('kheer') || lowerSub.includes('payasam')) course = 'kheer-payasam';
+        else if (lowerSub.includes('bengali')) course = 'bengali-sweets';
+        else if (lowerSub.includes('fruit')) course = 'fruit-desserts';
+        else if (lowerSub.includes('custard') || lowerSub.includes('pudding')) course = 'custards-puddings';
+        else if (lowerSub.includes('cold')) course = 'cold-desserts';
+        else if (lowerSub.includes('milk') || lowerSub.includes('cream')) course = 'milk-cream-desserts';
+        else if (lowerSub.includes('traditional snack')) course = 'traditional-snacks';
+        else if (lowerSub.includes('hot') || lowerSub.includes('jamun')) course = 'hot-sweets';
+        else course = 'traditional-sweets';
+      } else if (catSlug === 'starters') {
+        course = 'starters';
+      } else if (catSlug === 'breads') {
+        course = 'breads';
+      } else if (catSlug === 'veg-main') {
+        course = 'veg-main';
+      } else if (catSlug === 'nonveg-main') {
+        course = 'nonveg-main';
+      } else if (catSlug === 'rice-biryani') {
+        course = 'rice-biryani';
+      } else if (catSlug === 'accompaniments') {
+        course = 'accompaniments';
+      } else if (catSlug === 'south-indian-breakfast') {
         course = 'south-indian-breakfast';
-      }
-
-      if (lowerName.includes('chicken') || lowerName.includes('mutton') || lowerName.includes('fish') || lowerName.includes('lamb') || lowerName.includes('crab') || lowerName.includes('prawn') || lowerName.includes('meat') || lowerName.includes('egg')) {
-        isVeg = false;
-        if (course === 'veg-main') course = 'nonveg-main';
+      } else if (catSlug === 'north-indian-breakfast') {
+        course = 'north-indian-breakfast';
+      } else if (catSlug === 'special-breakfast') {
+        course = 'special-breakfast';
+      } else if (catSlug === 'breakfast-rice') {
+        course = 'breakfast-rice';
+      } else if (catSlug === 'live-counters') {
+        course = 'live-counters';
+      } else {
+        // Fallback matching
+        const lowerCat = catName.toLowerCase();
+        if (lowerCat.includes('drink') || lowerCat.includes('beverage')) course = 'starters';
+        else if (lowerCat.includes('chat') || lowerCat.includes('snack')) course = 'starters';
+        else if (lowerCat.includes('starter')) course = 'starters';
+        else if (lowerCat.includes('bread') || lowerCat.includes('roti') || lowerCat.includes('naan')) course = 'breads';
+        else if (lowerCat.includes('rice') || lowerCat.includes('biryani')) course = 'rice-biryani';
+        else if (lowerCat.includes('accompaniment')) course = 'accompaniments';
+        else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'traditional-sweets';
+        else if (lowerCat.includes('live counter') || lowerCat.includes('live-counter') || lowerCat.includes('live_counter')) course = 'live-counters';
+        else if (lowerCat.includes('breakfast') || lowerCat.includes('south indian') || lowerCat.includes('dosa') || lowerCat.includes('idly') || lowerCat.includes('vada') || lowerCat.includes('upma') || lowerCat.includes('pongal')) {
+          course = 'south-indian-breakfast';
+        }
       }
 
       return {
         id: dbItem.id,
         name: dbItem.name,
-        isVeg,
+        isVeg: dbItem.isVeg,
         course,
-        subcategory: catName || 'Chef Specials'
+        subcategory: subcat
       };
-    }).filter((item): item is LocalMenuItem => item !== null);
-
-    return [...MENU_ITEMS, ...dbMappedItems];
+    });
   }, [categories, items]);
 
   // Handle selection toggling
