@@ -86,9 +86,11 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     eventDate: ''
   });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [isMounted, setIsMounted] = useState(false);
 
   // Load selection from localStorage
   useEffect(() => {
+    setIsMounted(true);
     const saved = localStorage.getItem('purval_custom_menu_v2');
     if (saved) {
       try {
@@ -311,7 +313,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
         <div className={styles.printHeader}>
           <h1>Purval’s Caterers</h1>
           <p className={styles.printTagline}>Curated Authentic Indian Feast | Premium Catering Proposal</p>
-          <p className={styles.printMeta}>Generated Proposal Date: {new Date().toLocaleDateString()}</p>
+          <p className={styles.printMeta}>Generated Proposal Date: {isMounted ? new Date().toLocaleDateString() : ''}</p>
         </div>
 
         <div className={styles.printSummaryBlock}>
