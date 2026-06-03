@@ -371,6 +371,26 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     }
   };
 
+  // Handle WhatsApp Redirection with pretyped custom package details
+  const handleWhatsAppRedirect = () => {
+    if (selectedItemsDetails.length === 0) return;
+
+    let message = `Hi Purval's Caterers, I would like to get a quote/cost estimate for my custom catering package.\n\n`;
+    message += `Here are the selected items:\n`;
+    selectedItemsDetails.forEach((item, index) => {
+      message += `${index + 1}. ${item.name} (${item.isVeg ? 'Veg' : 'Non-Veg'})\n`;
+    });
+    message += `\nTotal Items: ${stats.total} (Veg: ${stats.veg}, Non-Veg: ${stats.nonveg})\n\n`;
+    message += `Could you please let me know the cost and options for this selection? Thank you!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsAppUrl = `https://wa.me/919246179757?text=${encodedMessage}`;
+
+    if (typeof window !== 'undefined') {
+      window.open(whatsAppUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   // Count items inside a course
   const courseCount = (course: CourseType) => {
     const courseGroup = groupedMenu[course];
@@ -579,67 +599,45 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
           <div className={styles.stickyPanel}>
             <div className={styles.panelHeader}>
               <h2>Catering Package</h2>
-              <p>Package Course Selector Checklist:</p>
+              <p>Your Selected Menu Items:</p>
             </div>
 
             <div className={styles.panelContent}>
-              {/* List counts for each course */}
-              <div className={styles.sidebarChecklist}>
-                {Object.entries(COURSE_DETAILS)
-                  .filter(([courseKey, details]) => details.menuType === menuType || (selectedItemsByCourse[courseKey as CourseType]?.length > 0))
-                  .map(([courseKey, details]) => {
-                    const courseItems = selectedItemsByCourse[courseKey as CourseType] || [];
-                    const isExpanded = sidebarExpanded[courseKey];
-                    const hasSelection = courseItems.length > 0;
-
-                    return (
-                      <div key={courseKey} className={styles.checklistRow}>
-                        <button 
-                          onClick={() => toggleSidebarAccordion(courseKey)}
-                          className={styles.sidebarGroupHeader}
-                        >
-                          <div className={styles.sidebarGroupHeaderLeft}>
-                            <span className={`${styles.checklistBullet} ${hasSelection ? styles.checklistBulletActive : ''}`}>
-                              {hasSelection && <FaCheck size={9} />}
-                            </span>
-                            <span className={styles.sidebarGroupName}>
-                              {details.title}
-                            </span>
-                          </div>
-                          <span className={styles.sidebarSelectedCount}>
-                            {courseItems.length} Selected
-                          </span>
-                        </button>
-
-                        {isExpanded && hasSelection && (
-                          <div className={styles.sidebarGroupList}>
-                            {courseItems.map(item => (
-                              <div key={item.id} className={styles.sidebarItem}>
-                                <span className={styles.sidebarItemName}>{item.name}</span>
-                                <button 
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    removeItem(item.id);
-                                  }}
-                                  className={styles.removeItemBtn}
-                                  title="Remove item"
-                                >
-                                  <FaTrashAlt />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
+              {selectedItemsDetails.length > 0 ? (
+                <div className={styles.selectedFlatList}>
+                  {selectedItemsDetails.map(item => (
+                    <div key={item.id} className={styles.selectedFlatItem}>
+                      <div className={styles.selectedFlatItemLeft}>
+                        {item.isVeg ? (
+                          <FaLeaf className={styles.vegIconSmall} title="Vegetarian" />
+                        ) : (
+                          <span className={styles.nonVegDotSmall} title="Non-Vegetarian" />
                         )}
+                        <span className={styles.selectedFlatItemName}>{item.name}</span>
                       </div>
-                    );
-                  })}
-              </div>
-
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeItem(item.id);
+                        }}
+                        className={styles.flatRemoveBtn}
+                        title="Remove item"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={styles.panelFooterEmpty} style={{ borderTop: 'none', padding: '2rem 0' }}>
+                  <p>Please select dishes from the categories to build your custom catering package.</p>
+                </div>
+              )}
             </div>
 
-            {selectedIds.length > 0 ? (
+            {selectedIds.length > 0 && (
               <div className={styles.panelFooter}>
-                <div className={styles.statsSummary}>
+                <div className={stats.total > 0 ? styles.statsSummary : ''}>
                   <div className={styles.statsRow}>
                     <span>Total Selection:</span>
                     <strong>{stats.total} Items</strong>
@@ -658,30 +656,19 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
                 {/* CTAs */}
                 <button 
-                  onClick={() => setModalOpen(true)} 
+                  onClick={handleWhatsAppRedirect} 
                   className={`btn btn-primary ${styles.ctaPrimary}`}
                 >
                   Proceed with My Custom Package <FaArrowRight style={{ marginLeft: '8px', fontSize: '0.85em' }} />
                 </button>
 
-                <div className={styles.secondaryActions}>
-                  <button 
-                    onClick={handleDownloadPDF} 
-                    className={`btn btn-outline ${styles.ctaSecondary}`}
-                  >
-                    <FaFilePdf style={{ marginRight: '6px' }} /> PDF Menu
-                  </button>
-                  <button 
-                    onClick={() => setModalOpen(true)} 
-                    className={`btn btn-outline ${styles.ctaSecondary}`}
-                  >
-                    Request Quote
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.panelFooterEmpty}>
-                <p>Please select dishes from the categories to build your custom catering package.</p>
+                <button 
+                  onClick={handleDownloadPDF} 
+                  className={`btn btn-outline ${styles.ctaSecondary}`}
+                  style={{ width: '100%', marginTop: '0.25rem' }}
+                >
+                  <FaFilePdf style={{ marginRight: '6px' }} /> PDF Menu
+                </button>
               </div>
             )}
           </div>
