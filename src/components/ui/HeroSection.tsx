@@ -50,9 +50,6 @@ export default function HeroSection() {
           <Link href="/menu" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.2rem' }}>
             Explore Menu
           </Link>
-          <Link href="/contact" className="btn btn-outline" style={{ padding: '1rem 2rem', fontSize: '1.2rem', backdropFilter: 'blur(5px)', background: 'rgba(0,0,0,0.3)' }}>
-            Book An Event
-          </Link>
         </div>
       </div>
     </section>
