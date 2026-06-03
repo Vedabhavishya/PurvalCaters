@@ -362,21 +362,30 @@
 
 /* Custom Catering Sidebar Panel (Right Column) */
 .stickyPanel {
-  position: sticky;
-  top: calc(var(--nav-height) + 2rem);
+  position: relative;
   background: #ffffff;
   border-radius: 20px;
   border: 1px solid #f0ede8;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  max-height: calc(100vh - var(--nav-height) - 4rem);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  max-height: 500px;
+}
+
+@media (min-width: 992px) {
+  .stickyPanel {
+    position: sticky;
+    top: calc(var(--nav-height) + 2rem);
+    height: calc(100vh - var(--nav-height) - 4rem);
+    max-height: calc(100vh - var(--nav-height) - 4rem);
+  }
 }
 
 .panelHeader {
   padding: 1.5rem;
   border-bottom: 1.5px solid #f5f2eb;
+  flex-shrink: 0;
 }
 
 .panelHeader h2 {
@@ -538,6 +547,7 @@
   padding: 1.25rem 1.5rem;
   border-top: 1px solid #f5f2eb;
   background: #fcfbfa;
+  flex-shrink: 0;
 }
 
 .panelFooterEmpty {
