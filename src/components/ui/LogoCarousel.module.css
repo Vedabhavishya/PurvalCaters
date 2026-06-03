@@ -53,14 +53,12 @@
   width: 140px;
   height: 60px;
   position: relative;
-  filter: grayscale(100%);
-  opacity: 0.65;
+  opacity: 0.9;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
 
 .logoWrapper:hover {
-  filter: grayscale(0%);
   opacity: 1;
   transform: scale(1.08);
 }
