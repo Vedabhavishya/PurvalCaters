@@ -25,7 +25,7 @@ export default async function Home() {
       <ScrollReveal>
         <section className={styles.whyUsSection}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>Why Choose Supperclub?</h2>
+            <h2 className={styles.sectionTitle}>Why Choose Purval’s Caterers?</h2>
             <div className={styles.featuresGrid}>
               <div className={styles.featureCard}>
                 <FaCrown className={styles.featureIcon} />
