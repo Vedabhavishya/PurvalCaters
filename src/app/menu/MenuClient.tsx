@@ -529,7 +529,7 @@ ${Object.entries(selectedItemsByCourse)
           {/* Accordion Menu Sections */}
           <div className={styles.accordionContainer}>
             {Object.entries(COURSE_DETAILS)
-              .filter(([_, details]) => details.menuType === menuType)
+              .filter(([_, details]) => searchQuery !== '' || details.menuType === menuType)
               .map(([courseKey, details]) => {
                 const count = courseCount(courseKey as CourseType);
                 if (count === 0) return null; // Hide categories that contain 0 matching items
@@ -596,10 +596,10 @@ ${Object.entries(selectedItemsByCourse)
                 );
               })}
 
-            {filteredItems.filter(item => {
+            {(searchQuery !== '' ? filteredItems.length === 0 : filteredItems.filter(item => {
               const details = COURSE_DETAILS[item.course as CourseType];
               return details && details.menuType === menuType;
-            }).length === 0 && (
+            }).length === 0) && (
               <div className={styles.emptyResults}>
                 <FaUtensils className={styles.emptyIcon} />
                 <h3>No dishes match your search</h3>
