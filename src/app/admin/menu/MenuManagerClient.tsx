@@ -70,27 +70,75 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
     isFeatured: false,
     isVeg: true,
     subcategory: '',
-    course: 'starters',
+    course: '',
   });
   const [newCategoryName, setNewCategoryName] = useState('');
+
+  // Custom addition states for cascading dropdowns
+  const [isCustomSubcategory, setIsCustomSubcategory] = useState(false);
+  const [customSubcategoryText, setCustomSubcategoryText] = useState('');
+  const [isCustomVariety, setIsCustomVariety] = useState(false);
+  const [customVarietyText, setCustomVarietyText] = useState('');
+  const [customVarietyKey, setCustomVarietyKey] = useState('');
 
   // Status states
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Get unique subcategories for a given category ID from all items
+  const getSubcategoriesForCategory = (catId: string) => {
+    const subcats = new Set<string>();
+    items.forEach(item => {
+      if (item.categoryId === catId && item.subcategory) {
+        subcats.add(item.subcategory.trim());
+      }
+    });
+    return Array.from(subcats).sort();
+  };
+
+  // Get unique varieties (course keys) for a given category ID and subcategory name
+  const getVarietiesForSubcategory = (catId: string, subcatName: string) => {
+    const varieties = new Set<string>();
+    items.forEach(item => {
+      if (item.categoryId === catId && item.subcategory?.trim() === subcatName.trim() && item.course) {
+        varieties.add(item.course.trim());
+      }
+    });
+    return Array.from(varieties).sort();
+  };
+
+  const getVarietyTitle = (courseKey: string | null) => {
+    if (!courseKey) return 'General';
+    return COURSE_DETAILS[courseKey]?.title || courseKey.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+
   // Handlers
   const handleOpenAddModal = () => {
     setSelectedItem(null);
+    
+    const initialCatId = categories[0]?.id || '';
+    const subcats = getSubcategoriesForCategory(initialCatId);
+    const initialSubcat = subcats[0] || '';
+    const vars = initialSubcat ? getVarietiesForSubcategory(initialCatId, initialSubcat) : [];
+    const initialVar = vars[0] || '';
+
     setFormData({
       name: '',
       description: '',
       price: '',
-      categoryId: categories[0]?.id || '',
+      categoryId: initialCatId,
       isFeatured: false,
       isVeg: true,
-      subcategory: '',
-      course: 'starters',
+      subcategory: initialSubcat,
+      course: initialVar,
     });
+
+    setIsCustomSubcategory(subcats.length === 0);
+    setCustomSubcategoryText('');
+    setIsCustomVariety(vars.length === 0);
+    setCustomVarietyText('');
+    setCustomVarietyKey('');
+    
     setErrorMsg('');
     setItemModalOpen(true);
   };
@@ -105,8 +153,23 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       isFeatured: item.isFeatured,
       isVeg: item.isVeg,
       subcategory: item.subcategory || '',
-      course: item.course || 'starters',
+      course: item.course || '',
     });
+
+    // Determine if subcategory or variety is custom (not in existing items)
+    const existingSubcats = getSubcategoriesForCategory(item.categoryId);
+    const subExists = item.subcategory ? existingSubcats.includes(item.subcategory.trim()) : false;
+    
+    setIsCustomSubcategory(!subExists && !!item.subcategory);
+    setCustomSubcategoryText(item.subcategory || '');
+
+    const existingVars = item.subcategory ? getVarietiesForSubcategory(item.categoryId, item.subcategory) : [];
+    const varExists = item.course ? existingVars.includes(item.course.trim()) : false;
+
+    setIsCustomVariety(!varExists && !!item.course);
+    setCustomVarietyKey(item.course || '');
+    setCustomVarietyText(item.course ? (COURSE_DETAILS[item.course]?.title || item.course) : '');
+
     setErrorMsg('');
     setItemModalOpen(true);
   };
@@ -114,6 +177,74 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
   const handleOpenDeleteModal = (item: MenuItem) => {
     setItemToDelete(item);
     setDeleteModalOpen(true);
+  };
+
+  const handleCategoryChange = (catId: string) => {
+    const subcats = getSubcategoriesForCategory(catId);
+    const nextSubcat = subcats[0] || '';
+    const vars = nextSubcat ? getVarietiesForSubcategory(catId, nextSubcat) : [];
+    const nextVar = vars[0] || '';
+    
+    setFormData(prev => ({
+      ...prev,
+      categoryId: catId,
+      subcategory: nextSubcat,
+      course: nextVar
+    }));
+    
+    setIsCustomSubcategory(subcats.length === 0);
+    setCustomSubcategoryText('');
+    setIsCustomVariety(vars.length === 0);
+    setCustomVarietyKey('');
+    setCustomVarietyText('');
+  };
+
+  const handleSubcategoryChange = (subcat: string) => {
+    if (subcat === '__custom__') {
+      setIsCustomSubcategory(true);
+      setCustomSubcategoryText('');
+      setFormData(prev => ({
+        ...prev,
+        subcategory: '',
+        course: ''
+      }));
+      setIsCustomVariety(true);
+      setCustomVarietyKey('');
+      setCustomVarietyText('');
+    } else {
+      setIsCustomSubcategory(false);
+      setCustomSubcategoryText('');
+      const vars = getVarietiesForSubcategory(formData.categoryId, subcat);
+      const nextVar = vars[0] || '';
+      setFormData(prev => ({
+        ...prev,
+        subcategory: subcat,
+        course: nextVar
+      }));
+      setIsCustomVariety(vars.length === 0);
+      setCustomVarietyKey('');
+      setCustomVarietyText('');
+    }
+  };
+
+  const handleVarietyChange = (courseValue: string) => {
+    if (courseValue === '__custom__') {
+      setIsCustomVariety(true);
+      setCustomVarietyKey('');
+      setCustomVarietyText('');
+      setFormData(prev => ({
+        ...prev,
+        course: ''
+      }));
+    } else {
+      setIsCustomVariety(false);
+      setCustomVarietyKey('');
+      setCustomVarietyText('');
+      setFormData(prev => ({
+        ...prev,
+        course: courseValue
+      }));
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -132,6 +263,30 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
     setLoading(true);
     setErrorMsg('');
 
+    const finalSubcategory = isCustomSubcategory ? customSubcategoryText.trim() : formData.subcategory;
+    const finalCourse = isCustomVariety ? customVarietyKey.trim() : formData.course;
+
+    if (!finalSubcategory) {
+      setErrorMsg('Please specify a subcategory.');
+      setLoading(false);
+      return;
+    }
+    if (!finalCourse) {
+      setErrorMsg('Please specify a variety.');
+      setLoading(false);
+      return;
+    }
+
+    if (isCustomVariety && finalCourse && customVarietyText) {
+      COURSE_DETAILS[finalCourse] = { title: customVarietyText.trim() };
+    }
+
+    const payload = {
+      ...formData,
+      subcategory: finalSubcategory,
+      course: finalCourse
+    };
+
     try {
       const url = selectedItem ? `/api/admin/menu/${selectedItem.id}` : '/api/admin/menu';
       const method = selectedItem ? 'PATCH' : 'POST';
@@ -139,7 +294,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       const result = await response.json();
@@ -345,10 +500,9 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                       <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                         <thead>
                           <tr style={{ borderBottom: '2px solid #f1f5f9', background: '#faf9f6' }}>
-                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '40%' }}>Name</th>
-                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '20%' }}>Menu Tab (Course)</th>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '50%' }}>Name</th>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '25%' }}>Varieties</th>
                             <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '15%' }}>Price</th>
-                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '15%' }}>Featured</th>
                             <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '10%', textAlign: 'right' }}>Actions</th>
                           </tr>
                         </thead>
@@ -396,20 +550,11 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                                   fontSize: '0.8rem', 
                                   fontWeight: 600 
                                 }}>
-                                  {item.course ? (COURSE_DETAILS[item.course]?.title || item.course) : 'General'}
+                                  {getVarietyTitle(item.course)}
                                 </span>
                               </td>
                               <td style={{ padding: '0.9rem 1rem', fontWeight: 600, color: '#0f172a' }}>
                                 {item.price ? `₹${item.price}` : '—'}
-                              </td>
-                              <td style={{ padding: '0.9rem 1rem' }}>
-                                <span style={{ 
-                                  color: item.isFeatured ? '#10b981' : '#cbd5e1', 
-                                  fontSize: '0.85rem', 
-                                  fontWeight: 600 
-                                }}>
-                                  {item.isFeatured ? '★ Featured' : 'No'}
-                                </span>
                               </td>
                               <td style={{ padding: '0.9rem 1rem', textAlign: 'right' }}>
                                 <button 
@@ -508,7 +653,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                       name="categoryId"
                       required
                       value={formData.categoryId}
-                      onChange={handleInputChange}
+                      onChange={(e) => handleCategoryChange(e.target.value)}
                       style={{ flexGrow: 1, padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: '#ffffff' }}
                     >
                       {categories.map(cat => (
@@ -538,51 +683,93 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                {/* Course Group Selection */}
+                {/* Subcategory dropdown */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Menu Tab Section *</label>
-                  <select 
-                    name="course"
-                    required
-                    value={formData.course}
-                    onChange={handleInputChange}
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: '#ffffff' }}
-                  >
-                    <option value="starters">Starters & Appetizers</option>
-                    <option value="breads">Roti's</option>
-                    <option value="veg-main">Vegetarian Main Course</option>
-                    <option value="nonveg-main">Non-Vegetarian Main Course</option>
-                    <option value="rice-biryani">Rice & Biryani</option>
-                    <option value="accompaniments">Accompaniments</option>
-                    <option value="south-indian-breakfast">South Indian Breakfast</option>
-                    <option value="north-indian-breakfast">North Indian Breakfast</option>
-                    <option value="special-breakfast">Special Breakfast</option>
-                    <option value="breakfast-rice">Breakfast Rice Items</option>
-                    <option value="hot-sweets">Hot Indian Sweets (Jamun Specials)</option>
-                    <option value="halwas">Halwas</option>
-                    <option value="kheer-payasam">Kheer & Payasam</option>
-                    <option value="traditional-sweets">Traditional Indian Sweets</option>
-                    <option value="fruit-desserts">Fruit-Based Desserts</option>
-                    <option value="custards-puddings">Custards & Puddings</option>
-                    <option value="cold-desserts">Cold Desserts</option>
-                    <option value="bengali-sweets">Bengali Sweets</option>
-                    <option value="milk-cream-desserts">Milk & Cream Desserts</option>
-                    <option value="traditional-snacks">Traditional Snacks / Sweets</option>
-                    <option value="live-counters">Live Counters</option>
-                  </select>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Subcategory *</label>
+                  {!isCustomSubcategory ? (
+                    <select 
+                      value={formData.subcategory}
+                      onChange={(e) => handleSubcategoryChange(e.target.value)}
+                      style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: '#ffffff' }}
+                    >
+                      {getSubcategoriesForCategory(formData.categoryId).map(subcat => (
+                        <option key={subcat} value={subcat}>{subcat}</option>
+                      ))}
+                      <option value="__custom__">+ Add Custom Subcategory...</option>
+                    </select>
+                  ) : (
+                    <div style={{ display: 'flex', gap: '0.5rem', flexDirection: 'column' }}>
+                      <input 
+                        type="text"
+                        placeholder="Type new subcategory"
+                        value={customSubcategoryText}
+                        onChange={(e) => setCustomSubcategoryText(e.target.value)}
+                        style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
+                      />
+                      {getSubcategoriesForCategory(formData.categoryId).length > 0 && (
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            setIsCustomSubcategory(false);
+                            const subcats = getSubcategoriesForCategory(formData.categoryId);
+                            handleSubcategoryChange(subcats[0] || '');
+                          }}
+                          style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', padding: '0.4rem 0.65rem', cursor: 'pointer', color: '#475569', fontSize: '0.8rem', alignSelf: 'flex-start' }}
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
 
-                {/* Subcategory */}
+                {/* Variety (course) dropdown */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Subcategory / Group (Optional)</label>
-                  <input 
-                    type="text"
-                    name="subcategory"
-                    value={formData.subcategory}
-                    onChange={handleInputChange}
-                    placeholder="e.g. Spring Rolls, Manchuria's"
-                    style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
-                  />
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Variety *</label>
+                  {!isCustomVariety ? (
+                    <select 
+                      value={formData.course}
+                      onChange={(e) => handleVarietyChange(e.target.value)}
+                      style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: '#ffffff' }}
+                    >
+                      {getVarietiesForSubcategory(formData.categoryId, formData.subcategory).map(courseKey => (
+                        <option key={courseKey} value={courseKey}>
+                          {COURSE_DETAILS[courseKey]?.title || courseKey}
+                        </option>
+                      ))}
+                      <option value="__custom__">+ Add Custom Variety...</option>
+                    </select>
+                  ) : (
+                    <div style={{ display: 'flex', gap: '0.5rem', flexDirection: 'column' }}>
+                      <input 
+                        type="text"
+                        placeholder="Type raw key (e.g. starters, special-rice)"
+                        value={customVarietyKey}
+                        onChange={(e) => setCustomVarietyKey(e.target.value)}
+                        style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
+                      />
+                      <input 
+                        type="text"
+                        placeholder="Display Name (e.g. Roti's)"
+                        value={customVarietyText}
+                        onChange={(e) => setCustomVarietyText(e.target.value)}
+                        style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
+                      />
+                      {getVarietiesForSubcategory(formData.categoryId, formData.subcategory).length > 0 && (
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            setIsCustomVariety(false);
+                            const vars = getVarietiesForSubcategory(formData.categoryId, formData.subcategory);
+                            handleVarietyChange(vars[0] || '');
+                          }}
+                          style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', padding: '0.4rem 0.65rem', cursor: 'pointer', color: '#475569', fontSize: '0.8rem', alignSelf: 'flex-start' }}
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
