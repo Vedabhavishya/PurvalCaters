@@ -110,8 +110,8 @@ ${formData.message}`;
               </div>
               <div className={styles.cardContent}>
                 <h3 className={styles.cardTitle}>Email Address</h3>
-                <a href="mailto:purvalscaterers@yahoo.co.in" className={styles.linkItem}>
-                  purvalscaterers@yahoo.co.in
+                <a href="mailto:supperclub60@gmail.com" className={styles.linkItem}>
+                  supperclub60@gmail.com
                 </a>
               </div>
             </div>

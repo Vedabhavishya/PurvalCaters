@@ -468,7 +468,7 @@ ${Object.entries(selectedItemsByCourse)
           })}
         </div>
         <div className={styles.printFooter}>
-          <p>Thank you for choosing Purval’s Caterers. For custom packages and consultations, reach out to us at purvalscaterers@yahoo.co.in or +91 92461 79757</p>
+          <p>Thank you for choosing Purval’s Caterers. For custom packages and consultations, reach out to us at supperclub60@gmail.com or +91 92461 79757</p>
         </div>
       </div>
 

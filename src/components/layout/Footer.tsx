@@ -44,7 +44,7 @@ export default function Footer() {
         <div className={styles.contact}>
           <h4>Contact Info</h4>
           <p><FaPhone /> +91 92461 79757 / +91 98495 59171</p>
-          <p><FaEnvelope /> purvalscaterers@yahoo.co.in</p>
+          <p><FaEnvelope /> supperclub60@gmail.com</p>
           <p><FaMapMarkerAlt /> Thukaramgate, North Lallaguda, Secunderabad, Hyderabad, India 500017</p>
         </div>
       </div>
