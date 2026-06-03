@@ -31,48 +31,91 @@ interface MenuClientProps {
   items: DBMenuItem[];
 }
 
-// Course details including titles and icons
+// Course details including titles, icons, and menuType
 const COURSE_DETAILS = {
-  'welcome-drinks': { title: 'Welcome Drinks', icon: FaCoffee },
-  'chat-items': { title: 'Chat Items', icon: FaUtensils },
-  'starters': { title: 'Starters & Appetizers', icon: FaPepperHot },
-  'breads': { title: "Roti's", icon: FaBreadSlice },
-  'veg-main': { title: 'Vegetarian Main Course', icon: FaLeaf },
-  'nonveg-main': { title: 'Non-Vegetarian Main Course', icon: FaUtensils },
-  'rice-biryani': { title: 'Rice & Biryani', icon: FaUtensils },
-  'accompaniments': { title: 'Accompaniments', icon: FaLemon },
-  'desserts': { title: 'Desserts & Sweets', icon: FaIceCream }
+  // Main Menu
+  'starters': { title: 'Starters & Appetizers', icon: FaPepperHot, menuType: 'main' as const },
+  'breads': { title: "Roti's", icon: FaBreadSlice, menuType: 'main' as const },
+  'veg-main': { title: 'Vegetarian Main Course', icon: FaLeaf, menuType: 'main' as const },
+  'nonveg-main': { title: 'Non-Vegetarian Main Course', icon: FaUtensils, menuType: 'main' as const },
+  'rice-biryani': { title: 'Rice & Biryani', icon: FaUtensils, menuType: 'main' as const },
+  'accompaniments': { title: 'Accompaniments', icon: FaLemon, menuType: 'main' as const },
+
+  // Breakfast Menu
+  'south-indian-breakfast': { title: 'South Indian Breakfast', icon: FaCoffee, menuType: 'breakfast' as const },
+  'north-indian-breakfast': { title: 'North Indian Breakfast', icon: FaCoffee, menuType: 'breakfast' as const },
+  'special-breakfast': { title: 'Special Breakfast', icon: FaUtensils, menuType: 'breakfast' as const },
+  'breakfast-rice': { title: 'Breakfast Rice Items', icon: FaUtensils, menuType: 'breakfast' as const },
+
+  // Desserts Menu
+  'hot-sweets': { title: 'Hot Indian Sweets (Jamun Specials)', icon: FaIceCream, menuType: 'desserts' as const },
+  'halwas': { title: 'Halwas', icon: FaIceCream, menuType: 'desserts' as const },
+  'kheer-payasam': { title: 'Kheer & Payasam', icon: FaIceCream, menuType: 'desserts' as const },
+  'traditional-sweets': { title: 'Traditional Indian Sweets', icon: FaIceCream, menuType: 'desserts' as const },
+  'fruit-desserts': { title: 'Fruit-Based Desserts', icon: FaIceCream, menuType: 'desserts' as const },
+  'custards-puddings': { title: 'Custards & Puddings', icon: FaIceCream, menuType: 'desserts' as const },
+  'cold-desserts': { title: 'Cold Desserts', icon: FaIceCream, menuType: 'desserts' as const },
+  'bengali-sweets': { title: 'Bengali Sweets', icon: FaIceCream, menuType: 'desserts' as const },
+  'milk-cream-desserts': { title: 'Milk & Cream Desserts', icon: FaIceCream, menuType: 'desserts' as const },
+  'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaIceCream, menuType: 'desserts' as const },
+  'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const }
 };
 
 type CourseType = keyof typeof COURSE_DETAILS;
 
 export default function MenuClient({ categories, items }: MenuClientProps) {
   // State
+  const [menuType, setMenuType] = useState<'main' | 'breakfast' | 'desserts' | 'live-counters'>('main');
   const [searchQuery, setSearchQuery] = useState('');
   const [dietFilter, setDietFilter] = useState<'all' | 'veg' | 'nonveg'>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  
   const [expandedCourses, setExpandedCourses] = useState<Record<string, boolean>>({
-    'welcome-drinks': true,
-    'chat-items': true,
     'starters': true,
     'breads': true,
     'veg-main': true,
     'nonveg-main': true,
     'rice-biryani': true,
     'accompaniments': true,
-    'desserts': true
+    'south-indian-breakfast': true,
+    'north-indian-breakfast': true,
+    'special-breakfast': true,
+    'breakfast-rice': true,
+    'hot-sweets': true,
+    'halwas': true,
+    'kheer-payasam': true,
+    'traditional-sweets': true,
+    'fruit-desserts': true,
+    'custards-puddings': true,
+    'cold-desserts': true,
+    'bengali-sweets': true,
+    'milk-cream-desserts': true,
+    'traditional-snacks': true,
+    'live-counters': true
   });
 
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({
-    'welcome-drinks': true,
-    'chat-items': true,
     'starters': true,
     'breads': true,
     'veg-main': true,
     'nonveg-main': true,
     'rice-biryani': true,
     'accompaniments': true,
-    'desserts': true
+    'south-indian-breakfast': true,
+    'north-indian-breakfast': true,
+    'special-breakfast': true,
+    'breakfast-rice': true,
+    'hot-sweets': true,
+    'halwas': true,
+    'kheer-payasam': true,
+    'traditional-sweets': true,
+    'fruit-desserts': true,
+    'custards-puddings': true,
+    'cold-desserts': true,
+    'bengali-sweets': true,
+    'milk-cream-desserts': true,
+    'traditional-snacks': true,
+    'live-counters': true
   });
 
   // Modal State
@@ -119,13 +162,17 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       const lowerCat = catName.toLowerCase();
       const lowerName = dbItem.name.toLowerCase();
 
-      if (lowerCat.includes('drink') || lowerCat.includes('beverage')) course = 'welcome-drinks';
-      else if (lowerCat.includes('chat') || lowerCat.includes('snack')) course = 'chat-items';
+      if (lowerCat.includes('drink') || lowerCat.includes('beverage')) course = 'starters';
+      else if (lowerCat.includes('chat') || lowerCat.includes('snack')) course = 'starters';
       else if (lowerCat.includes('starter')) course = 'starters';
       else if (lowerCat.includes('bread') || lowerCat.includes('roti') || lowerCat.includes('naan')) course = 'breads';
       else if (lowerCat.includes('rice') || lowerCat.includes('biryani')) course = 'rice-biryani';
       else if (lowerCat.includes('accompaniment')) course = 'accompaniments';
-      else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'desserts';
+      else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'traditional-sweets';
+      else if (lowerCat.includes('live counter') || lowerCat.includes('live-counter') || lowerCat.includes('live_counter')) course = 'live-counters';
+      else if (lowerCat.includes('breakfast') || lowerCat.includes('south indian') || lowerCat.includes('dosa') || lowerCat.includes('idly') || lowerCat.includes('vada') || lowerCat.includes('upma') || lowerCat.includes('pongal')) {
+        course = 'south-indian-breakfast';
+      }
 
       if (lowerName.includes('chicken') || lowerName.includes('mutton') || lowerName.includes('fish') || lowerName.includes('lamb') || lowerName.includes('crab') || lowerName.includes('prawn') || lowerName.includes('meat') || lowerName.includes('egg')) {
         isVeg = false;
@@ -175,22 +222,36 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
   // Group items by course, then by subcategory
   const groupedMenu = useMemo(() => {
     const groups: Record<CourseType, Record<string, LocalMenuItem[]>> = {
-      'welcome-drinks': {},
-      'chat-items': {},
       'starters': {},
       'breads': {},
       'veg-main': {},
       'nonveg-main': {},
       'rice-biryani': {},
       'accompaniments': {},
-      'desserts': {}
+      'south-indian-breakfast': {},
+      'north-indian-breakfast': {},
+      'special-breakfast': {},
+      'breakfast-rice': {},
+      'hot-sweets': {},
+      'halwas': {},
+      'kheer-payasam': {},
+      'traditional-sweets': {},
+      'fruit-desserts': {},
+      'custards-puddings': {},
+      'cold-desserts': {},
+      'bengali-sweets': {},
+      'milk-cream-desserts': {},
+      'traditional-snacks': {},
+      'live-counters': {}
     };
 
     filteredItems.forEach(item => {
-      if (!groups[item.course][item.subcategory]) {
-        groups[item.course][item.subcategory] = [];
+      if (groups[item.course]) {
+        if (!groups[item.course][item.subcategory]) {
+          groups[item.course][item.subcategory] = [];
+        }
+        groups[item.course][item.subcategory].push(item);
       }
-      groups[item.course][item.subcategory].push(item);
     });
 
     return groups;
@@ -204,19 +265,33 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
   // Group selected items by course for checklist counts
   const selectedItemsByCourse = useMemo(() => {
     const groups: Record<CourseType, LocalMenuItem[]> = {
-      'welcome-drinks': [],
-      'chat-items': [],
       'starters': [],
       'breads': [],
       'veg-main': [],
       'nonveg-main': [],
       'rice-biryani': [],
       'accompaniments': [],
-      'desserts': []
+      'south-indian-breakfast': [],
+      'north-indian-breakfast': [],
+      'special-breakfast': [],
+      'breakfast-rice': [],
+      'hot-sweets': [],
+      'halwas': [],
+      'kheer-payasam': [],
+      'traditional-sweets': [],
+      'fruit-desserts': [],
+      'custards-puddings': [],
+      'cold-desserts': [],
+      'bengali-sweets': [],
+      'milk-cream-desserts': [],
+      'traditional-snacks': [],
+      'live-counters': []
     };
 
     selectedItemsDetails.forEach(item => {
-      groups[item.course].push(item);
+      if (groups[item.course]) {
+        groups[item.course].push(item);
+      }
     });
 
     return groups;
@@ -299,6 +374,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
   // Count items inside a course
   const courseCount = (course: CourseType) => {
     const courseGroup = groupedMenu[course];
+    if (!courseGroup) return 0;
     let count = 0;
     Object.values(courseGroup).forEach(items => {
       count += items.length;
@@ -355,25 +431,44 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
             </p>
           </div>
 
+
           {/* Top Dietary Tabs Filters */}
           <div className={styles.dietaryTabs}>
             <button 
-              onClick={() => setDietFilter('all')} 
-              className={`${styles.dietTab} ${dietFilter === 'all' ? styles.dietTabActive : ''}`}
+              onClick={() => { setMenuType('main'); setDietFilter('all'); }} 
+              className={`${styles.dietTab} ${menuType === 'main' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
             >
               All Menu
             </button>
             <button 
-              onClick={() => setDietFilter('veg')} 
-              className={`${styles.dietTab} ${dietFilter === 'veg' ? styles.dietTabVegActive : ''}`}
+              onClick={() => { setMenuType('breakfast'); setDietFilter('all'); }} 
+              className={`${styles.dietTab} ${menuType === 'breakfast' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
+            >
+              Breakfast
+            </button>
+            <button 
+              onClick={() => { setMenuType('main'); setDietFilter('veg'); }} 
+              className={`${styles.dietTab} ${menuType === 'main' && dietFilter === 'veg' ? styles.dietTabVegActive : ''}`}
             >
               Vegetarian
             </button>
             <button 
-              onClick={() => setDietFilter('nonveg')} 
-              className={`${styles.dietTab} ${dietFilter === 'nonveg' ? styles.dietTabNonVegActive : ''}`}
+              onClick={() => { setMenuType('main'); setDietFilter('nonveg'); }} 
+              className={`${styles.dietTab} ${menuType === 'main' && dietFilter === 'nonveg' ? styles.dietTabNonVegActive : ''}`}
             >
               Non-Vegetarian
+            </button>
+            <button 
+              onClick={() => { setMenuType('desserts'); setDietFilter('all'); }} 
+              className={`${styles.dietTab} ${menuType === 'desserts' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
+            >
+              Desserts & Sweets
+            </button>
+            <button 
+              onClick={() => { setMenuType('live-counters'); setDietFilter('all'); }} 
+              className={`${styles.dietTab} ${menuType === 'live-counters' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
+            >
+              Live Counter
             </button>
           </div>
 
@@ -382,7 +477,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
             <FaSearch className={styles.searchIcon} />
             <input 
               type="text" 
-              placeholder="Search for any dish (e.g. Chicken, Paneer, Biryani)..." 
+              placeholder="Search for any dish (e.g. Dosa, Gulab Jamun, Tikka)..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -391,73 +486,78 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
           {/* Accordion Menu Sections */}
           <div className={styles.accordionContainer}>
-            {Object.entries(COURSE_DETAILS).map(([courseKey, details]) => {
-              const count = courseCount(courseKey as CourseType);
-              if (count === 0) return null; // Hide categories that contain 0 matching items
+            {Object.entries(COURSE_DETAILS)
+              .filter(([_, details]) => details.menuType === menuType)
+              .map(([courseKey, details]) => {
+                const count = courseCount(courseKey as CourseType);
+                if (count === 0) return null; // Hide categories that contain 0 matching items
 
-              const isExpanded = expandedCourses[courseKey];
-              const Icon = details.icon;
-              const courseGroup = groupedMenu[courseKey as CourseType];
+                const isExpanded = expandedCourses[courseKey];
+                const Icon = details.icon;
+                const courseGroup = groupedMenu[courseKey as CourseType];
 
-              return (
-                <div key={courseKey} className={`${styles.accordionCard} ${isExpanded ? styles.expanded : ''}`}>
-                  <button 
-                    onClick={() => toggleCourseAccordion(courseKey)} 
-                    className={styles.accordionHeader}
-                  >
-                    <div className={styles.accordionHeaderLeft}>
-                      <span className={styles.categoryIconCircle}>
-                        <Icon className={styles.courseIcon} />
-                      </span>
-                      <div>
-                        <h3>{details.title}</h3>
-                        <span className={styles.itemCountText}>{count} items</span>
-                      </div>
-                    </div>
-                    <span className={styles.accordionToggleIcon}>
-                      {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
-                    </span>
-                  </button>
-
-                  {isExpanded && (
-                    <div className={styles.accordionBody}>
-                      {Object.entries(courseGroup).map(([subcat, subcatItems]) => (
-                        <div key={subcat} className={styles.subCategoryBlock}>
-                          {subcat !== details.title && (
-                            <h4 className={styles.subCategoryTitle}>{subcat}</h4>
-                          )}
-                          
-                          <div className={styles.itemGrid}>
-                            {subcatItems.map((item) => {
-                              const isSelected = selectedIds.includes(item.id);
-                              return (
-                                <div 
-                                  key={item.id} 
-                                  onClick={() => toggleItem(item.id)}
-                                  className={`${styles.dishCard} ${isSelected ? styles.dishCardSelected : ''}`}
-                                >
-                                  <div className={styles.dishCardLeft}>
-                                    <span className={`${styles.checkbox} ${isSelected ? styles.checkboxSelected : ''}`}>
-                                      {isSelected && <FaCheck className={styles.checkIcon} />}
-                                    </span>
-                                    <span className={styles.dishName}>{item.name}</span>
-                                  </div>
-                                  <span className={`${styles.addSign} ${isSelected ? styles.addSignSelected : ''}`}>
-                                    {isSelected ? <FaCheck /> : <FaPlus />}
-                                  </span>
-                                </div>
-                              );
-                            })}
-                          </div>
+                return (
+                  <div key={courseKey} className={`${styles.accordionCard} ${isExpanded ? styles.expanded : ''}`}>
+                    <button 
+                      onClick={() => toggleCourseAccordion(courseKey)} 
+                      className={styles.accordionHeader}
+                    >
+                      <div className={styles.accordionHeaderLeft}>
+                        <span className={styles.categoryIconCircle}>
+                          <Icon className={styles.courseIcon} />
+                        </span>
+                        <div>
+                          <h3>{details.title}</h3>
+                          <span className={styles.itemCountText}>{count} items</span>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                      </div>
+                      <span className={styles.accordionToggleIcon}>
+                        {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
+                      </span>
+                    </button>
 
-            {filteredItems.length === 0 && (
+                    {isExpanded && courseGroup && (
+                      <div className={styles.accordionBody}>
+                        {Object.entries(courseGroup).map(([subcat, subcatItems]) => (
+                          <div key={subcat} className={styles.subCategoryBlock}>
+                            {subcat !== details.title && (
+                              <h4 className={styles.subCategoryTitle}>{subcat}</h4>
+                            )}
+                            
+                            <div className={styles.itemGrid}>
+                              {subcatItems.map((item) => {
+                                const isSelected = selectedIds.includes(item.id);
+                                return (
+                                  <div 
+                                    key={item.id} 
+                                    onClick={() => toggleItem(item.id)}
+                                    className={`${styles.dishCard} ${isSelected ? styles.dishCardSelected : ''}`}
+                                  >
+                                    <div className={styles.dishCardLeft}>
+                                      <span className={`${styles.checkbox} ${isSelected ? styles.checkboxSelected : ''}`}>
+                                        {isSelected && <FaCheck className={styles.checkIcon} />}
+                                      </span>
+                                      <span className={styles.dishName}>{item.name}</span>
+                                    </div>
+                                    <span className={`${styles.addSign} ${isSelected ? styles.addSignSelected : ''}`}>
+                                      {isSelected ? <FaCheck /> : <FaPlus />}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+            {filteredItems.filter(item => {
+              const details = COURSE_DETAILS[item.course as CourseType];
+              return details && details.menuType === menuType;
+            }).length === 0 && (
               <div className={styles.emptyResults}>
                 <FaUtensils className={styles.emptyIcon} />
                 <h3>No dishes match your search</h3>
@@ -485,59 +585,56 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
             <div className={styles.panelContent}>
               {/* List counts for each course */}
               <div className={styles.sidebarChecklist}>
-                {Object.entries(COURSE_DETAILS).map(([courseKey, details]) => {
-                  const courseItems = selectedItemsByCourse[courseKey as CourseType] || [];
-                  const isExpanded = sidebarExpanded[courseKey];
-                  const hasSelection = courseItems.length > 0;
+                {Object.entries(COURSE_DETAILS)
+                  .filter(([courseKey, details]) => details.menuType === menuType || (selectedItemsByCourse[courseKey as CourseType]?.length > 0))
+                  .map(([courseKey, details]) => {
+                    const courseItems = selectedItemsByCourse[courseKey as CourseType] || [];
+                    const isExpanded = sidebarExpanded[courseKey];
+                    const hasSelection = courseItems.length > 0;
 
-                  return (
-                    <div key={courseKey} className={styles.checklistRow}>
-                      <button 
-                        onClick={() => toggleSidebarAccordion(courseKey)}
-                        className={styles.sidebarGroupHeader}
-                      >
-                        <div className={styles.sidebarGroupHeaderLeft}>
-                          <span className={`${styles.checklistBullet} ${hasSelection ? styles.checklistBulletActive : ''}`}>
-                            {hasSelection && <FaCheck size={9} />}
+                    return (
+                      <div key={courseKey} className={styles.checklistRow}>
+                        <button 
+                          onClick={() => toggleSidebarAccordion(courseKey)}
+                          className={styles.sidebarGroupHeader}
+                        >
+                          <div className={styles.sidebarGroupHeaderLeft}>
+                            <span className={`${styles.checklistBullet} ${hasSelection ? styles.checklistBulletActive : ''}`}>
+                              {hasSelection && <FaCheck size={9} />}
+                            </span>
+                            <span className={styles.sidebarGroupName}>
+                              {details.title}
+                            </span>
+                          </div>
+                          <span className={styles.sidebarSelectedCount}>
+                            {courseItems.length} Selected
                           </span>
-                          <span className={styles.sidebarGroupName}>
-                            {details.title}
-                          </span>
-                        </div>
-                        <span className={styles.sidebarSelectedCount}>
-                          {courseItems.length} Selected
-                        </span>
-                      </button>
+                        </button>
 
-                      {isExpanded && hasSelection && (
-                        <div className={styles.sidebarGroupList}>
-                          {courseItems.map(item => (
-                            <div key={item.id} className={styles.sidebarItem}>
-                              <span className={styles.sidebarItemName}>{item.name}</span>
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  removeItem(item.id);
-                                }}
-                                className={styles.removeItemBtn}
-                                title="Remove item"
-                              >
-                                <FaTrashAlt />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                        {isExpanded && hasSelection && (
+                          <div className={styles.sidebarGroupList}>
+                            {courseItems.map(item => (
+                              <div key={item.id} className={styles.sidebarItem}>
+                                <span className={styles.sidebarItemName}>{item.name}</span>
+                                <button 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    removeItem(item.id);
+                                  }}
+                                  className={styles.removeItemBtn}
+                                  title="Remove item"
+                                >
+                                  <FaTrashAlt />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
               </div>
 
-              {/* Free Default Inclusion banner */}
-              <div className={styles.inclusionsBox}>
-                <h5>Included Free by Default:</h5>
-                <p>Plain Rice, Fryums & Papads, Ghee, Mirchi ka Salan, Plain Curd & Raitha, Curd Chilli, Mineral Water</p>
-              </div>
             </div>
 
             {selectedIds.length > 0 ? (

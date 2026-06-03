@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
 import ScrollReveal from '@/components/ui/ScrollReveal';
@@ -11,10 +14,13 @@ import {
   FaGlobe, 
   FaCogs, 
   FaBriefcase,
-  FaCheckCircle 
+  FaCheckCircle,
+  FaTimes 
 } from 'react-icons/fa';
 
 export default function About() {
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
   const canteens = [
     {
       name: "NIFT Madhapur",
@@ -117,6 +123,80 @@ export default function About() {
                   style={{ objectFit: 'cover' }}
                   priority
                 />
+              </div>
+            </div>
+          </section>
+        </ScrollReveal>
+
+        {/* Food Safety & Certifications Section */}
+        <ScrollReveal>
+          <section className={styles.safetySection}>
+            <div className="container">
+              <div className={styles.safetyGrid}>
+                {/* Left Content Column */}
+                <div className={styles.safetyLeft}>
+                  <span className={styles.safetyBadge}>Certified & Trusted</span>
+                  <h2 className={styles.safetyTitle}>Food Safety & Certifications</h2>
+                  <p className={styles.safetySubtitle}>
+                    We follow the highest standards of hygiene, food safety, and quality. Purvals Caterers & Hoteliers is officially registered under FSSAI, ensuring safe and trusted catering services for every occasion.
+                  </p>
+                  
+                  <div className={styles.trustGrid}>
+                    <div className={styles.trustCard}>
+                      <FaCheckCircle className={styles.trustIcon} />
+                      <span>FSSAI Certified</span>
+                    </div>
+                    <div className={styles.trustCard}>
+                      <FaCheckCircle className={styles.trustIcon} />
+                      <span>Hygienic Food Preparation</span>
+                    </div>
+                    <div className={styles.trustCard}>
+                      <FaCheckCircle className={styles.trustIcon} />
+                      <span>Government Registered</span>
+                    </div>
+                    <div className={styles.trustCard}>
+                      <FaCheckCircle className={styles.trustIcon} />
+                      <span>Trusted Catering Service</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.infoCard}>
+                    <div className={styles.infoRow}>
+                      <div className={styles.infoItem}>
+                        <strong>FSSAI Registration Number:</strong> 23621033001862
+                      </div>
+                      <div className={styles.infoItem}>
+                        <strong>Valid Till:</strong> 01 April 2029
+                      </div>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="btn btn-primary"
+                  >
+                    View Full Certificate
+                  </button>
+                </div>
+
+                {/* Right Image/Certificate Column */}
+                <div className={styles.safetyRight}>
+                  <div 
+                    className={styles.certCard}
+                    onClick={() => setIsLightboxOpen(true)}
+                  >
+                    <span className={styles.floatingBadge}>Government Verified</span>
+                    <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1.414', borderRadius: '12px', overflow: 'hidden' }}>
+                      <Image 
+                        src="/images/fssai_certificate.png" 
+                        alt="FSSAI Registration Certificate" 
+                        fill
+                        sizes="(max-width: 992px) 100vw, 40vw"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -228,6 +308,29 @@ export default function About() {
             </div>
           </section>
         </ScrollReveal>
+      {/* Lightbox / Modal Certificate Viewer */}
+      {isLightboxOpen && (
+        <div className={styles.lightboxOverlay} onClick={() => setIsLightboxOpen(false)}>
+          <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
+            <button 
+              className={styles.closeBtn} 
+              onClick={() => setIsLightboxOpen(false)}
+              aria-label="Close certificate viewer"
+            >
+              <FaTimes />
+            </button>
+            <div style={{ position: 'relative', width: 'min(90vw, 600px)', height: 'min(85vh, 848px)' }}>
+              <Image 
+                src="/images/fssai_certificate.png" 
+                alt="FSSAI Registration Certificate" 
+                fill
+                sizes="100vw"
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );
