@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
-
-const prisma = new PrismaClient();
 
 export default async function AdminMenu() {
   const menuItems = await prisma.menuItem.findMany({

@@ -4,10 +4,8 @@ import ServicesSection from '@/components/ui/ServicesSection';
 import ReviewerPhoto from '@/components/ui/ReviewerPhoto';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import styles from './page.module.css';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import { FaCrown, FaLeaf, FaHandsHelping, FaStar } from 'react-icons/fa';
-
-const prisma = new PrismaClient();
 
 export default async function Home() {
   const testimonials = await prisma.testimonial.findMany({

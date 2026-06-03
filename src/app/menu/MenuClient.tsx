@@ -372,6 +372,7 @@ ${Object.entries(selectedItemsByCourse)
           email: formData.email,
           phone: formData.phone,
           eventType: formData.eventType,
+          eventDate: formData.eventDate || null,
           guests: formData.guests ? parseInt(formData.guests) : null,
           message: menuDetails
         })
@@ -379,13 +380,17 @@ ${Object.entries(selectedItemsByCourse)
 
       if (response.ok) {
         setSubmitStatus('success');
-        window.open(whatsAppUrl, '_blank');
+        const opened = window.open(whatsAppUrl, '_blank');
+        if (!opened) {
+          window.location.href = whatsAppUrl;
+        }
         updateSelectedItems([]);
         setFormData({ name: '', email: '', phone: '', eventType: '', guests: '', eventDate: '' });
       } else {
         setSubmitStatus('error');
       }
     } catch (e) {
+      console.error('Error submitting inquiry:', e);
       setSubmitStatus('error');
     }
   };

@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import { FaCheckCircle, FaTimesCircle, FaEnvelope } from 'react-icons/fa';
-
-const prisma = new PrismaClient();
 
 export default async function AdminInquiries() {
   const inquiries = await prisma.inquiry.findMany({

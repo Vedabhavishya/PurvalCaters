@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
@@ -18,6 +16,7 @@ export async function POST(request: Request) {
         email: data.email,
         phone: data.phone,
         eventType: data.eventType || null,
+        eventDate: data.eventDate ? new Date(data.eventDate) : null,
         guests: data.guests || null,
         message: data.message,
       },

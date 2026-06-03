@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import { FaUtensils, FaBoxOpen, FaEnvelopeOpenText, FaUsers } from 'react-icons/fa';
-
-const prisma = new PrismaClient();
 
 export default async function AdminDashboard() {
   const menuItemsCount = await prisma.menuItem.count();
