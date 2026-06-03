@@ -97,23 +97,12 @@ export default function ContactPage() {
                 <FaMapMarkerAlt />
               </div>
               <div className={styles.cardContent}>
-                <h3 className={styles.cardTitle}>Our Addresses</h3>
-                <span className={styles.cardText} style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>
-                  Registered Office:
-                </span>
-                <p className={styles.cardText}>
-                  Thukaram Gate, North Lallaguda,<br />
-                  Street No.13, Secunderabad - 500017
-                </p>
-                
-                <hr className={styles.addressDivider} />
-                
-                <span className={styles.cardText} style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>
-                  Kitchen & Operations Venue:
-                </span>
-                <p className={styles.cardText}>
-                  4, RTC Colony, Tirumalagiri,<br />
-                  Secunderabad, Telangana - 500015
+                <h3 className={styles.cardTitle}>Our Address</h3>
+                <p className={styles.cardText} style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '1rem', lineHeight: '1.7' }}>
+                  Thukaramgate<br />
+                  North Lallaguda, Secunderabad.<br />
+                  Hyderabad 500017<br />
+                  Andhra Pradesh. INDIA
                 </p>
               </div>
             </div>
