@@ -338,6 +338,31 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       }
     });
 
+    // Construct WhatsApp message
+    const whatsAppMessage = `Hi Supper Club, I want to request a custom catering package quote. Here are my details:
+
+• Name: ${formData.name}
+• Email: ${formData.email}
+• Phone: ${formData.phone}
+• Event Type: ${formData.eventType}
+• Estimated Guests: ${formData.guests || 'N/A'}
+• Event Date: ${formData.eventDate || 'N/A'}
+
+=== SELECTED MENU ITEMS ===
+Total Selected: ${stats.total} Dishes (Veg: ${stats.veg} | Non-Veg: ${stats.nonveg})
+
+${Object.entries(selectedItemsByCourse)
+  .filter(([_, items]) => items.length > 0)
+  .map(([course, items]) => {
+    const title = COURSE_DETAILS[course as CourseType]?.title || course;
+    const itemsList = items.map((item, idx) => `  ${idx + 1}. ${item.name} (${item.isVeg ? 'Veg' : 'Non-Veg'})`).join('\n');
+    return `[${title} (${items.length})]\n${itemsList}`;
+  })
+  .join('\n\n')}`;
+
+    const encodedMessage = encodeURIComponent(whatsAppMessage);
+    const whatsAppUrl = `https://wa.me/919246179757?text=${encodedMessage}`;
+
     try {
       const response = await fetch('/api/inquiries', {
         method: 'POST',
@@ -354,6 +379,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
       if (response.ok) {
         setSubmitStatus('success');
+        window.open(whatsAppUrl, '_blank');
         updateSelectedItems([]);
         setFormData({ name: '', email: '', phone: '', eventType: '', guests: '', eventDate: '' });
       } else {
@@ -578,70 +604,52 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
         <div className={styles.menuRight}>
           <div className={styles.stickyPanel}>
             <div className={styles.panelHeader}>
-              <h2>Catering Package</h2>
-              <p>Package Course Selector Checklist:</p>
+              <h2>My Selection</h2>
+              <p>{selectedIds.length > 0 ? `${stats.total} Items Added` : 'No items selected'}</p>
             </div>
 
             <div className={styles.panelContent}>
-              {/* List counts for each course */}
-              <div className={styles.sidebarChecklist}>
-                {Object.entries(COURSE_DETAILS)
-                  .filter(([courseKey, details]) => details.menuType === menuType || (selectedItemsByCourse[courseKey as CourseType]?.length > 0))
-                  .map(([courseKey, details]) => {
-                    const courseItems = selectedItemsByCourse[courseKey as CourseType] || [];
-                    const isExpanded = sidebarExpanded[courseKey];
-                    const hasSelection = courseItems.length > 0;
-
+              {selectedIds.length > 0 ? (
+                <div className={styles.selectedItemsContainer}>
+                  {Object.entries(selectedItemsByCourse).map(([course, items]) => {
+                    if (items.length === 0) return null;
+                    const title = COURSE_DETAILS[course as CourseType]?.title || course;
                     return (
-                      <div key={courseKey} className={styles.checklistRow}>
-                        <button 
-                          onClick={() => toggleSidebarAccordion(courseKey)}
-                          className={styles.sidebarGroupHeader}
-                        >
-                          <div className={styles.sidebarGroupHeaderLeft}>
-                            <span className={`${styles.checklistBullet} ${hasSelection ? styles.checklistBulletActive : ''}`}>
-                              {hasSelection && <FaCheck size={9} />}
-                            </span>
-                            <span className={styles.sidebarGroupName}>
-                              {details.title}
-                            </span>
-                          </div>
-                          <span className={styles.sidebarSelectedCount}>
-                            {courseItems.length} Selected
-                          </span>
-                        </button>
-
-                        {isExpanded && hasSelection && (
-                          <div className={styles.sidebarGroupList}>
-                            {courseItems.map(item => (
-                              <div key={item.id} className={styles.sidebarItem}>
+                      <div key={course} className={styles.sidebarGroup}>
+                        <h4 className={styles.sidebarGroupTitle}>{title}</h4>
+                        <div className={styles.sidebarItemList}>
+                          {items.map(item => (
+                            <div key={item.id} className={styles.sidebarItemCard}>
+                              <div className={styles.sidebarItemLeft}>
+                                <span className={`${styles.dot} ${item.isVeg ? styles.dotVeg : styles.dotNonVeg}`} />
                                 <span className={styles.sidebarItemName}>{item.name}</span>
-                                <button 
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    removeItem(item.id);
-                                  }}
-                                  className={styles.removeItemBtn}
-                                  title="Remove item"
-                                >
-                                  <FaTrashAlt />
-                                </button>
                               </div>
-                            ))}
-                          </div>
-                        )}
+                              <button 
+                                onClick={() => removeItem(item.id)}
+                                className={styles.sidebarRemoveBtn}
+                                title="Remove item"
+                              >
+                                <FaTrashAlt />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     );
                   })}
-              </div>
-
+                </div>
+              ) : (
+                <div className={styles.sidebarEmptyMessage}>
+                  <p>Choose items from the categories on the left to build your custom package proposal.</p>
+                </div>
+              )}
             </div>
 
-            {selectedIds.length > 0 ? (
-              <div className={styles.panelFooter}>
+            <div className={styles.panelFooter}>
+              {selectedIds.length > 0 && (
                 <div className={styles.statsSummary}>
                   <div className={styles.statsRow}>
-                    <span>Total Selection:</span>
+                    <span>Total Selected:</span>
                     <strong>{stats.total} Items</strong>
                   </div>
                   <div className={styles.statsSubRows}>
@@ -655,35 +663,27 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
                     </div>
                   </div>
                 </div>
+              )}
 
-                {/* CTAs */}
-                <button 
-                  onClick={() => setModalOpen(true)} 
-                  className={`btn btn-primary ${styles.ctaPrimary}`}
-                >
-                  Proceed with My Custom Package <FaArrowRight style={{ marginLeft: '8px', fontSize: '0.85em' }} />
-                </button>
+              {/* Download PDF CTA */}
+              <button 
+                onClick={handleDownloadPDF} 
+                className={`btn ${styles.downloadPdfBtn}`}
+                style={{ width: '100%', marginBottom: '0.65rem', display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}
+              >
+                <FaFilePdf /> Download Full PDF of Menu
+              </button>
 
-                <div className={styles.secondaryActions}>
-                  <button 
-                    onClick={handleDownloadPDF} 
-                    className={`btn btn-outline ${styles.ctaSecondary}`}
-                  >
-                    <FaFilePdf style={{ marginRight: '6px' }} /> PDF Menu
-                  </button>
-                  <button 
-                    onClick={() => setModalOpen(true)} 
-                    className={`btn btn-outline ${styles.ctaSecondary}`}
-                  >
-                    Request Quote
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className={styles.panelFooterEmpty}>
-                <p>Please select dishes from the categories to build your custom catering package.</p>
-              </div>
-            )}
+              {/* Proceed CTA */}
+              <button 
+                onClick={() => setModalOpen(true)} 
+                className={`btn ${styles.proceedBtn}`}
+                disabled={selectedIds.length === 0}
+                style={{ width: '100%', display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}
+              >
+                Proceed with My Custom Package <FaArrowRight style={{ fontSize: '0.85em' }} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
