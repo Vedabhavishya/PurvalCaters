@@ -62,12 +62,16 @@ ${formData.message}`;
       
       if (res.ok) {
         setStatus('success');
-        window.open(whatsAppUrl, '_blank');
+        const opened = window.open(whatsAppUrl, '_blank');
+        if (!opened) {
+          window.location.href = whatsAppUrl;
+        }
         setFormData({ name: '', email: '', phone: '', eventType: '', guests: '', message: '' });
       } else {
         setStatus('error');
       }
     } catch (err) {
+      console.error('Error submitting contact inquiry:', err);
       setStatus('error');
     }
   };
