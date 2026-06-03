@@ -15,10 +15,36 @@ export default async function AdminMenu() {
     orderBy: { name: 'asc' }
   });
 
+  // Map to plain objects matching client-side types and avoiding Date serialization errors
+  const serializedItems = menuItems.map(item => ({
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    price: item.price,
+    imageUrl: item.imageUrl,
+    isVeg: item.isVeg,
+    subcategory: item.subcategory,
+    course: item.course,
+    categoryId: item.categoryId,
+    isFeatured: item.isFeatured,
+    category: {
+      id: item.category.id,
+      name: item.category.name,
+      slug: item.category.slug
+    }
+  }));
+
+  const serializedCategories = categories.map(cat => ({
+    id: cat.id,
+    name: cat.name,
+    slug: cat.slug
+  }));
+
   return (
     <MenuManagerClient 
-      initialItems={menuItems} 
-      initialCategories={categories} 
+      initialItems={serializedItems} 
+      initialCategories={serializedCategories} 
     />
   );
 }
+
