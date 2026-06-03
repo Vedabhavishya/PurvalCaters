@@ -37,6 +37,8 @@ const prismaClientSingleton = () => {
           fs.copyFileSync(bundledDbPath, tempDbPath);
           console.log(`Database successfully copied from ${bundledDbPath} to ${tempDbPath}`);
         }
+        // Force writable permissions in case the copied file inherited read-only state
+        fs.chmodSync(tempDbPath, 0o666);
       } catch (err: any) {
         console.error('Failed to copy database to /tmp:', err);
         throw new Error(`SQLite fallback copy failed: ${err.message || err}`);
