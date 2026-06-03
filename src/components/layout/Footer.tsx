@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContent}`}>
         <div className={styles.brand}>
-          <h3><FaUtensils /> Purval’s Caterers</h3>
+          <h3><FaUtensils /> Supperclub</h3>
           <p>Curated Authentic Indian Feast. Providing premium catering services for weddings, corporate events, and parties across the region.</p>
           <div className={styles.social}>
             <a href="#" aria-label="Facebook"><FaFacebookF /></a>
@@ -49,7 +49,7 @@ export default function Footer() {
         </div>
       </div>
       <div className={styles.bottom}>
-        <p>&copy; {new Date().getFullYear()} Purval’s Caterers. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Supperclub. All rights reserved.</p>
       </div>
     </footer>
   );

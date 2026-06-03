@@ -91,7 +91,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
   // Load selection from localStorage
   useEffect(() => {
     setIsMounted(true);
-    const saved = localStorage.getItem('purval_custom_menu_v2');
+    const saved = localStorage.getItem('supperclub_custom_menu_v2');
     if (saved) {
       try {
         setSelectedIds(JSON.parse(saved));
@@ -103,7 +103,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
   const updateSelectedItems = (ids: string[]) => {
     setSelectedIds(ids);
-    localStorage.setItem('purval_custom_menu_v2', JSON.stringify(ids));
+    localStorage.setItem('supperclub_custom_menu_v2', JSON.stringify(ids));
   };
 
   // Merge items from database if any are not in local data
@@ -311,7 +311,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       {/* Hidden print page block */}
       <div className={styles.printContainer}>
         <div className={styles.printHeader}>
-          <h1>Purval’s Caterers</h1>
+          <h1>Supperclub</h1>
           <p className={styles.printTagline}>Curated Authentic Indian Feast | Premium Catering Proposal</p>
           <p className={styles.printMeta}>Generated Proposal Date: {isMounted ? new Date().toLocaleDateString() : ''}</p>
         </div>
@@ -341,7 +341,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
           })}
         </div>
         <div className={styles.printFooter}>
-          <p>Thank you for choosing Purval’s Caterers. For custom packages and consultations, reach out to us at purvalscaterers@yahoo.co.in or +91 92461 79757</p>
+          <p>Thank you for choosing Supperclub. For custom packages and consultations, reach out to us at purvalscaterers@yahoo.co.in or +91 92461 79757</p>
         </div>
       </div>
 

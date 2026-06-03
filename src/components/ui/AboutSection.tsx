@@ -53,7 +53,7 @@ export default function AboutSection() {
               <div className={`${styles.imageWrapper} ${styles.imageLeft} ${styles.revealLeft}`}>
                 <Image 
                   src="/images/about_kabab.png" 
-                  alt="Authentic Tandoori Kabab Platter by Purval's Caterers" 
+                  alt="Authentic Tandoori Kabab Platter by Supperclub" 
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   style={{ objectFit: 'cover' }}
@@ -84,13 +84,13 @@ export default function AboutSection() {
           {/* Right Column - Brand & Narrative Copy */}
           <div className={styles.contentColumn}>
             <span className={`${styles.subtitle} ${styles.revealContent}`}>
-              About Purval's Caterers
+              About Supperclub
             </span>
             <h2 className={`${styles.title} ${styles.revealContent}`}>
               Crafting Culinary Emotions, Tailored For Every Celebration
             </h2>
             <p className={`${styles.text} ${styles.revealContent}`}>
-              Established in 1991, Purval’s Caterers was built on a deep passion for authentic cuisine and exceptional hospitality. Guided by our Founder, CEO, and Executive Chef—who brings over 20+ years of professional culinary experience across India, New Zealand, and the USA—we believe food is more than just taste; it is an emotion, a tradition, and a way to bring people together.
+              Established in 1991, Supperclub was built on a deep passion for authentic cuisine and exceptional hospitality. Guided by our Founder, CEO, and Executive Chef—who brings over 20+ years of professional culinary experience across India, New Zealand, and the USA—we believe food is more than just taste; it is an emotion, a tradition, and a way to bring people together.
             </p>
             <p className={`${styles.text} ${styles.revealContent}`}>
               From managing corporate canteens for leaders like P&G, NIFT, and Satyam Computers, to catering grand celebrations of up to 10,000+ guests, our commitment to exquisite taste, absolute hygiene, and execution excellence remains flawless.

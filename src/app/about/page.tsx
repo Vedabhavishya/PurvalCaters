@@ -78,7 +78,7 @@ export default function About() {
           <section className="container">
             <h2 className={styles.title}>Our Story & Heritage</h2>
             <p className={styles.subtitle}>
-              Established in 1991, Purval’s Caterers has been crafting memories through authentic flavors, traditional recipes, and unparalleled hospitality.
+              Established in 1991, Supperclub has been crafting memories through authentic flavors, traditional recipes, and unparalleled hospitality.
             </p>
 
             {/* Story Intro */}
@@ -86,7 +86,7 @@ export default function About() {
               <div className={styles.text}>
                 <h2>Crafting Celebrations for 35+ Years</h2>
                 <p>
-                  Purval’s Caterers was founded on a passion for exceptional culinary experiences and a singular vision: to create memorable dining for every single celebration. Over the decades, we have grown into one of the most trusted and respected names in outdoor catering, celebrated for our uncompromising quality, consistent taste, and bespoke hospitality.
+                  Supperclub was founded on a passion for exceptional culinary experiences and a singular vision: to create memorable dining for every single celebration. Over the decades, we have grown into one of the most trusted and respected names in outdoor catering, celebrated for our uncompromising quality, consistent taste, and bespoke hospitality.
                 </p>
                 <p>
                   To us, food is not merely nourishment — it is an emotional experience, an echo of centuries-old traditions, and a beautiful medium that draws people closer. Every custom menu we curate is a reflection of our commitment to culinary authenticity, innovative presentation, and flawless execution.
@@ -119,7 +119,7 @@ export default function About() {
                 <div className={styles.chefPhotoContainer}>
                   <Image 
                     src="/images/founder.png" 
-                    alt="Arun Kumar Lakpath - Founder, CEO & Executive Chef of Purval's Caterers" 
+                    alt="Arun Kumar Lakpath - Founder, CEO & Executive Chef of Supperclub" 
                     fill
                     sizes="(max-width: 992px) 100vw, 40vw"
                     style={{ objectFit: 'cover' }}
@@ -138,7 +138,7 @@ export default function About() {
                   </div>
                   
                   <p className={styles.chefDesc}>
-                    Welcome to Purval’s Caterers. Established in 1991, our journey began with a passion for authentic cuisine, exceptional hospitality, and a vision of creating memorable dining experiences for every celebration. Over the decades, we have grown into a trusted name in outdoor catering, celebrated for our uncompromising quality, consistent taste, and personalized service.
+                    Welcome to Supperclub. Established in 1991, our journey began with a passion for authentic cuisine, exceptional hospitality, and a vision of creating memorable dining experiences for every celebration. Over the decades, we have grown into a trusted name in outdoor catering, celebrated for our uncompromising quality, consistent taste, and personalized service.
                   </p>
                   
                   <p className={styles.chefDesc}>

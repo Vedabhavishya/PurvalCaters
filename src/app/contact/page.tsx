@@ -36,7 +36,7 @@ export default function ContactPage() {
     
     const eventLabel = eventLabels[formData.eventType] || formData.eventType || 'N/A';
 
-    const whatsAppMessage = `Hi Purval's Caterers, I want to inquire about catering services. Here are my details:
+    const whatsAppMessage = `Hi Supperclub, I want to inquire about catering services. Here are my details:
 
 • Name: ${formData.name}
 • Email: ${formData.email}
@@ -261,7 +261,7 @@ ${formData.message}`;
                 allowFullScreen 
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Purval Caterers Operations Location Map"
+                title="Supperclub Operations Location Map"
               ></iframe>
             </div>
           </div>
