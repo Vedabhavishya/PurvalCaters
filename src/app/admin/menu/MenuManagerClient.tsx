@@ -76,6 +76,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
 
   // Custom addition states for cascading dropdowns
   const [isCustomSubcategory, setIsCustomSubcategory] = useState(false);
+  const [customSubcategoryKey, setCustomSubcategoryKey] = useState('');
   const [customSubcategoryText, setCustomSubcategoryText] = useState('');
   const [isCustomVariety, setIsCustomVariety] = useState(false);
   const [customVarietyText, setCustomVarietyText] = useState('');
@@ -85,23 +86,23 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Get unique subcategories for a given category ID from all items
+  // Get unique subcategories (courses in database) for a given category ID from all items
   const getSubcategoriesForCategory = (catId: string) => {
     const subcats = new Set<string>();
     items.forEach(item => {
-      if (item.categoryId === catId && item.subcategory) {
-        subcats.add(item.subcategory.trim());
+      if (item.categoryId === catId && item.course) {
+        subcats.add(item.course.trim());
       }
     });
     return Array.from(subcats).sort();
   };
 
-  // Get unique varieties (course keys) for a given category ID and subcategory name
-  const getVarietiesForSubcategory = (catId: string, subcatName: string) => {
+  // Get unique varieties (subcategory string in database) for a given category ID and course key
+  const getVarietiesForSubcategory = (catId: string, courseKey: string) => {
     const varieties = new Set<string>();
     items.forEach(item => {
-      if (item.categoryId === catId && item.subcategory?.trim() === subcatName.trim() && item.course) {
-        varieties.add(item.course.trim());
+      if (item.categoryId === catId && item.course?.trim() === courseKey.trim() && item.subcategory) {
+        varieties.add(item.subcategory.trim());
       }
     });
     return Array.from(varieties).sort();
@@ -129,15 +130,15 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       categoryId: initialCatId,
       isFeatured: false,
       isVeg: true,
-      subcategory: initialSubcat,
-      course: initialVar,
+      course: initialSubcat, // course = Subcategory
+      subcategory: initialVar, // subcategory = Variety
     });
 
     setIsCustomSubcategory(subcats.length === 0);
+    setCustomSubcategoryKey('');
     setCustomSubcategoryText('');
     setIsCustomVariety(vars.length === 0);
     setCustomVarietyText('');
-    setCustomVarietyKey('');
     
     setErrorMsg('');
     setItemModalOpen(true);
@@ -152,23 +153,24 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       categoryId: item.categoryId,
       isFeatured: item.isFeatured,
       isVeg: item.isVeg,
-      subcategory: item.subcategory || '',
       course: item.course || '',
+      subcategory: item.subcategory || '',
     });
 
-    // Determine if subcategory or variety is custom (not in existing items)
+    // Check if subcategory (course in database) is custom
     const existingSubcats = getSubcategoriesForCategory(item.categoryId);
-    const subExists = item.subcategory ? existingSubcats.includes(item.subcategory.trim()) : false;
+    const subExists = item.course ? existingSubcats.includes(item.course.trim()) : false;
     
-    setIsCustomSubcategory(!subExists && !!item.subcategory);
-    setCustomSubcategoryText(item.subcategory || '');
+    setIsCustomSubcategory(!subExists && !!item.course);
+    setCustomSubcategoryKey(item.course || '');
+    setCustomSubcategoryText(item.course ? (COURSE_DETAILS[item.course]?.title || item.course) : '');
 
-    const existingVars = item.subcategory ? getVarietiesForSubcategory(item.categoryId, item.subcategory) : [];
-    const varExists = item.course ? existingVars.includes(item.course.trim()) : false;
+    // Check if variety (subcategory in database) is custom
+    const existingVars = item.course ? getVarietiesForSubcategory(item.categoryId, item.course) : [];
+    const varExists = item.subcategory ? existingVars.includes(item.subcategory.trim()) : false;
 
-    setIsCustomVariety(!varExists && !!item.course);
-    setCustomVarietyKey(item.course || '');
-    setCustomVarietyText(item.course ? (COURSE_DETAILS[item.course]?.title || item.course) : '');
+    setIsCustomVariety(!varExists && !!item.subcategory);
+    setCustomVarietyText(item.subcategory || '');
 
     setErrorMsg('');
     setItemModalOpen(true);
@@ -188,61 +190,59 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
     setFormData(prev => ({
       ...prev,
       categoryId: catId,
-      subcategory: nextSubcat,
-      course: nextVar
+      course: nextSubcat, // course = Subcategory
+      subcategory: nextVar // subcategory = Variety
     }));
     
     setIsCustomSubcategory(subcats.length === 0);
+    setCustomSubcategoryKey('');
     setCustomSubcategoryText('');
     setIsCustomVariety(vars.length === 0);
-    setCustomVarietyKey('');
     setCustomVarietyText('');
   };
 
-  const handleSubcategoryChange = (subcat: string) => {
-    if (subcat === '__custom__') {
+  const handleSubcategoryChange = (courseKey: string) => {
+    if (courseKey === '__custom__') {
       setIsCustomSubcategory(true);
+      setCustomSubcategoryKey('');
       setCustomSubcategoryText('');
       setFormData(prev => ({
         ...prev,
-        subcategory: '',
-        course: ''
+        course: '',
+        subcategory: ''
       }));
       setIsCustomVariety(true);
-      setCustomVarietyKey('');
       setCustomVarietyText('');
     } else {
       setIsCustomSubcategory(false);
+      setCustomSubcategoryKey('');
       setCustomSubcategoryText('');
-      const vars = getVarietiesForSubcategory(formData.categoryId, subcat);
+      const vars = getVarietiesForSubcategory(formData.categoryId, courseKey);
       const nextVar = vars[0] || '';
       setFormData(prev => ({
         ...prev,
-        subcategory: subcat,
-        course: nextVar
+        course: courseKey,
+        subcategory: nextVar
       }));
       setIsCustomVariety(vars.length === 0);
-      setCustomVarietyKey('');
       setCustomVarietyText('');
     }
   };
 
-  const handleVarietyChange = (courseValue: string) => {
-    if (courseValue === '__custom__') {
+  const handleVarietyChange = (subcatValue: string) => {
+    if (subcatValue === '__custom__') {
       setIsCustomVariety(true);
-      setCustomVarietyKey('');
       setCustomVarietyText('');
       setFormData(prev => ({
         ...prev,
-        course: ''
+        subcategory: ''
       }));
     } else {
       setIsCustomVariety(false);
-      setCustomVarietyKey('');
       setCustomVarietyText('');
       setFormData(prev => ({
         ...prev,
-        course: courseValue
+        subcategory: subcatValue
       }));
     }
   };
@@ -263,28 +263,28 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
     setLoading(true);
     setErrorMsg('');
 
-    const finalSubcategory = isCustomSubcategory ? customSubcategoryText.trim() : formData.subcategory;
-    const finalCourse = isCustomVariety ? customVarietyKey.trim() : formData.course;
+    const finalSubcategory = isCustomSubcategory ? customSubcategoryKey.trim() : formData.course; // Subcategory corresponds to course in DB
+    const finalVariety = isCustomVariety ? customVarietyText.trim() : formData.subcategory; // Variety corresponds to subcategory in DB
 
     if (!finalSubcategory) {
       setErrorMsg('Please specify a subcategory.');
       setLoading(false);
       return;
     }
-    if (!finalCourse) {
+    if (!finalVariety) {
       setErrorMsg('Please specify a variety.');
       setLoading(false);
       return;
     }
 
-    if (isCustomVariety && finalCourse && customVarietyText) {
-      COURSE_DETAILS[finalCourse] = { title: customVarietyText.trim() };
+    if (isCustomSubcategory && finalSubcategory && customSubcategoryText) {
+      COURSE_DETAILS[finalSubcategory] = { title: customSubcategoryText.trim() };
     }
 
     const payload = {
       ...formData,
-      subcategory: finalSubcategory,
-      course: finalCourse
+      course: finalSubcategory,
+      subcategory: finalVariety
     };
 
     try {
@@ -465,17 +465,22 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
           const catItems = filteredItems.filter(item => item.categoryId === cat.id);
           if (catItems.length === 0) return null;
 
-          // Group catItems by subcategory
+          // Group catItems by Subcategory (course in database)
           const subcatGroups: Record<string, MenuItem[]> = {};
           catItems.forEach(item => {
-            const subcat = item.subcategory?.trim() || 'General';
+            const subcat = item.course?.trim() || 'General';
             if (!subcatGroups[subcat]) {
               subcatGroups[subcat] = [];
             }
             subcatGroups[subcat].push(item);
           });
 
-          const sortedSubcats = Object.keys(subcatGroups).sort();
+          // Sort subcategories by their display titles
+          const sortedSubcats = Object.keys(subcatGroups).sort((a, b) => {
+            const titleA = getVarietyTitle(a);
+            const titleB = getVarietyTitle(b);
+            return titleA.localeCompare(titleB);
+          });
 
           return (
             <div key={cat.id} style={{ marginBottom: '3rem', background: 'white', borderRadius: '16px', padding: '2rem', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', border: '1px solid #f0ede8' }}>
@@ -488,12 +493,12 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                 </span>
               </div>
 
-              {sortedSubcats.map(subcatName => {
-                const subcatItems = subcatGroups[subcatName];
+              {sortedSubcats.map(subcatKey => {
+                const subcatItems = subcatGroups[subcatKey];
                 return (
-                  <div key={subcatName} style={{ marginBottom: '2.5rem' }}>
+                  <div key={subcatKey} style={{ marginBottom: '2.5rem' }}>
                     <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)', background: '#eae6df', padding: '0.5rem 1.25rem', borderRadius: '8px', marginBottom: '1.25rem', display: 'inline-block' }}>
-                      {subcatName}
+                      {getVarietyTitle(subcatKey)}
                     </h3>
                     
                     <div style={{ overflowX: 'auto', border: '1px solid #f1f5f9', borderRadius: '12px' }}>
@@ -501,7 +506,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                         <thead>
                           <tr style={{ borderBottom: '2px solid #f1f5f9', background: '#faf9f6' }}>
                             <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '50%' }}>Name</th>
-                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '25%' }}>Varieties</th>
+                            <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '25%' }}>Variety</th>
                             <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '15%' }}>Price</th>
                             <th style={{ padding: '0.85rem 1rem', color: '#64748b', fontWeight: 600, fontSize: '0.85rem', width: '10%', textAlign: 'right' }}>Actions</th>
                           </tr>
@@ -550,7 +555,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                                   fontSize: '0.8rem', 
                                   fontWeight: 600 
                                 }}>
-                                  {getVarietyTitle(item.course)}
+                                  {item.subcategory || 'General'}
                                 </span>
                               </td>
                               <td style={{ padding: '0.9rem 1rem', fontWeight: 600, color: '#0f172a' }}>
@@ -683,17 +688,19 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                {/* Subcategory dropdown */}
+                {/* Subcategory dropdown (maps to course key in database) */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Subcategory *</label>
                   {!isCustomSubcategory ? (
                     <select 
-                      value={formData.subcategory}
+                      value={formData.course}
                       onChange={(e) => handleSubcategoryChange(e.target.value)}
                       style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: '#ffffff' }}
                     >
-                      {getSubcategoriesForCategory(formData.categoryId).map(subcat => (
-                        <option key={subcat} value={subcat}>{subcat}</option>
+                      {getSubcategoriesForCategory(formData.categoryId).map(courseKey => (
+                        <option key={courseKey} value={courseKey}>
+                          {getVarietyTitle(courseKey)}
+                        </option>
                       ))}
                       <option value="__custom__">+ Add Custom Subcategory...</option>
                     </select>
@@ -701,7 +708,14 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                     <div style={{ display: 'flex', gap: '0.5rem', flexDirection: 'column' }}>
                       <input 
                         type="text"
-                        placeholder="Type new subcategory"
+                        placeholder="Type raw key (e.g. south-indian-breakfast)"
+                        value={customSubcategoryKey}
+                        onChange={(e) => setCustomSubcategoryKey(e.target.value)}
+                        style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
+                      />
+                      <input 
+                        type="text"
+                        placeholder="Display Name (e.g. South Indian Breakfast)"
                         value={customSubcategoryText}
                         onChange={(e) => setCustomSubcategoryText(e.target.value)}
                         style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
@@ -723,19 +737,17 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                   )}
                 </div>
 
-                {/* Variety (course) dropdown */}
+                {/* Variety dropdown (maps to subcategory string in database) */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Variety *</label>
                   {!isCustomVariety ? (
                     <select 
-                      value={formData.course}
+                      value={formData.subcategory}
                       onChange={(e) => handleVarietyChange(e.target.value)}
                       style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: '#ffffff' }}
                     >
-                      {getVarietiesForSubcategory(formData.categoryId, formData.subcategory).map(courseKey => (
-                        <option key={courseKey} value={courseKey}>
-                          {COURSE_DETAILS[courseKey]?.title || courseKey}
-                        </option>
+                      {getVarietiesForSubcategory(formData.categoryId, formData.course).map(subcatVal => (
+                        <option key={subcatVal} value={subcatVal}>{subcatVal}</option>
                       ))}
                       <option value="__custom__">+ Add Custom Variety...</option>
                     </select>
@@ -743,24 +755,17 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                     <div style={{ display: 'flex', gap: '0.5rem', flexDirection: 'column' }}>
                       <input 
                         type="text"
-                        placeholder="Type raw key (e.g. starters, special-rice)"
-                        value={customVarietyKey}
-                        onChange={(e) => setCustomVarietyKey(e.target.value)}
-                        style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
-                      />
-                      <input 
-                        type="text"
-                        placeholder="Display Name (e.g. Roti's)"
+                        placeholder="Type new variety (e.g. Dosa, Manchuria's)"
                         value={customVarietyText}
                         onChange={(e) => setCustomVarietyText(e.target.value)}
                         style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
                       />
-                      {getVarietiesForSubcategory(formData.categoryId, formData.subcategory).length > 0 && (
+                      {getVarietiesForSubcategory(formData.categoryId, formData.course).length > 0 && (
                         <button 
                           type="button"
                           onClick={() => {
                             setIsCustomVariety(false);
-                            const vars = getVarietiesForSubcategory(formData.categoryId, formData.subcategory);
+                            const vars = getVarietiesForSubcategory(formData.categoryId, formData.course);
                             handleVarietyChange(vars[0] || '');
                           }}
                           style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', padding: '0.4rem 0.65rem', cursor: 'pointer', color: '#475569', fontSize: '0.8rem', alignSelf: 'flex-start' }}
