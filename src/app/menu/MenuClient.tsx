@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import styles from './page.module.css';
-import ScrollReveal from '@/components/ui/ScrollReveal';
 import { MENU_ITEMS, MenuItem as LocalMenuItem } from '@/data/menuData';
 import { 
   FaSearch, 
@@ -346,7 +345,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
       <div className={`container ${styles.menuLayout}`}>
         {/* Left Column Selection Area */}
-        <ScrollReveal className={styles.menuLeft}>
+        <div className={styles.menuLeft}>
           <div className={styles.header}>
             <h1 className={styles.title}>Catering Menu Builder</h1>
             <p className={styles.subtitle}>
@@ -471,10 +470,10 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
               </div>
             )}
           </div>
-        </ScrollReveal>
+        </div>
 
         {/* Right Sticky Catering Package Panel */}
-        <ScrollReveal className={styles.menuRight}>
+        <div className={styles.menuRight}>
           <div className={styles.stickyPanel}>
             <div className={styles.panelHeader}>
               <h2>Catering Package</h2>
@@ -587,7 +586,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
               </div>
             )}
           </div>
-        </ScrollReveal>
+        </div>
       </div>
 
       {/* Quote Request Modal */}
