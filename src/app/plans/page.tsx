@@ -4,7 +4,7 @@ import styles from './page.module.css';
 import Image from 'next/image';
 
 export const metadata = {
-  title: "Premium Catering Packages | Purval's Caterers",
+  title: "Premium Catering Packages | Supper Club",
   description: "Explore our vegetarian and non-vegetarian catering menu packages, custom live counters, and tailored setups.",
 };
 

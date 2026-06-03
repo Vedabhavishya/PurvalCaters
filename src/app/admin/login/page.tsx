@@ -35,6 +35,7 @@ export default function AdminLogin() {
 
   return (
     <div className={styles.loginContainer}>
+      <title>Supper Club Admin | Login</title>
       <div className={styles.loginCard}>
         <div className={styles.brand}>
           <FaUtensils /> SC Admin

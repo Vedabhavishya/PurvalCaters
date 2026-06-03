@@ -32,6 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className={styles.adminLayout}>
+      <title>Supper Club Admin</title>
       <aside className={styles.sidebar}>
         <Link href="/admin/dashboard" className={styles.brand}>
           <FaUtensils /> SC Admin
