@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
 const prismaClientSingleton = () => {
+  if (!process.env.DATABASE_URL) {
+    process.env.DATABASE_URL = 'file:./prisma/dev.db';
+  }
   return new PrismaClient();
 };
 
