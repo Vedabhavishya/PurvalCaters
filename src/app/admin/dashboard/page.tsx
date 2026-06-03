@@ -1,6 +1,17 @@
 import prisma from '@/lib/prisma';
 import { FaUtensils, FaBoxOpen, FaEnvelopeOpenText, FaUsers } from 'react-icons/fa';
 
+const getStatusStyles = (status: string) => {
+  switch (status) {
+    case 'PENDING':
+      return { backgroundColor: '#fef3c7', color: '#d97706' }; // Amber/Gold
+    case 'DONE':
+      return { backgroundColor: '#d1fae5', color: '#059669' }; // Emerald/Green
+    default:
+      return { backgroundColor: '#e2e8f0', color: '#475569' }; // Slate/Gray
+  }
+};
+
 export default async function AdminDashboard() {
   const menuItemsCount = await prisma.menuItem.count();
   const packagesCount = await prisma.package.count();
@@ -51,25 +62,28 @@ export default async function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {recentInquiries.map(inquiry => (
-                <tr key={inquiry.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '1rem' }}>{inquiry.name}</td>
-                  <td style={{ padding: '1rem', textTransform: 'capitalize' }}>{inquiry.eventType || 'N/A'}</td>
-                  <td style={{ padding: '1rem' }}>{inquiry.createdAt.toLocaleDateString()}</td>
-                  <td style={{ padding: '1rem' }}>
-                    <span style={{ 
-                      padding: '0.25rem 0.75rem', 
-                      borderRadius: '9999px', 
-                      fontSize: '0.85rem',
-                      fontWeight: 500,
-                      backgroundColor: inquiry.status === 'PENDING' ? '#fef3c7' : '#d1fae5',
-                      color: inquiry.status === 'PENDING' ? '#d97706' : '#059669'
-                    }}>
-                      {inquiry.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {recentInquiries.map(inquiry => {
+                const styles = getStatusStyles(inquiry.status);
+                return (
+                  <tr key={inquiry.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                    <td style={{ padding: '1rem' }}>{inquiry.name}</td>
+                    <td style={{ padding: '1rem', textTransform: 'capitalize' }}>{inquiry.eventType || 'N/A'}</td>
+                    <td style={{ padding: '1rem' }}>{inquiry.createdAt.toLocaleDateString()}</td>
+                    <td style={{ padding: '1rem' }}>
+                      <span style={{ 
+                        padding: '0.25rem 0.75rem', 
+                        borderRadius: '9999px', 
+                        fontSize: '0.85rem',
+                        fontWeight: 500,
+                        backgroundColor: styles.backgroundColor,
+                        color: styles.color
+                      }}>
+                        {inquiry.status}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         ) : (
@@ -79,3 +93,4 @@ export default async function AdminDashboard() {
     </div>
   );
 }
+

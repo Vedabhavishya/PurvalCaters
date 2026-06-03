@@ -26,7 +26,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <FaHome /> },
     { name: 'Menu Management', path: '/admin/menu', icon: <FaUtensils /> },
-    { name: 'Premium Plans', path: '/admin/plans', icon: <FaBoxOpen /> },
     { name: 'Inquiries', path: '/admin/inquiries', icon: <FaEnvelopeOpenText /> },
     { name: 'Testimonials', path: '/admin/testimonials', icon: <FaStar /> },
   ];
