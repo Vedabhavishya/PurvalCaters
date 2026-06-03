@@ -5,32 +5,41 @@ import { MENU_ITEMS } from '../src/data/menuData';
 
 const prisma = new PrismaClient();
 
-const COURSE_MAPPING: Record<string, { name: string; slug: string }> = {
-  'starters': { name: 'Starters & Appetizers', slug: 'starters' },
-  'breads': { name: "Roti's", slug: 'breads' },
-  'veg-main': { name: 'Vegetarian Main Course', slug: 'veg-main' },
-  'nonveg-main': { name: 'Non-Vegetarian Main Course', slug: 'nonveg-main' },
-  'rice-biryani': { name: 'Rice & Biryani', slug: 'rice-biryani' },
-  'accompaniments': { name: 'Accompaniments', slug: 'accompaniments' },
-  'south-indian-breakfast': { name: 'South Indian Breakfast', slug: 'south-indian-breakfast' },
-  'north-indian-breakfast': { name: 'North Indian Breakfast', slug: 'north-indian-breakfast' },
-  'special-breakfast': { name: 'Special Breakfast', slug: 'special-breakfast' },
-  'breakfast-rice': { name: 'Breakfast Rice Items', slug: 'breakfast-rice' },
-  'hot-sweets': { name: 'Hot Indian Sweets (Jamun Specials)', slug: 'hot-sweets' },
-  'halwas': { name: 'Halwas', slug: 'halwas' },
-  'kheer-payasam': { name: 'Kheer & Payasam', slug: 'kheer-payasam' },
-  'traditional-sweets': { name: 'Traditional Indian Sweets', slug: 'traditional-sweets' },
-  'fruit-desserts': { name: 'Fruit-Based Desserts', slug: 'fruit-desserts' },
-  'custards-puddings': { name: 'Custards & Puddings', slug: 'custards-puddings' },
-  'cold-desserts': { name: 'Cold Desserts', slug: 'cold-desserts' },
-  'bengali-sweets': { name: 'Bengali Sweets', slug: 'bengali-sweets' },
-  'milk-cream-desserts': { name: 'Milk & Cream Desserts', slug: 'milk-cream-desserts' },
-  'traditional-snacks': { name: 'Traditional Snacks / Sweet Items', slug: 'traditional-snacks' },
-  'live-counters': { name: 'Live Counters', slug: 'live-counters' }
-};
+const MAIN_CATEGORIES = [
+  { name: 'Breakfast', slug: 'breakfast' },
+  { name: 'Vegetarian', slug: 'vegetarian' },
+  { name: 'Non-Vegetarian', slug: 'non-vegetarian' },
+  { name: 'Desserts & Sweets', slug: 'desserts-sweets' },
+  { name: 'Live Counter', slug: 'live-counter' }
+];
+
+// Helper to determine main category slug based on item course and isVeg status
+function getCategorySlug(course: string, isVeg: boolean): string {
+  const c = course.toLowerCase();
+  
+  if (c.includes('breakfast')) {
+    return 'breakfast';
+  }
+  if (c.includes('live-counter') || c.includes('live_counter') || c.includes('live counter')) {
+    return 'live-counter';
+  }
+  if (
+    c.includes('sweet') || 
+    c.includes('halwa') || 
+    c.includes('kheer') || 
+    c.includes('payasam') || 
+    c.includes('dessert') || 
+    c.includes('snack') // sweets & traditional snacks
+  ) {
+    return 'desserts-sweets';
+  }
+  
+  // For starters, breads, veg-main, nonveg-main, rice-biryani, accompaniments
+  return isVeg ? 'vegetarian' : 'non-vegetarian';
+}
 
 async function main() {
-  console.log('Starting seeding with exact categories...');
+  console.log('Starting seeding with 5 main categories...');
 
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10);
@@ -52,13 +61,8 @@ async function main() {
   // Create clean Category map
   const categoryCache: Record<string, string> = {};
   
-  // Unique categories list based on mapping values (since all 21 slugs are unique, it creates all 21 categories!)
-  const uniqueCategories = Array.from(
-    new Map(Object.values(COURSE_MAPPING).map(item => [item.slug, item])).values()
-  );
-
-  console.log('Creating database categories...');
-  for (const catConfig of uniqueCategories) {
+  console.log('Creating database main categories...');
+  for (const catConfig of MAIN_CATEGORIES) {
     const createdCat = await prisma.category.create({
       data: {
         name: catConfig.name,
@@ -67,24 +71,24 @@ async function main() {
     });
     categoryCache[catConfig.slug] = createdCat.id;
   }
-  console.log(`Created ${uniqueCategories.length} categories.`);
+  console.log(`Created ${MAIN_CATEGORIES.length} main categories.`);
 
   // Seed Menu Items
   console.log(`Inserting ${MENU_ITEMS.length} menu items from menuData.ts...`);
   
-  // Use a transaction/chunking to insert items efficiently
   const menuItemsData = MENU_ITEMS.map((item) => {
-    const catConfig = COURSE_MAPPING[item.course];
-    if (!catConfig) {
-      throw new Error(`No category mapping found for course: ${item.course} on item: ${item.name}`);
+    const catSlug = getCategorySlug(item.course, item.isVeg);
+    const categoryId = categoryCache[catSlug];
+    if (!categoryId) {
+      throw new Error(`No category ID found for slug: ${catSlug} on item: ${item.name}`);
     }
-    const categoryId = categoryCache[catConfig.slug];
     
     return {
       id: item.id,
       name: item.name,
       isVeg: item.isVeg,
       subcategory: item.subcategory,
+      course: item.course, // store the sub-group course code like "starters", "breads"
       categoryId,
       isFeatured: false,
     };
@@ -149,7 +153,7 @@ async function main() {
     });
   }
 
-  console.log('Database seeded successfully with all static menu items grouped by exact category names!');
+  console.log('Database seeded successfully with all static menu items grouped by 5 main categories!');
 }
 
 main()

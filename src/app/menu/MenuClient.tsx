@@ -32,6 +32,7 @@ type DBMenuItem = {
   imageUrl: string | null; 
   isVeg: boolean;
   subcategory: string | null;
+  course: string | null;
   categoryId: string;
 };
 
@@ -166,10 +167,9 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
     return items.map((dbItem): LocalMenuItem => {
       const category = categories.find(c => c.id === dbItem.categoryId);
-      const catSlug = category?.slug || 'starters';
       const catName = category?.name || 'Starters';
 
-      const course = catSlug as CourseType;
+      const course = (dbItem.course || 'veg-main') as CourseType;
       const subcat = dbItem.subcategory || catName;
 
       return {

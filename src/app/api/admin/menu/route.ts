@@ -22,7 +22,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const { name, description, price, imageUrl, categoryId, isFeatured, isVeg, subcategory } = data;
+    const { name, description, price, imageUrl, categoryId, isFeatured, isVeg, subcategory, course } = data;
 
     if (!name || name.trim() === '') {
       return NextResponse.json({ error: 'Item name is required' }, { status: 400 });
@@ -49,6 +49,7 @@ export async function POST(request: Request) {
         imageUrl: imageUrl ? imageUrl.trim() : null,
         isVeg: isVeg === undefined ? true : !!isVeg,
         subcategory: subcategory ? subcategory.trim() : null,
+        course: course ? course.trim() : null,
         categoryId,
         isFeatured: !!isFeatured,
       },

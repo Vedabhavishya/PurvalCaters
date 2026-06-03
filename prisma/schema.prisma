@@ -35,6 +35,7 @@ model MenuItem {
   imageUrl    String?
   isVeg       Boolean  @default(true)
   subcategory String?
+  course      String?
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   isFeatured  Boolean  @default(false)

@@ -12,6 +12,7 @@ type MenuItem = {
   imageUrl: string | null; 
   isVeg: boolean;
   subcategory: string | null;
+  course: string | null;
   categoryId: string;
   isFeatured: boolean;
   category: Category;
@@ -45,6 +46,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
     isFeatured: false,
     isVeg: true,
     subcategory: '',
+    course: 'starters',
   });
   const [newCategoryName, setNewCategoryName] = useState('');
 
@@ -63,6 +65,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       isFeatured: false,
       isVeg: true,
       subcategory: '',
+      course: 'starters',
     });
     setErrorMsg('');
     setItemModalOpen(true);
@@ -78,6 +81,7 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
       isFeatured: item.isFeatured,
       isVeg: item.isVeg,
       subcategory: item.subcategory || '',
+      course: item.course || 'starters',
     });
     setErrorMsg('');
     setItemModalOpen(true);
@@ -479,17 +483,53 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                 </div>
               </div>
 
-              {/* Subcategory */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Subcategory / Group (Optional)</label>
-                <input 
-                  type="text"
-                  name="subcategory"
-                  value={formData.subcategory}
-                  onChange={handleInputChange}
-                  placeholder="e.g. Spring Rolls, Manchuria's, Tandoor, Curries"
-                  style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                {/* Course Group Selection */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Menu Tab Section *</label>
+                  <select 
+                    name="course"
+                    required
+                    value={formData.course}
+                    onChange={handleInputChange}
+                    style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: '#ffffff' }}
+                  >
+                    <option value="starters">Starters & Appetizers</option>
+                    <option value="breads">Roti's</option>
+                    <option value="veg-main">Vegetarian Main Course</option>
+                    <option value="nonveg-main">Non-Vegetarian Main Course</option>
+                    <option value="rice-biryani">Rice & Biryani</option>
+                    <option value="accompaniments">Accompaniments</option>
+                    <option value="south-indian-breakfast">South Indian Breakfast</option>
+                    <option value="north-indian-breakfast">North Indian Breakfast</option>
+                    <option value="special-breakfast">Special Breakfast</option>
+                    <option value="breakfast-rice">Breakfast Rice Items</option>
+                    <option value="hot-sweets">Hot Indian Sweets (Jamun Specials)</option>
+                    <option value="halwas">Halwas</option>
+                    <option value="kheer-payasam">Kheer & Payasam</option>
+                    <option value="traditional-sweets">Traditional Indian Sweets</option>
+                    <option value="fruit-desserts">Fruit-Based Desserts</option>
+                    <option value="custards-puddings">Custards & Puddings</option>
+                    <option value="cold-desserts">Cold Desserts</option>
+                    <option value="bengali-sweets">Bengali Sweets</option>
+                    <option value="milk-cream-desserts">Milk & Cream Desserts</option>
+                    <option value="traditional-snacks">Traditional Snacks / Sweets</option>
+                    <option value="live-counters">Live Counters</option>
+                  </select>
+                </div>
+
+                {/* Subcategory */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Subcategory / Group (Optional)</label>
+                  <input 
+                    type="text"
+                    name="subcategory"
+                    value={formData.subcategory}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Spring Rolls, Manchuria's"
+                    style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem' }}
+                  />
+                </div>
               </div>
 
               {/* Description */}

@@ -9,7 +9,7 @@ export async function PATCH(
   try {
     const { id } = await params;
     const data = await request.json();
-    const { name, description, price, imageUrl, categoryId, isFeatured, isVeg, subcategory } = data;
+    const { name, description, price, imageUrl, categoryId, isFeatured, isVeg, subcategory, course } = data;
 
     // Check if menu item exists
     const existingItem = await prisma.menuItem.findUnique({
@@ -29,6 +29,7 @@ export async function PATCH(
     if (isFeatured !== undefined) updateData.isFeatured = !!isFeatured;
     if (isVeg !== undefined) updateData.isVeg = !!isVeg;
     if (subcategory !== undefined) updateData.subcategory = subcategory ? subcategory.trim() : null;
+    if (course !== undefined) updateData.course = course ? course.trim() : null;
 
     if (categoryId !== undefined) {
       // Check if category exists
