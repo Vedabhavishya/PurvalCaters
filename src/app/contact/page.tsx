@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaCalendarAlt, FaUsers } from 'react-icons/fa';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ export default function ContactPage() {
     guests: '',
     message: ''
   });
+  
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -45,92 +46,212 @@ export default function ContactPage() {
   };
 
   return (
-    <section className={`container ${styles.contactSection}`}>
-      <h1 className={styles.title}>Get in Touch</h1>
-      
-      <div className={styles.container}>
-        <div className={styles.info}>
-          <h2>Contact Information</h2>
-          <p>Ready to plan your unforgettable event? Reach out to our dedicated team of catering experts today.</p>
-          
-          <div className={styles.contactDetails}>
-            <div className={styles.contactItem}>
-              <FaPhone className={styles.icon} />
-              <span>+91 98765 43210</span>
-            </div>
-            <div className={styles.contactItem}>
-              <FaEnvelope className={styles.icon} />
-              <span>bookings@supperclub.com</span>
-            </div>
-            <div className={styles.contactItem}>
-              <FaMapMarkerAlt className={styles.icon} />
-              <span>123 Heritage Street, Food District, India</span>
-            </div>
-          </div>
-          
-          <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className={styles.whatsappBtn}>
-            <FaWhatsapp size={24} /> Chat on WhatsApp
-          </a>
-        </div>
-        
-        <div className={styles.form}>
-          <h2>Catering Inquiry</h2>
-          {status === 'success' && (
-            <div style={{ padding: '1rem', background: '#10b98120', color: '#10b981', borderRadius: '8px', marginBottom: '1rem' }}>
-              Thank you! Your inquiry has been sent successfully. We will contact you shortly.
-            </div>
-          )}
-          {status === 'error' && (
-            <div style={{ padding: '1rem', background: '#ef444420', color: '#ef4444', borderRadius: '8px', marginBottom: '1rem' }}>
-              Something went wrong. Please try again or contact us directly.
-            </div>
-          )}
-          
-          <form onSubmit={handleSubmit}>
-            <div className={styles.formGroup}>
-              <label htmlFor="name">Full Name *</label>
-              <input type="text" id="name" name="name" className={styles.input} required value={formData.name} onChange={handleChange} />
-            </div>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div className={styles.formGroup}>
-                <label htmlFor="email">Email Address *</label>
-                <input type="email" id="email" name="email" className={styles.input} required value={formData.email} onChange={handleChange} />
-              </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="phone">Phone Number *</label>
-                <input type="tel" id="phone" name="phone" className={styles.input} required value={formData.phone} onChange={handleChange} />
-              </div>
-            </div>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div className={styles.formGroup}>
-                <label htmlFor="eventType">Event Type</label>
-                <select id="eventType" name="eventType" className={styles.input} value={formData.eventType} onChange={handleChange}>
-                  <option value="">Select Event Type</option>
-                  <option value="wedding">Wedding</option>
-                  <option value="corporate">Corporate Event</option>
-                  <option value="party">Private Party</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="guests">Estimated Guests</label>
-                <input type="number" id="guests" name="guests" className={styles.input} value={formData.guests} onChange={handleChange} />
-              </div>
-            </div>
-            
-            <div className={styles.formGroup}>
-              <label htmlFor="message">Event Details & Requirements *</label>
-              <textarea id="message" name="message" className={styles.textarea} required value={formData.message} onChange={handleChange}></textarea>
-            </div>
-            
-            <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={status === 'loading'}>
-              {status === 'loading' ? 'Sending...' : 'Send Inquiry'}
-            </button>
-          </form>
+    <div className={styles.contactPage}>
+      {/* Top Banner Section */}
+      <div className={styles.bannerContainer}>
+        <div className={styles.bannerOverlay}></div>
+        <div className={styles.bannerContent}>
+          <h1 className={styles.bannerTitle}>Contact Us</h1>
+          <p className={styles.bannerSubtitle}>Let's Plan Your Next Culinary Feast</p>
         </div>
       </div>
-    </section>
+
+      <div className={`container ${styles.mainContainer}`}>
+        <div className={styles.grid}>
+          {/* Left Column: Contact Details Cards */}
+          <div className={styles.detailsColumn}>
+            {/* Phone Card */}
+            <div className={styles.detailCard}>
+              <div className={styles.iconCircle}>
+                <FaPhone />
+              </div>
+              <div className={styles.cardContent}>
+                <h3 className={styles.cardTitle}>Phone & Mobile</h3>
+                <span className={styles.cardText}>Mobile (Click to call):</span>
+                <a href="tel:+919246179757" className={styles.linkItem}>+91 92461 79757</a>
+                <a href="tel:+919849559171" className={styles.linkItem}>+91 98495 59171</a>
+                
+                <span className={styles.cardText} style={{ marginTop: '0.5rem' }}>Landline:</span>
+                <a href="tel:04027730385" className={styles.linkItem}>040 - 27730385</a>
+                <a href="tel:04064514143" className={styles.linkItem}>040 - 64514143</a>
+              </div>
+            </div>
+
+            {/* Email Card */}
+            <div className={styles.detailCard}>
+              <div className={styles.iconCircle}>
+                <FaEnvelope />
+              </div>
+              <div className={styles.cardContent}>
+                <h3 className={styles.cardTitle}>Email Address</h3>
+                <span className={styles.cardText}>Send us an email (Click to mail):</span>
+                <a href="mailto:purvalscaterers@yahoo.co.in" className={styles.linkItem}>
+                  purvalscaterers@yahoo.co.in
+                </a>
+              </div>
+            </div>
+
+            {/* Address Card */}
+            <div className={styles.detailCard}>
+              <div className={styles.iconCircle}>
+                <FaMapMarkerAlt />
+              </div>
+              <div className={styles.cardContent}>
+                <h3 className={styles.cardTitle}>Our Addresses</h3>
+                <span className={styles.cardText} style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>
+                  Registered Office:
+                </span>
+                <p className={styles.cardText}>
+                  Thukaram Gate, North Lallaguda,<br />
+                  Street No.13, Secunderabad - 500017
+                </p>
+                
+                <hr className={styles.addressDivider} />
+                
+                <span className={styles.cardText} style={{ fontWeight: 600, color: 'var(--primary-dark)' }}>
+                  Kitchen & Operations Venue:
+                </span>
+                <p className={styles.cardText}>
+                  4, RTC Colony, Tirumalagiri,<br />
+                  Secunderabad, Telangana - 500015
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Send Us A Message Form */}
+          <div className={styles.formCard}>
+            <h2>Send Us a Message</h2>
+            <p>Fill out the inquiry form below, and our catering coordinators will reach out to design your proposal.</p>
+            
+            {status === 'success' && (
+              <div className={styles.alertSuccess}>
+                Thank you! Your catering inquiry message has been sent successfully. We will get back to you shortly.
+              </div>
+            )}
+            {status === 'error' && (
+              <div className={styles.alertError}>
+                Something went wrong. Please check your network connection and try again or contact us directly.
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <div className={styles.formGroup}>
+                <label htmlFor="name">Full Name *</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  required 
+                  className={styles.inputField} 
+                  value={formData.name} 
+                  onChange={handleChange}
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="email">Email Address *</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    required 
+                    className={styles.inputField} 
+                    value={formData.email} 
+                    onChange={handleChange}
+                    placeholder="name@email.com"
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="phone">Phone Number *</label>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    required 
+                    className={styles.inputField} 
+                    value={formData.phone} 
+                    onChange={handleChange}
+                    placeholder="10-digit mobile number"
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="eventType">Event Type</label>
+                  <select 
+                    id="eventType" 
+                    name="eventType" 
+                    className={styles.selectField} 
+                    value={formData.eventType} 
+                    onChange={handleChange}
+                  >
+                    <option value="">Select Event Type</option>
+                    <option value="wedding">Wedding Ceremony</option>
+                    <option value="birthday">Birthday Party</option>
+                    <option value="corporate">Corporate Event</option>
+                    <option value="private">Private Banquet / Gathering</option>
+                    <option value="other">Other Occasions</option>
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="guests">Estimated Guest Count</label>
+                  <input 
+                    type="number" 
+                    id="guests" 
+                    name="guests" 
+                    min="35"
+                    className={styles.inputField} 
+                    value={formData.guests} 
+                    onChange={handleChange}
+                    placeholder="Min 35 guests"
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="message">Message & Catering Details *</label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  required 
+                  className={styles.textareaField} 
+                  value={formData.message} 
+                  onChange={handleChange}
+                  placeholder="Detail your requirements, preferred cuisines, event date, and specific requests here..."
+                ></textarea>
+              </div>
+
+              <button 
+                type="submit" 
+                className={`btn btn-primary ${styles.submitBtn}`} 
+                disabled={status === 'loading'}
+              >
+                {status === 'loading' ? 'Sending Message...' : 'Send Message'}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Map Section */}
+        <div className={styles.mapSection}>
+          <h2 className={styles.mapHeading}>Our Location</h2>
+          <p className={styles.mapSubtitle}>Find us at our main kitchen and operations office</p>
+          <div className={styles.mapWrapper}>
+            <iframe 
+              src="https://maps.google.com/maps?q=4,%20RTC%20Colony,%20Tirumalagiri,%20Secunderabad,%20Telangana%20500015&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+              className={styles.mapFrame} 
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Purval Caterers Operations Location Map"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

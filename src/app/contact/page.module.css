@@ -1,83 +1,225 @@
-.contactSection {
-  padding: calc(5rem + var(--nav-height)) 0 5rem 0;
+.contactPage {
+  background-color: var(--bg-main);
+  padding-bottom: 6rem;
 }
 
-.title {
+/* Banner Section */
+.bannerContainer {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(168, 43, 61, 0.1);
+}
+
+.bannerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 20%, var(--primary-dark) 90%), 
+              linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+  z-index: 1;
+}
+
+.bannerContent {
+  position: relative;
+  z-index: 2;
+  color: var(--text-light);
   text-align: center;
+  padding: 0 1.5rem;
+  margin-top: calc(var(--nav-height) / 2);
+}
+
+.bannerTitle {
   font-size: 3rem;
-  color: var(--primary-dark);
-  margin-bottom: 3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  animation: fadeInDown 0.8s ease-out;
 }
 
-.container {
+.bannerSubtitle {
+  font-size: 1.1rem;
+  color: var(--accent-gold);
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Page Layout Grid */
+.mainContainer {
+  margin-top: -60px; /* Overlap with banner slightly for premium look */
+  position: relative;
+  z-index: 10;
+}
+
+.grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1fr;
+  gap: 3rem;
 }
 
-.info {
-  background: var(--bg-main);
-  padding: 3rem;
-  border-radius: 16px;
+@media (min-width: 992px) {
+  .grid {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 4rem;
+  }
 }
 
-.info h2 {
-  color: var(--primary-dark);
-  margin-bottom: 1.5rem;
-}
-
-.info p {
-  color: var(--text-muted);
-  margin-bottom: 2rem;
-}
-
-.contactDetails {
+/* Left Column - Contact details */
+.detailsColumn {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.contactItem {
+.detailCard {
+  background: var(--bg-surface);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  border: 1px solid rgba(168, 43, 61, 0.06);
+  box-shadow: 0 10px 30px rgba(168, 43, 61, 0.02);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              box-shadow 0.4s ease, 
+              border-color 0.4s ease;
+}
+
+.detailCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(168, 43, 61, 0.08);
+  border-color: rgba(168, 43, 61, 0.15);
+}
+
+.iconCircle {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(168, 43, 61, 0.06);
   display: flex;
   align-items: center;
-  gap: 1rem;
-  color: var(--text-main);
-  font-size: 1.1rem;
-}
-
-.icon {
+  justify-content: center;
   color: var(--primary);
   font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.whatsappBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #25D366;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  margin-top: 2rem;
-  transition: all 0.3s ease;
-  font-weight: 500;
+.detailCard:hover .iconCircle {
+  background: var(--primary);
+  color: #ffffff;
 }
 
-.whatsappBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.form {
-  background: white;
-  padding: 3rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-.form h2 {
-  margin-bottom: 1.5rem;
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--primary-dark);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.cardText {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.linkItem {
+  display: block;
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.linkItem:hover {
+  color: var(--primary);
+}
+
+.addressDivider {
+  margin: 0.5rem 0;
+  border: 0;
+  border-top: 1px dashed rgba(168, 43, 61, 0.15);
+}
+
+/* Right Column - Send Us A Message Form */
+.formCard {
+  background: var(--bg-surface);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  border: 1px solid rgba(168, 43, 61, 0.06);
+  box-shadow: 0 10px 30px rgba(168, 43, 61, 0.03);
+}
+
+@media (min-width: 768px) {
+  .formCard {
+    padding: 3rem;
+  }
+}
+
+.formCard h2 {
+  font-size: 1.8rem;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.formCard p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .formRow {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .formGroup {
@@ -86,28 +228,35 @@
 
 .formGroup label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--text-main);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.input, .textarea {
+.inputField, .selectField, .textareaField {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(168, 43, 61, 0.15);
+  background: var(--bg-main);
+  color: var(--text-main);
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
-.input:focus, .textarea:focus {
+.inputField:focus, .selectField:focus, .textareaField:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(108, 43, 217, 0.1);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(168, 43, 61, 0.08);
 }
 
-.textarea {
+.textareaField {
   min-height: 120px;
   resize: vertical;
 }
@@ -116,10 +265,67 @@
   width: 100%;
   padding: 1rem;
   font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(168, 43, 61, 0.25);
+  margin-top: 1rem;
 }
 
-@media (max-width: 768px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
+/* Map Section */
+.mapSection {
+  margin-top: 5rem;
+}
+
+.mapHeading {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.mapSubtitle {
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 1rem;
+}
+
+.mapWrapper {
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 4px solid var(--bg-surface);
+  box-shadow: 0 15px 40px rgba(74, 16, 27, 0.1);
+  background: var(--bg-surface);
+  height: 480px;
+}
+
+.mapFrame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Alert Boxes */
+.alertSuccess {
+  padding: 1.25rem;
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--accent-success);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.alertError {
+  padding: 1.25rem;
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--accent-error);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
