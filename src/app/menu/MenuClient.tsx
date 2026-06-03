@@ -151,7 +151,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
   // Merge items from database if any are not in local data
   const allMenuItems = useMemo(() => {
-    const dbMappedItems: LocalMenuItem[] = items.map(dbItem => {
+    const dbMappedItems = items.map((dbItem): LocalMenuItem | null => {
       const exists = MENU_ITEMS.some(item => item.name.toLowerCase() === dbItem.name.toLowerCase());
       if (exists) return null;
 
