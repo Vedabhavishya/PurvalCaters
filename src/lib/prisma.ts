@@ -3,23 +3,26 @@ import fs from 'fs';
 import path from 'path';
 
 const prismaClientSingleton = () => {
-  const isLocalFileDb = !process.env.DATABASE_URL || process.env.DATABASE_URL.startsWith('file:');
-  
-  if (process.env.VERCEL && isLocalFileDb) {
+  // Ensure DATABASE_URL is set and resolved to an absolute path if it is file-based
+  if (!process.env.DATABASE_URL) {
+    process.env.DATABASE_URL = 'file:./prisma/dev.db';
+  }
+
+  if (process.env.DATABASE_URL.startsWith('file:')) {
+    const rawPath = process.env.DATABASE_URL.replace('file:', '');
+    if (!path.isAbsolute(rawPath)) {
+      process.env.DATABASE_URL = `file:${path.resolve(process.cwd(), rawPath)}`;
+    }
+  }
+
+  if (process.env.VERCEL && process.env.DATABASE_URL.startsWith('file:')) {
     const tempDbPath = '/tmp/dev.db';
     
     try {
-      // Extract database path from existing DATABASE_URL if present
-      let customSourcePath = '';
-      if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('file:')) {
-        const rawPath = process.env.DATABASE_URL.replace('file:', '');
-        customSourcePath = path.isAbsolute(rawPath) ? rawPath : path.join(process.cwd(), rawPath);
-      }
-
+      const sourceDbPath = process.env.DATABASE_URL.replace('file:', '');
       const possibleDbPaths = [
-        ...(customSourcePath ? [customSourcePath] : []),
+        sourceDbPath,
         path.join(/*turbopackIgnore: true*/ process.cwd(), 'prisma', 'dev.db'),
-        path.join(/*turbopackIgnore: true*/ process.cwd(), 'dev.db'),
         path.join(/*turbopackIgnore: true*/ __dirname, 'dev.db'),
         // Next.js serverless bundles routes in separate chunks. Check relative paths from chunk location:
         path.join(/*turbopackIgnore: true*/ __dirname, '..', '..', '..', 'prisma', 'dev.db'),
@@ -53,8 +56,6 @@ const prismaClientSingleton = () => {
       console.error('Failed to copy database to /tmp:', err);
       throw new Error(`SQLite fallback copy failed: ${err.message || err}`);
     }
-  } else if (!process.env.DATABASE_URL) {
-    process.env.DATABASE_URL = 'file:./prisma/dev.db';
   }
   return new PrismaClient();
 };

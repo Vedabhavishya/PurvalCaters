@@ -791,36 +791,17 @@ export default function MenuManagerClient({ initialItems, initialCategories }: M
                 />
               </div>
 
-              <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-                {/* Vegetarian Checkbox */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <input 
-                    type="checkbox"
-                    id="isVeg"
-                    name="isVeg"
-                    checked={formData.isVeg}
-                    onChange={handleCheckboxChange}
-                    style={{ width: '16px', height: '16px', accentColor: '#10b981' }}
-                  />
-                  <label htmlFor="isVeg" style={{ fontSize: '0.9rem', fontWeight: 600, color: '#475569', cursor: 'pointer' }}>
-                    Vegetarian (Veg) Dish
-                  </label>
-                </div>
-
-                {/* Featured Checkbox */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <input 
-                    type="checkbox"
-                    id="isFeatured"
-                    name="isFeatured"
-                    checked={formData.isFeatured}
-                    onChange={handleCheckboxChange}
-                    style={{ width: '16px', height: '16px', accentColor: 'var(--primary)' }}
-                  />
-                  <label htmlFor="isFeatured" style={{ fontSize: '0.9rem', fontWeight: 600, color: '#475569', cursor: 'pointer' }}>
-                    Feature this item on homepage
-                  </label>
-                </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>Dietary Option *</label>
+                <select 
+                  name="isVeg"
+                  value={formData.isVeg ? 'true' : 'false'}
+                  onChange={e => setFormData(prev => ({ ...prev, isVeg: e.target.value === 'true' }))}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', border: '1px solid #cbd5e1', borderRadius: '8px', outline: 'none', fontSize: '0.95rem', background: 'white' }}
+                >
+                  <option value="true">Vegetarian (Veg)</option>
+                  <option value="false">Non-Vegetarian (Non-Veg)</option>
+                </select>
               </div>
 
               {/* Modal Footer */}
