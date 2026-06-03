@@ -4,8 +4,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "Supper Club of India | Premium Catering",
-  description: "Curated Authentic Indian Feast. Premium catering services for weddings, corporate events, and parties.",
+  title: "Purval’s Caterers | Premium Catering",
+  description: "Purval’s Caterers - Curated Authentic Indian Feast. Premium catering services for weddings, corporate events, and parties.",
 };
 
 export default function RootLayout({

@@ -229,7 +229,7 @@ export default function ContactPage() {
           <p className={styles.mapSubtitle}>Find us at our main kitchen and operations office</p>
           <div className={styles.mapWrapper}>
             <iframe 
-              src="https://maps.google.com/maps?q=4,%20RTC%20Colony,%20Tirumalagiri,%20Secunderabad,%20Telangana%20500015&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+              src="https://maps.google.com/maps?q=Thukaramgate,%20North%20Lallaguda,%20Secunderabad,%20Hyderabad%20500017,%20Andhra%20Pradesh,%20INDIA&t=&z=16&ie=UTF8&iwloc=&output=embed" 
               className={styles.mapFrame} 
               allowFullScreen 
               loading="lazy" 

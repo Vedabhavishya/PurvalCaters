@@ -25,7 +25,7 @@ export default async function AdminDashboard() {
     <div>
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', color: '#1e293b' }}>Dashboard Overview</h1>
-        <p style={{ color: 'var(--text-muted)' }}>Welcome to the Supper Club Admin Panel.</p>
+        <p style={{ color: 'var(--text-muted)' }}>Welcome to the Purval’s Caterers Admin Panel.</p>
       </div>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>

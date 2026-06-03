@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContent}`}>
         <div className={styles.brand}>
-          <h3><FaUtensils /> Supper Club of India</h3>
+          <h3><FaUtensils /> Purval’s Caterers</h3>
           <p>Curated Authentic Indian Feast. Providing premium catering services for weddings, corporate events, and parties across the region.</p>
           <div className={styles.social}>
             <a href="#" aria-label="Facebook"><FaFacebookF /></a>
@@ -39,13 +39,13 @@ export default function Footer() {
 
         <div className={styles.contact}>
           <h4>Contact Info</h4>
-          <p><FaPhone /> +91 98765 43210</p>
-          <p><FaEnvelope /> info@supperclub.com</p>
-          <p><FaMapMarkerAlt /> 123 Heritage Street, Food District, India</p>
+          <p><FaPhone /> +91 92461 79757 / +91 98495 59171</p>
+          <p><FaEnvelope /> purvalscaterers@yahoo.co.in</p>
+          <p><FaMapMarkerAlt /> Thukaramgate, North Lallaguda, Secunderabad, Hyderabad 500017</p>
         </div>
       </div>
       <div className={styles.bottom}>
-        <p>&copy; {new Date().getFullYear()} Supper Club of India. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Purval’s Caterers. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -309,7 +309,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       {/* Hidden print page block */}
       <div className={styles.printContainer}>
         <div className={styles.printHeader}>
-          <h1>Supper Club of India</h1>
+          <h1>Purval’s Caterers</h1>
           <p className={styles.printTagline}>Curated Authentic Indian Feast | Premium Catering Proposal</p>
           <p className={styles.printMeta}>Generated Proposal Date: {new Date().toLocaleDateString()}</p>
         </div>
@@ -339,7 +339,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
           })}
         </div>
         <div className={styles.printFooter}>
-          <p>Thank you for choosing Supper Club. For custom packages and consultations, reach out to us at bookings@supperclub.com</p>
+          <p>Thank you for choosing Purval’s Caterers. For custom packages and consultations, reach out to us at purvalscaterers@yahoo.co.in or +91 92461 79757</p>
         </div>
       </div>
 

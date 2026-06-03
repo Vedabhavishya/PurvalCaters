@@ -23,7 +23,7 @@ export default async function Home() {
       {/* Why Choose Us */}
       <section className={styles.whyUsSection}>
         <div className="container">
-          <h2 className={styles.sectionTitle}>Why Choose Supper Club?</h2>
+          <h2 className={styles.sectionTitle}>Why Choose Purval’s Caterers?</h2>
           <div className={styles.featuresGrid}>
             <div className={styles.featureCard}>
               <FaCrown className={styles.featureIcon} />
