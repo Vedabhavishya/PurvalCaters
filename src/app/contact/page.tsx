@@ -100,8 +100,7 @@ export default function ContactPage() {
                 <p className={styles.cardText} style={{ fontWeight: 500, color: 'var(--text-main)', fontSize: '1rem', lineHeight: '1.7' }}>
                   Thukaramgate<br />
                   North Lallaguda, Secunderabad.<br />
-                  Hyderabad 500017<br />
-                  Andhra Pradesh. INDIA
+                  Hyderabad, India 500017
                 </p>
               </div>
             </div>
@@ -231,7 +230,7 @@ export default function ContactPage() {
             <p className={styles.mapSubtitle}>Find us at our main kitchen and operations office</p>
             <div className={styles.mapWrapper}>
               <iframe 
-                src="https://maps.google.com/maps?q=Thukaramgate,%20North%20Lallaguda,%20Secunderabad,%20Hyderabad%20500017,%20Andhra%20Pradesh,%20INDIA&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                src="https://maps.google.com/maps?q=Thukaramgate,%20North%20Lallaguda,%20Secunderabad,%20Hyderabad,%20India%20500017&t=&z=16&ie=UTF8&iwloc=&output=embed" 
                 className={styles.mapFrame} 
                 allowFullScreen 
                 loading="lazy" 
