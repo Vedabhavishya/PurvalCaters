@@ -1,6 +1,7 @@
 import styles from './page.module.css';
 import Image from 'next/image';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import LogoCarousel from '@/components/ui/LogoCarousel';
 import { 
   FaUtensils, 
   FaAward, 
@@ -34,6 +35,21 @@ export default function About() {
     "Air India", "GST Department", "State Bank of India (SBI)", "Telangana Police", 
     "Kotak Mahindra Bank", "Second Chance Christian Ministry", "Medinova Hospitals", 
     "Allwyn", "Samsung Electronics", "Defence Accounts"
+  ];
+
+  const clientLogos = [
+    { name: "NIFT", logo: "/images/nift_logo.png" },
+    { name: "Procter & Gamble", logo: "/images/p&g_logo.png" },
+    { name: "Samsung Electronics", logo: "/images/samsung_logo.webp" },
+    { name: "State Bank of India (SBI)", logo: "/images/sbi_logo.png" },
+    { name: "Telangana Police", logo: "/images/telangana_police_logo.png" },
+    { name: "Kotak Mahindra Bank", logo: "/images/kotak_mahindra_logo.png" },
+    { name: "South Central Railways", logo: "/images/southcentralrailways_logo.jpg" },
+    { name: "Air India", logo: "/images/airindia_logo.webp" },
+    { name: "King & Cardinal", logo: "/images/King_cardinal_logo.jpg" },
+    { name: "Allwyn", logo: "/images/allwyn_logo.png" },
+    { name: "Defence Accounts", logo: "/images/defenece_accounts_logo.png" },
+    { name: "GST Department", logo: "/images/gst_logo.png" }
   ];
 
   const consultations = [
@@ -183,6 +199,9 @@ export default function About() {
                   </span>
                 ))}
               </div>
+
+              {/* Client Logos Carousel Marquee */}
+              <LogoCarousel logos={clientLogos} />
             </div>
           </section>
         </ScrollReveal>
