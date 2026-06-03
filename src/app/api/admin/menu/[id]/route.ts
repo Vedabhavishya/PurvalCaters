@@ -49,9 +49,9 @@ export async function PATCH(
     });
 
     return NextResponse.json(updatedItem);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating menu item:', error);
-    return NextResponse.json({ error: 'Failed to update menu item' }, { status: 500 });
+    return NextResponse.json({ error: `Failed to update menu item: ${error.message || error}` }, { status: 500 });
   }
 }
 
