@@ -25,6 +25,31 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus('loading');
     
+    // Construct WhatsApp message content
+    const eventLabels: Record<string, string> = {
+      wedding: 'Wedding Ceremony',
+      birthday: 'Birthday Party',
+      corporate: 'Corporate Event',
+      private: 'Private Banquet / Gathering',
+      other: 'Other Occasions'
+    };
+    
+    const eventLabel = eventLabels[formData.eventType] || formData.eventType || 'N/A';
+
+    const whatsAppMessage = `Hi Purval's Caterers, I want to inquire about catering services. Here are my details:
+
+• Name: ${formData.name}
+• Email: ${formData.email}
+• Phone: ${formData.phone}
+• Event Type: ${eventLabel}
+• Estimated Guests: ${formData.guests || 'N/A'}
+
+Message & Catering Details:
+${formData.message}`;
+
+    const encodedMessage = encodeURIComponent(whatsAppMessage);
+    const whatsAppUrl = `https://wa.me/919246179757?text=${encodedMessage}`;
+
     try {
       const res = await fetch('/api/inquiries', {
         method: 'POST',
@@ -37,6 +62,7 @@ export default function ContactPage() {
       
       if (res.ok) {
         setStatus('success');
+        window.open(whatsAppUrl, '_blank');
         setFormData({ name: '', email: '', phone: '', eventType: '', guests: '', message: '' });
       } else {
         setStatus('error');
