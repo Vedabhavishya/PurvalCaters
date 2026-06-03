@@ -57,14 +57,15 @@ const COURSE_DETAILS = {
   'cold-desserts': { title: 'Cold Desserts', icon: FaIceCream, menuType: 'desserts' as const },
   'bengali-sweets': { title: 'Bengali Sweets', icon: FaIceCream, menuType: 'desserts' as const },
   'milk-cream-desserts': { title: 'Milk & Cream Desserts', icon: FaIceCream, menuType: 'desserts' as const },
-  'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaIceCream, menuType: 'desserts' as const }
+  'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaIceCream, menuType: 'desserts' as const },
+  'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const }
 };
 
 type CourseType = keyof typeof COURSE_DETAILS;
 
 export default function MenuClient({ categories, items }: MenuClientProps) {
   // State
-  const [menuType, setMenuType] = useState<'main' | 'breakfast' | 'desserts'>('main');
+  const [menuType, setMenuType] = useState<'main' | 'breakfast' | 'desserts' | 'live-counters'>('main');
   const [searchQuery, setSearchQuery] = useState('');
   const [dietFilter, setDietFilter] = useState<'all' | 'veg' | 'nonveg'>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -89,7 +90,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'cold-desserts': true,
     'bengali-sweets': true,
     'milk-cream-desserts': true,
-    'traditional-snacks': true
+    'traditional-snacks': true,
+    'live-counters': true
   });
 
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({
@@ -112,7 +114,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'cold-desserts': true,
     'bengali-sweets': true,
     'milk-cream-desserts': true,
-    'traditional-snacks': true
+    'traditional-snacks': true,
+    'live-counters': true
   });
 
   // Modal State
@@ -166,6 +169,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       else if (lowerCat.includes('rice') || lowerCat.includes('biryani')) course = 'rice-biryani';
       else if (lowerCat.includes('accompaniment')) course = 'accompaniments';
       else if (lowerCat.includes('dessert') || lowerCat.includes('sweet')) course = 'traditional-sweets';
+      else if (lowerCat.includes('live counter') || lowerCat.includes('live-counter') || lowerCat.includes('live_counter')) course = 'live-counters';
       else if (lowerCat.includes('breakfast') || lowerCat.includes('south indian') || lowerCat.includes('dosa') || lowerCat.includes('idly') || lowerCat.includes('vada') || lowerCat.includes('upma') || lowerCat.includes('pongal')) {
         course = 'south-indian-breakfast';
       }
@@ -237,7 +241,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'cold-desserts': {},
       'bengali-sweets': {},
       'milk-cream-desserts': {},
-      'traditional-snacks': {}
+      'traditional-snacks': {},
+      'live-counters': {}
     };
 
     filteredItems.forEach(item => {
@@ -279,7 +284,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'cold-desserts': [],
       'bengali-sweets': [],
       'milk-cream-desserts': [],
-      'traditional-snacks': []
+      'traditional-snacks': [],
+      'live-counters': []
     };
 
     selectedItemsDetails.forEach(item => {
@@ -457,6 +463,12 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
               className={`${styles.dietTab} ${menuType === 'desserts' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
             >
               Desserts & Sweets
+            </button>
+            <button 
+              onClick={() => { setMenuType('live-counters'); setDietFilter('all'); }} 
+              className={`${styles.dietTab} ${menuType === 'live-counters' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
+            >
+              Live Counter
             </button>
           </div>
 

@@ -24,7 +24,9 @@ export interface MenuItem {
     | 'cold-desserts'
     | 'bengali-sweets'
     | 'milk-cream-desserts'
-    | 'traditional-snacks';
+    | 'traditional-snacks'
+    // Live Counter Course
+    | 'live-counters';
   subcategory: string;
 }
 
@@ -654,5 +656,14 @@ export const MENU_ITEMS: MenuItem[] = [
 
   // 10.14 Traditional Snacks / Sweet Items
   { id: 'de-snk-1', name: 'Besan Chakki', isVeg: true, course: 'traditional-snacks', subcategory: 'Traditional Snacks / Sweet Items' },
-  { id: 'de-snk-2', name: 'Coconut Laddu', isVeg: true, course: 'traditional-snacks', subcategory: 'Traditional Snacks / Sweet Items' }
+  { id: 'de-snk-2', name: 'Coconut Laddu', isVeg: true, course: 'traditional-snacks', subcategory: 'Traditional Snacks / Sweet Items' },
+
+  // 11. LIVE COUNTER ITEMS
+  { id: 'lc-1', name: 'Live Chaat Counter', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
+  { id: 'lc-2', name: 'Live Dosa Counter', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
+  { id: 'lc-3', name: 'Live BBQ / Grill Station', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
+  { id: 'lc-4', name: 'Mocktail Counter', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
+  { id: 'lc-5', name: 'Ice Cream & Dessert Bar', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
+  { id: 'lc-6', name: 'Pan Counter', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' }
 ];
+
