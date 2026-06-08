@@ -172,6 +172,10 @@
   border-color: rgba(219, 39, 119, 0.12); /* Pink tint border */
 }
 
+.accordionCard.expanded.accordionCardLive {
+  border-color: rgba(13, 148, 136, 0.12); /* Teal tint border */
+}
+
 
 .accordionHeader {
   width: 100%;
@@ -241,6 +245,16 @@
 
 .accordionCard.expanded .categoryIconCircleSweets {
   background: #db2777; /* Solid pink */
+  color: #ffffff;
+}
+
+.categoryIconCircleLive {
+  background: #e6fffa; /* Light teal box */
+  color: #0d9488;
+}
+
+.accordionCard.expanded .categoryIconCircleLive {
+  background: #0d9488; /* Solid teal */
   color: #ffffff;
 }
 

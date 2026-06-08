@@ -546,9 +546,11 @@ ${Object.entries(selectedItemsByCourse)
                   subcatItems.some(item => !item.isVeg)
                 );
 
-                let categoryStyleType: 'veg' | 'nonveg' | 'combined' | 'sweets' = 'combined';
+                let categoryStyleType: 'veg' | 'nonveg' | 'combined' | 'sweets' | 'live' = 'combined';
                 if (details.menuType === 'desserts') {
                   categoryStyleType = 'sweets';
+                } else if (details.menuType === 'live-counters') {
+                  categoryStyleType = 'live';
                 } else if (hasVeg && !hasNonVeg) {
                   categoryStyleType = 'veg';
                 } else if (!hasVeg && hasNonVeg) {
@@ -560,12 +562,14 @@ ${Object.entries(selectedItemsByCourse)
                 // Map classification to CSS classes
                 const cardStyleClass = 
                   categoryStyleType === 'sweets' ? styles.accordionCardSweets :
+                  categoryStyleType === 'live' ? styles.accordionCardLive :
                   categoryStyleType === 'veg' ? styles.accordionCardVeg :
                   categoryStyleType === 'nonveg' ? styles.accordionCardNonVeg :
                   styles.accordionCardCombined;
 
                 const circleStyleClass = 
                   categoryStyleType === 'sweets' ? styles.categoryIconCircleSweets :
+                  categoryStyleType === 'live' ? styles.categoryIconCircleLive :
                   categoryStyleType === 'veg' ? styles.categoryIconCircleVeg :
                   categoryStyleType === 'nonveg' ? styles.categoryIconCircleNonVeg :
                   styles.categoryIconCircleCombined;
