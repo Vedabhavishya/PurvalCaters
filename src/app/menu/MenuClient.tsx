@@ -538,14 +538,20 @@ ${Object.entries(selectedItemsByCourse)
                 const Icon = details.icon;
                 const courseGroup = groupedMenu[courseKey as CourseType];
 
+                // Determine if this category contains any non-vegetarian items
+                const hasNonVeg = Object.values(courseGroup || {}).some(subcatItems =>
+                  subcatItems.some(item => !item.isVeg)
+                );
+                const isVegCategory = !hasNonVeg;
+
                 return (
-                  <div key={courseKey} className={`${styles.accordionCard} ${isExpanded ? styles.expanded : ''}`}>
+                  <div key={courseKey} className={`${styles.accordionCard} ${isVegCategory ? styles.accordionCardVeg : styles.accordionCardNonVeg} ${isExpanded ? styles.expanded : ''}`}>
                     <button 
                       onClick={() => toggleCourseAccordion(courseKey)} 
                       className={styles.accordionHeader}
                     >
                       <div className={styles.accordionHeaderLeft}>
-                        <span className={styles.categoryIconCircle}>
+                        <span className={`${styles.categoryIconCircle} ${isVegCategory ? styles.categoryIconCircleVeg : styles.categoryIconCircleNonVeg}`}>
                           <Icon className={styles.courseIcon} />
                         </span>
                         <div>

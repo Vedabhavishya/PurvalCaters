@@ -153,9 +153,17 @@
 }
 
 .accordionCard.expanded {
-  border-color: rgba(168, 43, 61, 0.12); /* Red tint border */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.03);
 }
+
+.accordionCard.expanded.accordionCardVeg {
+  border-color: rgba(46, 125, 50, 0.12); /* Green tint border */
+}
+
+.accordionCard.expanded.accordionCardNonVeg {
+  border-color: rgba(168, 43, 61, 0.12); /* Red tint border */
+}
+
 
 .accordionHeader {
   width: 100%;
@@ -181,19 +189,33 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #faebee; /* Light red box */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary);
   font-size: 1.15rem;
   transition: all 0.3s ease;
 }
 
-.accordionCard.expanded .categoryIconCircle {
-  background: var(--primary);
+.categoryIconCircleVeg {
+  background: #e8f5e9; /* Light green box */
+  color: #2e7d32;
+}
+
+.accordionCard.expanded .categoryIconCircleVeg {
+  background: #2e7d32; /* Solid green */
   color: #ffffff;
 }
+
+.categoryIconCircleNonVeg {
+  background: #faebee; /* Light red box */
+  color: var(--primary);
+}
+
+.accordionCard.expanded .categoryIconCircleNonVeg {
+  background: var(--primary); /* Solid red */
+  color: #ffffff;
+}
+
 
 .accordionHeaderLeft h3 {
   font-size: 1.2rem;
