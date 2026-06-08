@@ -164,6 +164,14 @@
   border-color: rgba(168, 43, 61, 0.12); /* Red tint border */
 }
 
+.accordionCard.expanded.accordionCardCombined {
+  border-color: rgba(217, 119, 6, 0.12); /* Amber tint border */
+}
+
+.accordionCard.expanded.accordionCardSweets {
+  border-color: rgba(124, 58, 237, 0.12); /* Purple tint border */
+}
+
 
 .accordionHeader {
   width: 100%;
@@ -213,6 +221,26 @@
 
 .accordionCard.expanded .categoryIconCircleNonVeg {
   background: var(--primary); /* Solid red */
+  color: #ffffff;
+}
+
+.categoryIconCircleCombined {
+  background: #fffbeb; /* Light amber box */
+  color: #b45309;
+}
+
+.accordionCard.expanded .categoryIconCircleCombined {
+  background: #d97706; /* Solid amber */
+  color: #ffffff;
+}
+
+.categoryIconCircleSweets {
+  background: #f3e8ff; /* Light purple box */
+  color: #7c3aed;
+}
+
+.accordionCard.expanded .categoryIconCircleSweets {
+  background: #7c3aed; /* Solid purple */
   color: #ffffff;
 }
 

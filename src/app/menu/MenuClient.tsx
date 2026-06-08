@@ -538,20 +538,46 @@ ${Object.entries(selectedItemsByCourse)
                 const Icon = details.icon;
                 const courseGroup = groupedMenu[courseKey as CourseType];
 
-                // Determine if this category contains any non-vegetarian items
+                // Determine classification for color-coding (veg, non-veg, combined, sweets)
+                const hasVeg = Object.values(courseGroup || {}).some(subcatItems =>
+                  subcatItems.some(item => item.isVeg)
+                );
                 const hasNonVeg = Object.values(courseGroup || {}).some(subcatItems =>
                   subcatItems.some(item => !item.isVeg)
                 );
-                const isVegCategory = !hasNonVeg;
+
+                let categoryStyleType: 'veg' | 'nonveg' | 'combined' | 'sweets' = 'combined';
+                if (details.menuType === 'desserts') {
+                  categoryStyleType = 'sweets';
+                } else if (hasVeg && !hasNonVeg) {
+                  categoryStyleType = 'veg';
+                } else if (!hasVeg && hasNonVeg) {
+                  categoryStyleType = 'nonveg';
+                } else {
+                  categoryStyleType = 'combined';
+                }
+
+                // Map classification to CSS classes
+                const cardStyleClass = 
+                  categoryStyleType === 'sweets' ? styles.accordionCardSweets :
+                  categoryStyleType === 'veg' ? styles.accordionCardVeg :
+                  categoryStyleType === 'nonveg' ? styles.accordionCardNonVeg :
+                  styles.accordionCardCombined;
+
+                const circleStyleClass = 
+                  categoryStyleType === 'sweets' ? styles.categoryIconCircleSweets :
+                  categoryStyleType === 'veg' ? styles.categoryIconCircleVeg :
+                  categoryStyleType === 'nonveg' ? styles.categoryIconCircleNonVeg :
+                  styles.categoryIconCircleCombined;
 
                 return (
-                  <div key={courseKey} className={`${styles.accordionCard} ${isVegCategory ? styles.accordionCardVeg : styles.accordionCardNonVeg} ${isExpanded ? styles.expanded : ''}`}>
+                  <div key={courseKey} className={`${styles.accordionCard} ${cardStyleClass} ${isExpanded ? styles.expanded : ''}`}>
                     <button 
                       onClick={() => toggleCourseAccordion(courseKey)} 
                       className={styles.accordionHeader}
                     >
                       <div className={styles.accordionHeaderLeft}>
-                        <span className={`${styles.categoryIconCircle} ${isVegCategory ? styles.categoryIconCircleVeg : styles.categoryIconCircleNonVeg}`}>
+                        <span className={`${styles.categoryIconCircle} ${circleStyleClass}`}>
                           <Icon className={styles.courseIcon} />
                         </span>
                         <div>
