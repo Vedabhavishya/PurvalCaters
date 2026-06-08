@@ -12,15 +12,16 @@
   gap: 2.5rem;
   margin-top: 1.5rem;
   align-items: start;
-  max-width: 1600px !important; /* Stretch to 1600px max on wide monitors */
-  width: 95% !important; /* Occupy 95% of screen width */
-  padding-left: 1rem !important; /* Reduced from 2rem */
-  padding-right: 1rem !important; /* Reduced from 2rem */
+  max-width: 90vw !important; /* Scalable maximum footprint to scale layout with screen size */
+  width: 90% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 @media (min-width: 992px) {
   .menuLayout {
-    grid-template-columns: 1.5fr 1.5fr; /* Equal width split to maximize Selection card space */
+    grid-template-columns: 1fr auto; /* Allow left side cards to occupy all remaining width dynamically while selection panel stays fixed size */
+    gap: 3.5rem; /* Give breathing room between accordion grid and selection panel */
   }
 }
 
@@ -335,7 +336,7 @@
   background: #ffffff;
   border: 1px solid #f0ede8;
   border-radius: 12px;
-  padding: 1.1rem 1.25rem;
+  padding: 0.75rem 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -455,12 +456,15 @@
   overflow: hidden;
   height: auto;
   max-height: calc(100vh - var(--nav-height) - 4rem);
+  width: 100%;
 }
 
 @media (min-width: 992px) {
   .stickyPanel {
     position: sticky;
     top: calc(var(--nav-height) + 2rem);
+    max-width: 440px; /* Constrain panel width to prevent overflow on zoom / wide screens */
+    margin-left: auto; /* Keep selection card pinned to right side cleanly */
   }
 }
 
@@ -492,7 +496,7 @@
 }
 
 .sidebarChecklistScroll {
-  max-height: 230px;
+  max-height: 460px;
   overflow-y: auto;
   padding-right: 0.5rem;
 }
