@@ -541,6 +541,30 @@ ${Object.entries(selectedItemsByCourse)
           <div className={styles.accordionContainer}>
             {Object.entries(COURSE_DETAILS)
               .filter(([_, details]) => searchQuery !== '' || details.menuType === menuType)
+              .sort(([keyA, detailsA], [keyB, detailsB]) => {
+                // Determine style type for A
+                const groupA = groupedMenu[keyA as CourseType];
+                const hasVegA = Object.values(groupA || {}).some(items => items.some(item => item.isVeg));
+                const hasNonVegA = Object.values(groupA || {}).some(items => items.some(item => !item.isVeg));
+                let typeA = 'combined';
+                if (detailsA.menuType === 'desserts') typeA = 'sweets';
+                else if (detailsA.menuType === 'live-counters') typeA = 'live';
+                else if (hasVegA && !hasNonVegA) typeA = 'veg';
+                else if (!hasVegA && hasNonVegA) typeA = 'nonveg';
+
+                // Determine style type for B
+                const groupB = groupedMenu[keyB as CourseType];
+                const hasVegB = Object.values(groupB || {}).some(items => items.some(item => item.isVeg));
+                const hasNonVegB = Object.values(groupB || {}).some(items => items.some(item => !item.isVeg));
+                let typeB = 'combined';
+                if (detailsB.menuType === 'desserts') typeB = 'sweets';
+                else if (detailsB.menuType === 'live-counters') typeB = 'live';
+                else if (hasVegB && !hasNonVegB) typeB = 'veg';
+                else if (!hasVegB && hasNonVegB) typeB = 'nonveg';
+
+                const order = { 'veg': 1, 'nonveg': 2, 'combined': 3, 'live': 4, 'sweets': 5 };
+                return order[typeA] - order[typeB];
+              })
               .map(([courseKey, details]) => {
                 const count = courseCount(courseKey as CourseType);
                 if (count === 0) return null; // Hide categories that contain 0 matching items
