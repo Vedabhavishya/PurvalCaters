@@ -542,7 +542,7 @@ ${Object.entries(selectedItemsByCourse)
             {Object.entries(COURSE_DETAILS)
               .filter(([_, details]) => {
                 if (searchQuery !== '') return true;
-                if (dietFilter !== 'all' && details.menuType === 'desserts') return false;
+                if (dietFilter !== 'all' && details.menuType !== 'main') return false;
                 return menuType === 'all' || details.menuType === menuType;
               })
               .sort(([keyA, detailsA], [keyB, detailsB]) => {
