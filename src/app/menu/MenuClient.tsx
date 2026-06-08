@@ -245,6 +245,17 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       }
     });
 
+    // Sort items so that Veg (isVeg === true) comes first
+    Object.keys(groups).forEach(courseKey => {
+      const course = courseKey as CourseType;
+      Object.keys(groups[course]).forEach(subcat => {
+        groups[course][subcat].sort((a, b) => {
+          if (a.isVeg === b.isVeg) return 0;
+          return a.isVeg ? -1 : 1;
+        });
+      });
+    });
+
     return groups;
   }, [filteredItems]);
 
