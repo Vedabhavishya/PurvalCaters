@@ -68,14 +68,15 @@ const COURSE_DETAILS = {
   'bengali-sweets': { title: 'Bengali Sweets', icon: FaIceCream, menuType: 'desserts' as const },
   'milk-cream-desserts': { title: 'Milk & Cream Desserts', icon: FaIceCream, menuType: 'desserts' as const },
   'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaIceCream, menuType: 'desserts' as const },
-  'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const }
+  'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const },
+  'Welcome Drinks': { title: 'Welcome Drinks', icon: FaCoffee, menuType: 'drinks-snacks' as const }
 };
 
 type CourseType = keyof typeof COURSE_DETAILS;
 
 export default function MenuClient({ categories, items }: MenuClientProps) {
   // State
-  const [menuType, setMenuType] = useState<'all' | 'main' | 'breakfast' | 'desserts' | 'live-counters'>('all');
+  const [menuType, setMenuType] = useState<'all' | 'main' | 'breakfast' | 'desserts' | 'live-counters' | 'drinks-snacks'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [dietFilter, setDietFilter] = useState<'all' | 'veg' | 'nonveg'>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -101,7 +102,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'bengali-sweets': true,
     'milk-cream-desserts': true,
     'traditional-snacks': true,
-    'live-counters': true
+    'live-counters': true,
+    'Welcome Drinks': true
   });
 
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({
@@ -125,7 +127,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'bengali-sweets': true,
     'milk-cream-desserts': true,
     'traditional-snacks': true,
-    'live-counters': true
+    'live-counters': true,
+    'Welcome Drinks': true
   });
 
   // Modal State
@@ -233,7 +236,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'bengali-sweets': {},
       'milk-cream-desserts': {},
       'traditional-snacks': {},
-      'live-counters': {}
+      'live-counters': {},
+      'Welcome Drinks': {}
     };
 
     filteredItems.forEach(item => {
@@ -287,7 +291,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'bengali-sweets': [],
       'milk-cream-desserts': [],
       'traditional-snacks': [],
-      'live-counters': []
+      'live-counters': [],
+      'Welcome Drinks': []
     };
 
     selectedItemsDetails.forEach(item => {
@@ -523,6 +528,12 @@ ${Object.entries(selectedItemsByCourse)
             >
               Live Counter
             </button>
+            <button 
+              onClick={() => { setMenuType('drinks-snacks'); setDietFilter('all'); }} 
+              className={`${styles.dietTab} ${menuType === 'drinks-snacks' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
+            >
+              Drinks & Snacks
+            </button>
           </div>
 
           {/* Search Input Box */}
@@ -557,7 +568,8 @@ ${Object.entries(selectedItemsByCourse)
                     return 40;
                   }
                   if (details.menuType === 'desserts') return 50;
-                  if (details.menuType === 'live-counters') return 60;
+                  if (details.menuType === 'drinks-snacks') return 60;
+                  if (details.menuType === 'live-counters') return 70;
                   return 100;
                 };
                 return getSortWeight(keyA, detailsA) - getSortWeight(keyB, detailsB);
@@ -578,9 +590,11 @@ ${Object.entries(selectedItemsByCourse)
                   subcatItems.some(item => !item.isVeg)
                 );
 
-                let categoryStyleType: 'veg' | 'nonveg' | 'combined' | 'sweets' | 'live' = 'combined';
+                let categoryStyleType: 'veg' | 'nonveg' | 'combined' | 'sweets' | 'live' | 'drinks' = 'combined';
                 if (details.menuType === 'desserts') {
                   categoryStyleType = 'sweets';
+                } else if (details.menuType === 'drinks-snacks') {
+                  categoryStyleType = 'drinks';
                 } else if (details.menuType === 'live-counters') {
                   categoryStyleType = 'live';
                 } else if (hasVeg && !hasNonVeg) {
@@ -594,6 +608,7 @@ ${Object.entries(selectedItemsByCourse)
                 // Map classification to CSS classes
                 const cardStyleClass = 
                   categoryStyleType === 'sweets' ? styles.accordionCardSweets :
+                  categoryStyleType === 'drinks' ? styles.accordionCardDrinks :
                   categoryStyleType === 'live' ? styles.accordionCardLive :
                   categoryStyleType === 'veg' ? styles.accordionCardVeg :
                   categoryStyleType === 'nonveg' ? styles.accordionCardNonVeg :
@@ -601,6 +616,7 @@ ${Object.entries(selectedItemsByCourse)
 
                 const circleStyleClass = 
                   categoryStyleType === 'sweets' ? styles.categoryIconCircleSweets :
+                  categoryStyleType === 'drinks' ? styles.categoryIconCircleDrinks :
                   categoryStyleType === 'live' ? styles.categoryIconCircleLive :
                   categoryStyleType === 'veg' ? styles.categoryIconCircleVeg :
                   categoryStyleType === 'nonveg' ? styles.categoryIconCircleNonVeg :

@@ -176,6 +176,10 @@
   border-color: rgba(13, 148, 136, 0.12); /* Teal tint border */
 }
 
+.accordionCard.expanded.accordionCardDrinks {
+  border-color: rgba(234, 88, 12, 0.12); /* Orange/Coral tint border */
+}
+
 
 .accordionHeader {
   width: 100%;
@@ -257,6 +261,17 @@
   background: #0d9488; /* Solid teal */
   color: #ffffff;
 }
+
+.categoryIconCircleDrinks {
+  background: #fff5f5; /* Light orange box */
+  color: #ea580c;
+}
+
+.accordionCard.expanded .categoryIconCircleDrinks {
+  background: #ea580c; /* Solid orange */
+  color: #ffffff;
+}
+
 
 
 .accordionHeaderLeft h3 {

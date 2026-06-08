@@ -26,7 +26,9 @@ export interface MenuItem {
     | 'milk-cream-desserts'
     | 'traditional-snacks'
     // Live Counter Course
-    | 'live-counters';
+    | 'live-counters'
+    // Drinks & Snacks
+    | 'Welcome Drinks';
   subcategory: string;
 }
 
@@ -666,6 +668,19 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'lc-3', name: 'Live BBQ / Grill Station', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
   { id: 'lc-4', name: 'Mocktail Counter', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
   { id: 'lc-5', name: 'Ice Cream & Dessert Bar', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
-  { id: 'lc-6', name: 'Pan Counter', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' }
+  { id: 'lc-6', name: 'Pan Counter', isVeg: true, course: 'live-counters', subcategory: 'Live Counter Station' },
+
+  // Welcome Drinks
+  { id: 'wd-1', name: 'Pine Apple', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-2', name: 'Watermelon', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-3', name: 'Fruit Punch', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-4', name: 'Badam Milk', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-5', name: 'Pista Milk', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-6', name: 'Kaju Milk', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-7', name: 'Punjabi Lassi', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-8', name: 'Dry Fruit Lassi', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-9', name: 'Mango Lassi', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-10', name: 'Kesar Lassi', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+  { id: 'wd-11', name: 'Any Fruit(Fresh) Juice', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' }
 ];
 
