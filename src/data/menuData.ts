@@ -389,6 +389,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'nvm-ch-16', name: 'Chicken-do-Pyaza', isVeg: false, course: 'nonveg-main', subcategory: 'Chicken Curries' },
   { id: 'nvm-ch-17', name: 'Pepper Chicken', isVeg: false, course: 'nonveg-main', subcategory: 'Chicken Curries' },
   { id: 'nvm-ch-18', name: 'Chicken Haleem', isVeg: false, course: 'nonveg-main', subcategory: 'Chicken Curries' },
+  { id: 'nvm-ch-19', name: 'Chicken Harees', isVeg: false, course: 'nonveg-main', subcategory: 'Chicken Curries' },
 
   // 6.2 Mutton Curries
   { id: 'nvm-mu-1', name: 'Mutton Curry', isVeg: false, course: 'nonveg-main', subcategory: 'Mutton Curries' },
@@ -410,6 +411,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'nvm-mu-17', name: 'Pepper Mutton', isVeg: false, course: 'nonveg-main', subcategory: 'Mutton Curries' },
   { id: 'nvm-mu-18', name: 'Chilli Mutton', isVeg: false, course: 'nonveg-main', subcategory: 'Mutton Curries' },
   { id: 'nvm-mu-19', name: 'Mutton Salami', isVeg: false, course: 'nonveg-main', subcategory: 'Mutton Curries' },
+  { id: 'nvm-mu-20', name: 'Mutton Murag', isVeg: false, course: 'nonveg-main', subcategory: 'Mutton Curries' },
 
   // 6.3 Sea Food Curries
   { id: 'nvm-sf-1', name: 'Fish Curry (bone/boneless)', isVeg: false, course: 'nonveg-main', subcategory: 'Sea Food Curries' },
