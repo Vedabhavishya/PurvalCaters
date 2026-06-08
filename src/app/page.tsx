@@ -7,10 +7,11 @@ import styles from './page.module.css';
 import prisma from '@/lib/prisma';
 import { FaCrown, FaLeaf, FaHandsHelping, FaStar } from 'react-icons/fa';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const testimonials = await prisma.testimonial.findMany({
     where: { isVisible: true },
-    take: 3,
   });
 
   return (

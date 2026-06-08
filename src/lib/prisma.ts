@@ -1,8 +1,31 @@
+import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
+import { PrismaLibSql } from '@prisma/adapter-libsql';
 import fs from 'fs';
 import path from 'path';
 
+// Force DATABASE_URL to a placeholder SQLite format to pass Prisma schema load validations
+if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
+  process.env.DATABASE_URL = 'file:./dev.db';
+}
+
 const prismaClientSingleton = () => {
+  const tursoUrl = process.env.TURSO_DATABASE_URL;
+  const tursoToken = process.env.TURSO_AUTH_TOKEN;
+
+  console.log('DEBUG: TURSO_DATABASE_URL =', tursoUrl);
+  console.log('DEBUG: TURSO_AUTH_TOKEN =', tursoToken ? 'FOUND (len: ' + tursoToken.length + ')' : 'UNDEFINED');
+
+  if (tursoUrl && tursoToken) {
+    console.log('Initializing Prisma Client with Turso LibSQL Adapter...');
+    const adapter = new PrismaLibSql({
+      url: tursoUrl,
+      authToken: tursoToken,
+    });
+    return new PrismaClient({ adapter });
+  }
+
+  console.log('Initializing Prisma Client with local SQLite file fallback...');
   // Ensure DATABASE_URL is set and resolved to an absolute path if it is file-based
   if (!process.env.DATABASE_URL) {
     process.env.DATABASE_URL = 'file:./prisma/dev.db';

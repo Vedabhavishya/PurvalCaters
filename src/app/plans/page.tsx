@@ -4,6 +4,8 @@ import styles from './page.module.css';
 import Image from 'next/image';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Premium Catering Packages | Supper Club",
   description: "Explore our vegetarian and non-vegetarian catering menu packages, custom live counters, and tailored setups.",
