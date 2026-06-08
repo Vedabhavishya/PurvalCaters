@@ -65,6 +65,18 @@
   letter-spacing: -0.02em;
 }
 
+.brandAffiliation {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--accent-gold, #d4af37);
+  letter-spacing: 0.04em;
+  margin-top: -0.25rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
 .subtitle {
   font-size: clamp(1.2rem, 3vw, 2rem);
   font-style: italic;

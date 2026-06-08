@@ -45,6 +45,7 @@ export default function HeroSection() {
       
       <div className={styles.content}>
         <h1 className={styles.title}>Supper Club of India</h1>
+        <p className={styles.brandAffiliation}>A unit of Purval’s Caterers</p>
         <p className={styles.subtitle}>"Curated Authentic Indian Feasts for Grand Celebrations"</p>
         <div className={styles.buttons}>
           <Link href="/menu" className="btn btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.2rem' }}>
