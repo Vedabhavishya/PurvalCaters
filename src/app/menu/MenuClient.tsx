@@ -540,7 +540,11 @@ ${Object.entries(selectedItemsByCourse)
           {/* Accordion Menu Sections */}
           <div className={styles.accordionContainer}>
             {Object.entries(COURSE_DETAILS)
-              .filter(([_, details]) => searchQuery !== '' || menuType === 'all' || details.menuType === menuType)
+              .filter(([_, details]) => {
+                if (searchQuery !== '') return true;
+                if (dietFilter !== 'all' && details.menuType === 'desserts') return false;
+                return menuType === 'all' || details.menuType === menuType;
+              })
               .sort(([keyA, detailsA], [keyB, detailsB]) => {
                 const getSortWeight = (key: string, details: any) => {
                   if (details.menuType === 'breakfast') return 10;
