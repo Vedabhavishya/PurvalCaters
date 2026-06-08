@@ -69,7 +69,8 @@ const COURSE_DETAILS = {
   'milk-cream-desserts': { title: 'Milk & Cream Desserts', icon: FaIceCream, menuType: 'desserts' as const },
   'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaIceCream, menuType: 'desserts' as const },
   'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const },
-  'Welcome Drinks': { title: 'Welcome Drinks', icon: FaCoffee, menuType: 'drinks-snacks' as const }
+  'Welcome Drinks': { title: 'Welcome Drinks', icon: FaCoffee, menuType: 'drinks-snacks' as const },
+  'Chat': { title: 'Chat', icon: FaUtensils, menuType: 'drinks-snacks' as const }
 };
 
 type CourseType = keyof typeof COURSE_DETAILS;
@@ -103,7 +104,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'milk-cream-desserts': true,
     'traditional-snacks': true,
     'live-counters': true,
-    'Welcome Drinks': true
+    'Welcome Drinks': true,
+    'Chat': true
   });
 
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({
@@ -128,7 +130,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'milk-cream-desserts': true,
     'traditional-snacks': true,
     'live-counters': true,
-    'Welcome Drinks': true
+    'Welcome Drinks': true,
+    'Chat': true
   });
 
   // Modal State
@@ -237,7 +240,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'milk-cream-desserts': {},
       'traditional-snacks': {},
       'live-counters': {},
-      'Welcome Drinks': {}
+      'Welcome Drinks': {},
+      'Chat': {}
     };
 
     filteredItems.forEach(item => {
@@ -292,7 +296,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'milk-cream-desserts': [],
       'traditional-snacks': [],
       'live-counters': [],
-      'Welcome Drinks': []
+      'Welcome Drinks': [],
+      'Chat': []
     };
 
     selectedItemsDetails.forEach(item => {

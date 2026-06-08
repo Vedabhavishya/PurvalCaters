@@ -28,7 +28,8 @@ export interface MenuItem {
     // Live Counter Course
     | 'live-counters'
     // Drinks & Snacks
-    | 'Welcome Drinks';
+    | 'Welcome Drinks'
+    | 'Chat';
   subcategory: string;
 }
 
@@ -681,6 +682,28 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'wd-8', name: 'Dry Fruit Lassi', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
   { id: 'wd-9', name: 'Mango Lassi', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
   { id: 'wd-10', name: 'Kesar Lassi', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
-  { id: 'wd-11', name: 'Any Fruit(Fresh) Juice', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' }
+  { id: 'wd-11', name: 'Any Fruit(Fresh) Juice', isVeg: true, course: 'Welcome Drinks', subcategory: 'Drinks' },
+
+  // Chat Items
+  { id: 'ct-1', name: 'Papdi Chat', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-2', name: 'Dahi Chat', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-3', name: 'Dum Aloo Chat', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-4', name: 'Kachori Chat', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-5', name: 'Chole Bhatura', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-6', name: 'Dahi Pakodi', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-7', name: 'Sweet Corn Chat', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-8', name: 'Paneer Vada', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-9', name: 'Samosa Ragada', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-10', name: 'Masala Pani Puri', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-11', name: 'Jeera Pani Puri', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-12', name: 'Chana Dal Cutlet', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-13', name: 'Mutter Pav', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-14', name: 'Pav Bhaji', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-15', name: 'Bhel Puri', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-16', name: 'Sev Puri', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-17', name: 'Bhaji Pav', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-18', name: 'Vada Pav', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-19', name: 'Paneer Kachori', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
+  { id: 'ct-20', name: 'Dry Fruits Kachori', isVeg: true, course: 'Chat', subcategory: 'Chat Items' }
 ];
 
