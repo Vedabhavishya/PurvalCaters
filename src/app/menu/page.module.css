@@ -491,6 +491,31 @@
   min-height: 0;
 }
 
+.sidebarChecklistScroll {
+  max-height: 230px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Custom Scrollbar for Selection list */
+.sidebarChecklistScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebarChecklistScroll::-webkit-scrollbar-track {
+  background: #fbf9f6;
+  border-radius: 4px;
+}
+
+.sidebarChecklistScroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.sidebarChecklistScroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 /* Sidebar Checklist Rows */
 .sidebarChecklist {
   display: flex;

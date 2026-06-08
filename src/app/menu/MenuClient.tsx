@@ -735,33 +735,51 @@ ${Object.entries(selectedItemsByCourse)
 
             <div className={styles.panelContent}>
               {selectedIds.length > 0 ? (
-                <div className={styles.selectedItemsContainer}>
-                  {Object.entries(selectedItemsByCourse).map(([course, items]) => {
-                    if (items.length === 0) return null;
-                    const title = COURSE_DETAILS[course as CourseType]?.title || course;
-                    return (
-                      <div key={course} className={styles.sidebarGroup}>
-                        <h4 className={styles.sidebarGroupTitle}>{title}</h4>
-                        <div className={styles.sidebarItemList}>
-                          {items.map(item => (
-                            <div key={item.id} className={styles.sidebarItemCard}>
-                              <div className={styles.sidebarItemLeft}>
-                                <span className={`${styles.dot} ${item.isVeg ? styles.dotVeg : styles.dotNonVeg}`} />
-                                <span className={styles.sidebarItemName}>{item.name}</span>
-                              </div>
-                              <button 
-                                onClick={() => removeItem(item.id)}
-                                className={styles.sidebarRemoveBtn}
-                                title="Remove item"
-                              >
-                                <FaTrashAlt />
-                              </button>
+                <div className={styles.sidebarChecklistScroll}>
+                  <div className={styles.sidebarChecklist}>
+                    {Object.entries(selectedItemsByCourse).map(([course, items]) => {
+                      if (items.length === 0) return null;
+                      const isExpanded = sidebarExpanded[course] ?? true;
+                      const title = COURSE_DETAILS[course as CourseType]?.title || course;
+
+                      return (
+                        <div key={course} className={styles.checklistRow}>
+                          <button 
+                            onClick={() => toggleSidebarAccordion(course)}
+                            className={styles.sidebarGroupHeader}
+                          >
+                            <div className={styles.sidebarGroupHeaderLeft}>
+                              <span className={`${styles.checklistBullet} ${styles.checklistBulletActive}`}>
+                                <FaCheck size={7} />
+                              </span>
+                              <span className={styles.sidebarGroupName}>{title}</span>
                             </div>
-                          ))}
+                            <span className={styles.sidebarSelectedCount}>
+                              {items.length} {items.length === 1 ? 'item' : 'items'}
+                            </span>
+                          </button>
+
+                          <div className={`${styles.sidebarGroupList} ${isExpanded ? '' : styles.collapsed}`}>
+                            {items.map(item => (
+                              <div key={item.id} className={styles.sidebarItem}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', overflow: 'hidden' }}>
+                                  <span className={item.isVeg ? styles.dotVeg : styles.dotNonVeg} />
+                                  <span className={styles.sidebarItemName}>{item.name}</span>
+                                </div>
+                                <button 
+                                  onClick={() => removeItem(item.id)}
+                                  className={styles.sidebarRemoveBtn}
+                                  title="Remove item"
+                                >
+                                  <FaTrashAlt />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               ) : (
                 <div className={styles.sidebarEmptyMessage}>
@@ -789,15 +807,6 @@ ${Object.entries(selectedItemsByCourse)
                   </div>
                 </div>
               )}
-
-              {/* Download PDF CTA */}
-              <button 
-                onClick={handleDownloadPDF} 
-                className={`btn ${styles.downloadPdfBtn}`}
-                style={{ width: '100%', marginBottom: '0.65rem', display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}
-              >
-                <FaFilePdf /> Download Full PDF of Menu
-              </button>
 
               {/* Proceed CTA */}
               <button 
