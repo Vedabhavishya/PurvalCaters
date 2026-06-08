@@ -169,7 +169,7 @@
 }
 
 .accordionCard.expanded.accordionCardSweets {
-  border-color: rgba(124, 58, 237, 0.12); /* Purple tint border */
+  border-color: rgba(219, 39, 119, 0.12); /* Pink tint border */
 }
 
 
@@ -235,12 +235,12 @@
 }
 
 .categoryIconCircleSweets {
-  background: #f3e8ff; /* Light purple box */
-  color: #7c3aed;
+  background: #fce7f3; /* Light pink box */
+  color: #db2777;
 }
 
 .accordionCard.expanded .categoryIconCircleSweets {
-  background: #7c3aed; /* Solid purple */
+  background: #db2777; /* Solid pink */
   color: #ffffff;
 }
 
