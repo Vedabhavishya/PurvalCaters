@@ -75,7 +75,7 @@ type CourseType = keyof typeof COURSE_DETAILS;
 
 export default function MenuClient({ categories, items }: MenuClientProps) {
   // State
-  const [menuType, setMenuType] = useState<'main' | 'breakfast' | 'desserts' | 'live-counters'>('main');
+  const [menuType, setMenuType] = useState<'all' | 'main' | 'breakfast' | 'desserts' | 'live-counters'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [dietFilter, setDietFilter] = useState<'all' | 'veg' | 'nonveg'>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -488,8 +488,8 @@ ${Object.entries(selectedItemsByCourse)
           {/* Top Dietary Tabs Filters */}
           <div className={styles.dietaryTabs}>
             <button 
-              onClick={() => { setMenuType('main'); setDietFilter('all'); }} 
-              className={`${styles.dietTab} ${menuType === 'main' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
+              onClick={() => { setMenuType('all'); setDietFilter('all'); }} 
+              className={`${styles.dietTab} ${menuType === 'all' && dietFilter === 'all' ? styles.dietTabActive : ''}`}
             >
               All Menu
             </button>
@@ -500,14 +500,14 @@ ${Object.entries(selectedItemsByCourse)
               Breakfast
             </button>
             <button 
-              onClick={() => { setMenuType('main'); setDietFilter('veg'); }} 
-              className={`${styles.dietTab} ${menuType === 'main' && dietFilter === 'veg' ? styles.dietTabVegActive : ''}`}
+              onClick={() => { setMenuType('all'); setDietFilter('veg'); }} 
+              className={`${styles.dietTab} ${menuType === 'all' && dietFilter === 'veg' ? styles.dietTabVegActive : ''}`}
             >
               Vegetarian
             </button>
             <button 
-              onClick={() => { setMenuType('main'); setDietFilter('nonveg'); }} 
-              className={`${styles.dietTab} ${menuType === 'main' && dietFilter === 'nonveg' ? styles.dietTabNonVegActive : ''}`}
+              onClick={() => { setMenuType('all'); setDietFilter('nonveg'); }} 
+              className={`${styles.dietTab} ${menuType === 'all' && dietFilter === 'nonveg' ? styles.dietTabNonVegActive : ''}`}
             >
               Non-Vegetarian
             </button>
@@ -540,30 +540,23 @@ ${Object.entries(selectedItemsByCourse)
           {/* Accordion Menu Sections */}
           <div className={styles.accordionContainer}>
             {Object.entries(COURSE_DETAILS)
-              .filter(([_, details]) => searchQuery !== '' || details.menuType === menuType)
+              .filter(([_, details]) => searchQuery !== '' || menuType === 'all' || details.menuType === menuType)
               .sort(([keyA, detailsA], [keyB, detailsB]) => {
-                // Determine style type for A
-                const groupA = groupedMenu[keyA as CourseType];
-                const hasVegA = Object.values(groupA || {}).some(items => items.some(item => item.isVeg));
-                const hasNonVegA = Object.values(groupA || {}).some(items => items.some(item => !item.isVeg));
-                let typeA = 'combined';
-                if (detailsA.menuType === 'desserts') typeA = 'sweets';
-                else if (detailsA.menuType === 'live-counters') typeA = 'live';
-                else if (hasVegA && !hasNonVegA) typeA = 'veg';
-                else if (!hasVegA && hasNonVegA) typeA = 'nonveg';
-
-                // Determine style type for B
-                const groupB = groupedMenu[keyB as CourseType];
-                const hasVegB = Object.values(groupB || {}).some(items => items.some(item => item.isVeg));
-                const hasNonVegB = Object.values(groupB || {}).some(items => items.some(item => !item.isVeg));
-                let typeB = 'combined';
-                if (detailsB.menuType === 'desserts') typeB = 'sweets';
-                else if (detailsB.menuType === 'live-counters') typeB = 'live';
-                else if (hasVegB && !hasNonVegB) typeB = 'veg';
-                else if (!hasVegB && hasNonVegB) typeB = 'nonveg';
-
-                const order = { 'veg': 1, 'nonveg': 2, 'combined': 3, 'live': 4, 'sweets': 5 };
-                return order[typeA] - order[typeB];
+                const getSortWeight = (key: string, details: any) => {
+                  if (details.menuType === 'breakfast') return 10;
+                  if (details.menuType === 'main') {
+                    const group = groupedMenu[key as CourseType];
+                    const hasVeg = Object.values(group || {}).some(items => items.some(item => item.isVeg));
+                    const hasNonVeg = Object.values(group || {}).some(items => items.some(item => !item.isVeg));
+                    if (hasVeg && !hasNonVeg) return 20;
+                    if (!hasVeg && hasNonVeg) return 30;
+                    return 40;
+                  }
+                  if (details.menuType === 'desserts') return 50;
+                  if (details.menuType === 'live-counters') return 60;
+                  return 100;
+                };
+                return getSortWeight(keyA, detailsA) - getSortWeight(keyB, detailsB);
               })
               .map(([courseKey, details]) => {
                 const count = courseCount(courseKey as CourseType);
