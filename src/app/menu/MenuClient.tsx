@@ -70,7 +70,9 @@ const COURSE_DETAILS = {
   'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaIceCream, menuType: 'desserts' as const },
   'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const },
   'Welcome Drinks': { title: 'Welcome Drinks', icon: FaCoffee, menuType: 'drinks-snacks' as const },
-  'Chat': { title: 'Chat', icon: FaUtensils, menuType: 'drinks-snacks' as const }
+  'Chat': { title: 'Chat', icon: FaUtensils, menuType: 'drinks-snacks' as const },
+  'Chineese Soup': { title: 'Chineese Soup', icon: FaUtensils, menuType: 'drinks-snacks' as const },
+  'Chineese Noodles': { title: 'Chineese Noodles', icon: FaUtensils, menuType: 'main' as const }
 };
 
 type CourseType = keyof typeof COURSE_DETAILS;
@@ -105,7 +107,9 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'traditional-snacks': true,
     'live-counters': true,
     'Welcome Drinks': true,
-    'Chat': true
+    'Chat': true,
+    'Chineese Soup': true,
+    'Chineese Noodles': true
   });
 
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({
@@ -131,7 +135,9 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'traditional-snacks': true,
     'live-counters': true,
     'Welcome Drinks': true,
-    'Chat': true
+    'Chat': true,
+    'Chineese Soup': true,
+    'Chineese Noodles': true
   });
 
   // Modal State
@@ -215,6 +221,17 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       return matchesSearch && matchesDiet;
     });
   }, [allMenuItems, searchQuery, dietFilter]);
+  
+  // Filter items based on active tab (menuType), diet filter, and search query
+  const visibleItems = useMemo(() => {
+    return filteredItems.filter(item => {
+      const details = COURSE_DETAILS[item.course as CourseType];
+      if (!details) return false;
+      if (searchQuery !== '') return true;
+      if (dietFilter !== 'all' && details.menuType !== 'main') return false;
+      return menuType === 'all' || details.menuType === menuType;
+    });
+  }, [filteredItems, menuType, dietFilter, searchQuery]);
 
   // Group items by course, then by subcategory
   const groupedMenu = useMemo(() => {
@@ -241,10 +258,12 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'traditional-snacks': {},
       'live-counters': {},
       'Welcome Drinks': {},
-      'Chat': {}
+      'Chat': {},
+      'Chineese Soup': {},
+      'Chineese Noodles': {}
     };
 
-    filteredItems.forEach(item => {
+    visibleItems.forEach(item => {
       if (groups[item.course]) {
         if (!groups[item.course][item.subcategory]) {
           groups[item.course][item.subcategory] = [];
@@ -297,7 +316,9 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'traditional-snacks': [],
       'live-counters': [],
       'Welcome Drinks': [],
-      'Chat': []
+      'Chat': [],
+      'Chineese Soup': [],
+      'Chineese Noodles': []
     };
 
     selectedItemsDetails.forEach(item => {
@@ -367,7 +388,9 @@ ${Object.entries(selectedItemsByCourse)
   .filter(([_, items]) => items.length > 0)
   .map(([course, items]) => {
     const title = COURSE_DETAILS[course as CourseType]?.title || course;
-    const itemsList = items.map((item, idx) => `  ${idx + 1}. ${item.name} (${item.isVeg ? 'Veg' : 'Non-Veg'})`).join('\n');
+    // Sort items alphabetically by name
+    const sortedItems = [...items].sort((a, b) => a.name.localeCompare(b.name));
+    const itemsList = sortedItems.map((item, idx) => `  ${idx + 1}. ${item.name} (${item.isVeg ? 'Veg' : 'Non-Veg'})`).join('\n');
     return `[${title} (${items.length})]\n${itemsList}`;
   })
   .join('\n\n')}`;
@@ -685,10 +708,7 @@ ${Object.entries(selectedItemsByCourse)
                 );
               })}
 
-            {(searchQuery !== '' ? filteredItems.length === 0 : filteredItems.filter(item => {
-              const details = COURSE_DETAILS[item.course as CourseType];
-              return details && details.menuType === menuType;
-            }).length === 0) && (
+            {visibleItems.length === 0 && (
               <div className={styles.emptyResults}>
                 <FaUtensils className={styles.emptyIcon} />
                 <h3>No dishes match your search</h3>

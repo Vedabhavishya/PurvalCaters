@@ -10,7 +10,8 @@ const MAIN_CATEGORIES = [
   { name: 'Vegetarian', slug: 'vegetarian' },
   { name: 'Non-Vegetarian', slug: 'non-vegetarian' },
   { name: 'Desserts & Sweets', slug: 'desserts-sweets' },
-  { name: 'Live Counter', slug: 'live-counter' }
+  { name: 'Live Counter', slug: 'live-counter' },
+  { name: 'Drinks & Snacks', slug: 'drinks-snacks' }
 ];
 
 // Helper to determine main category slug based on item course and isVeg status
@@ -32,6 +33,13 @@ function getCategorySlug(course: string, isVeg: boolean): string {
     c.includes('snack') // sweets & traditional snacks
   ) {
     return 'desserts-sweets';
+  }
+  if (
+    c.includes('drinks') ||
+    c.includes('chat') ||
+    c.includes('soup')
+  ) {
+    return 'drinks-snacks';
   }
   
   // For starters, breads, veg-main, nonveg-main, rice-biryani, accompaniments

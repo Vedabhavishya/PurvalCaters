@@ -28,103 +28,89 @@ interface PackageItem {
   name: string;
   idealFor: string;
   welcomeDrinks: string[];
+  welcomeDrinksLabel?: string;
   starters: string[];
-  mainCourse: {
-    northIndian: string[];
-    southIndian: string[];
-    mughlaiSpecial: string[];
-  };
+  startersLabel?: string;
+  mainCourse: Record<string, string[]>;
   saladsAndAccompaniments: string[];
+  saladsLabel?: string;
   desserts: string[];
+  dessertsLabel?: string;
 }
 
 const VEG_PACKAGES: PackageItem[] = [
   {
     id: 'veg-p1',
-    name: 'Classic Veg Delight',
+    name: 'Veg Delight',
     idealFor: 'Small gatherings, birthday parties, corporate lunches',
-    welcomeDrinks: ['Fresh Lime Soda', 'Buttermilk / Masala Chaas'],
-    starters: ['Veg Manchurian', 'Paneer Tikka', 'Mini Veg Cutlets'],
+    welcomeDrinks: [],
+    starters: ['Veg Manchuria', 'Crispy Baby Corn', 'Spring Rolls'],
+    startersLabel: 'Vegetarian Starters (Any 1)',
     mainCourse: {
-      northIndian: ['Paneer Butter Masala', 'Dal Tadka', 'Jeera Rice', 'Butter Naan / Roti'],
-      southIndian: ['Vegetable Kurma', 'Lemon Rice', 'Medu Vada with Coconut Chutney'],
-      mughlaiSpecial: ['Veg Mughlai Kofta']
+      'Indian Breads (Any 1)': ['Poori', 'Chappati', 'Tandoor Roti', 'Rumali Roti'],
+      'Rice & Biryani (Any 1)': ['Jeera Rice', 'Fried Rice', 'Vegetable Biryani & Steam Rice'],
+      'Signature Curries (Any 2)': ['Paneer Specialties', 'Veg Korma', 'Dum Aloo', 'Bagara Baingan', 'Alu Gobi Masala', 'Veg Kofta', 'Chole', 'Bhendi Fry'],
+      'Dals & South Indian (Any 2)': ['Sambar', 'Dal Fry', 'Tomato Dal', 'Palak Dal', 'Dal Tadka', 'Rasam']
     },
-    saladsAndAccompaniments: ['Green Salad', 'Pickle & Papad', 'Raita'],
-    desserts: ['Gulab Jamun', 'Fruit Custard']
+    saladsAndAccompaniments: ['Green Salad', 'Papad / Fryums', 'Pickle / Chutney', 'Plain Curd', 'Raitha', 'Mineral Water'],
+    desserts: ['Gulab Jamun', 'Kala Jamun', 'Double-ka-meetha', 'Kaddu-ka-kheer'],
+    dessertsLabel: 'Dessert (Any 1)'
   },
   {
     id: 'veg-p2',
     name: 'Royal Vegetarian Feast',
     idealFor: 'Weddings, engagement functions, festive celebrations',
-    welcomeDrinks: ['Mango Mocktail', 'Sweet Lassi'],
-    starters: ['Hara Bhara Kabab', 'Paneer Malai Tikka', 'Crispy Corn', 'Veg Spring Rolls'],
+    welcomeDrinks: ['Watermelon Juice', 'Pineapple Juice', 'Fruit Punch', 'Badam Milk'],
+    welcomeDrinksLabel: 'Welcome Drinks (Any 1)',
+    starters: ['Veg Manchuria', 'Crispy Baby Corn', 'Spring Rolls', 'Aloo 65', 'Gobi Manchuria', 'Gobi 65', 'Mushroom Manchuria', 'Veg Bullets'],
+    startersLabel: 'Vegetarian Starters (Any 2)',
     mainCourse: {
-      northIndian: ['Shahi Paneer', 'Dum Aloo Kashmiri', 'Dal Makhani', 'Veg Pulao', 'Butter Naan / Kulcha'],
-      southIndian: ['Vegetable Biryani', 'Avial', 'Mini Masala Dosa Live Counter', 'Sambar & Chutneys'],
-      mughlaiSpecial: ['Veg Nawabi Korma']
+      'Indian Breads (Any 1)': ['Poori', 'Chappati', 'Tandoor Roti', 'Rumali Roti'],
+      'Rice & Biryani (Any 2)': ['Jeera Rice', 'Fried Rice', 'Vegetable Biryani', 'Thai Biryani', 'Veg Pulav', 'Peas Pulav & Steam Rice'],
+      'Signature Curries (Any 3)': ['Paneer Specialties', 'Veg Korma', 'Dum Aloo', 'Bagara Baingan', 'Alu Gobi Masala', 'Veg Kofta', 'Chole', 'Bhendi Fry', 'Malai Kofta', 'Stuffed Bhendi', 'Paneer Phool Makhani', 'Mushroom Curry', 'Jeera Aloo', 'Kadai Paneer', 'Cabbage Dry', 'French Beans Dry'],
+      'Dals & South Indian (Any 2)': ['Sambar', 'Dal Fry', 'Tomato Dal', 'Palak Dal', 'Dal Tadka', 'Rasam']
     },
-    saladsAndAccompaniments: ['Russian Salad', 'Boondi Raita', 'Papad & Pickles'],
-    desserts: ['Rasmalai', 'Double Ka Meetha', 'Ice Cream']
-  },
-  {
-    id: 'veg-p3',
-    name: 'Grand Maharaja Veg Experience',
-    idealFor: 'Luxury events, premium weddings, VIP functions',
-    welcomeDrinks: ['Jaljeera', 'Fresh Fruit Punch', 'Badam Milk'],
-    starters: ['Paneer Achari Tikka', 'Veg Seekh Kabab', 'Cheese Balls', 'Baby Corn Pepper Fry', 'Tandoori Mushroom'],
-    mainCourse: {
-      northIndian: ['Paneer Lababdar', 'Kadai Vegetables', 'Dal Bukhara', 'Kashmiri Pulao', 'Assorted Indian Breads'],
-      southIndian: ['Hyderabadi Veg Dum Biryani', 'Malabar Vegetable Curry', 'Appam with Stew', 'Ghee Pongal'],
-      mughlaiSpecial: ['Subz Badami Korma', 'Veg Haleem']
-    },
-    saladsAndAccompaniments: ['Exotic Salad Bar', 'Mint Raita', 'Pickles, Papad & Chutneys'],
-    desserts: ['Gajar Ka Halwa', 'Angoori Rasmalai', 'Apricot Delight', 'Live Jalebi Counter']
+    saladsAndAccompaniments: ['Green Salad', 'Papad / Fryums', 'Pickle / Chutney', 'Plain Curd', 'Raitha', 'Mineral Water'],
+    desserts: ['Gulab Jamun', 'Kala Jamun', 'Double-ka-meetha', 'Kaddu-ka-kheer', 'Ice Cream (Vanilla/Strawberry)', 'Rasmalai'],
+    dessertsLabel: 'Dessert (Any 1)'
   }
 ];
 
 const NON_VEG_PACKAGES: PackageItem[] = [
   {
     id: 'nonveg-p1',
-    name: 'Signature Non-Veg Combo',
+    name: 'Non-Veg Delight',
     idealFor: 'Family functions, office parties, casual celebrations',
-    welcomeDrinks: ['Mint Cooler', 'Sweet Lassi'],
-    starters: ['Chicken Tikka', 'Fish Fry', 'Chicken 65'],
+    welcomeDrinks: [],
+    starters: ['Chicken 65', 'Chicken Manchuria', 'Chilly Chicken', 'Pepper Chicken', 'Chicken Majestic'],
+    startersLabel: 'Non-Vegetarian Starters (Any 1)',
     mainCourse: {
-      northIndian: ['Butter Chicken', 'Mutton Rogan Josh', 'Dal Fry', 'Jeera Rice', 'Butter Naan'],
-      southIndian: ['Andhra Chicken Curry', 'Chicken Biryani', 'Medu Vada with Chutney'],
-      mughlaiSpecial: ['Chicken Korma']
+      'Indian Breads (Any 1)': ['Poori', 'Chappati', 'Tandoor Roti', 'Rumali Roti'],
+      'Rice & Biryani (Any 1)': ['Jeera Rice', 'Fried Rice', 'Veg Pulav', 'Veg Biryani & Steam Rice'],
+      'Signature Curries (Combo: Veg 1 + Non-Veg 1)': ['Paneer Specialties', 'Veg Korma', 'Dum Aloo', 'Bagara Baingan', 'Alu Gobi Masala', 'Veg Kofta', 'Chole', 'Bhendi Fry', 'Chicken Afghani', 'Chicken Moghalai', 'Dum-ka-Chicken', 'Butter Chicken'],
+      'Dals & South Indian (Any 1)': ['Sambar', 'Dal Fry', 'Tomato Dal', 'Palak Dal', 'Dal Tadka', 'Rasam']
     },
-    saladsAndAccompaniments: ['Onion Salad', 'Raita', 'Pickle & Papad'],
-    desserts: ['Gulab Jamun', 'Kheer']
+    saladsAndAccompaniments: ['Green Salad', 'Papad / Fryums', 'Pickle / Chutney', 'Plain Curd', 'Raitha', 'Mineral Water'],
+    desserts: ['Gulab Jamun', 'Kala Jamun', 'Double-ka-meetha', 'Kaddu-ka-kheer'],
+    dessertsLabel: 'Dessert (Any 1)'
   },
   {
     id: 'nonveg-p2',
-    name: 'Royal Mughlai Non-Veg Feast',
+    name: 'Royal Non-Vegetarian Feast',
     idealFor: 'Weddings, receptions, premium celebrations',
-    welcomeDrinks: ['Fresh Lime Mint', 'Rose Milk'],
-    starters: ['Chicken Malai Kebab', 'Mutton Seekh Kebab', 'Fish Tikka', 'Dragon Chicken'],
+    welcomeDrinks: ['Watermelon Juice', 'Pineapple Juice', 'Fruit Punch', 'Badam Milk'],
+    welcomeDrinksLabel: 'Welcome Drinks (Any 1)',
+    starters: ['Chicken 65', 'Chicken Manchuria', 'Chilly Chicken', 'Pepper Chicken', 'Chicken Majestic', 'Fish Fry', 'Fish Fingers', 'Apollo Fish', 'Loose Prawns', 'Chilli Prawns', 'Prawn 65'],
+    startersLabel: 'Non-Vegetarian Starters (Any 2)',
     mainCourse: {
-      northIndian: ['Murgh Musallam', 'Mutton Curry', 'Dal Makhani', 'Veg Pulao', 'Garlic Naan'],
-      southIndian: ['Hyderabadi Chicken Dum Biryani', 'Chettinad Chicken Curry', 'Appam with Chicken Stew'],
-      mughlaiSpecial: ['Mutton Korma', 'Chicken Rezala']
+      'Indian Breads (Any 1)': ['Poori', 'Chappati', 'Tandoor Roti', 'Rumali Roti'],
+      'Rice & Biryani (Any 1) - (Chicken/Mutton/Fish/Prawn)': ['Jeera Rice', 'Fried Rice', 'Veg Pulav & Steam Rice'],
+      'Signature Curries (Combo: Veg 1 + Non-Veg 2)': ['Paneer Specialties', 'Veg Korma', 'Dum Aloo', 'Bagara Baingan', 'Alu Gobi Masala', 'Veg Kofta', 'Chole', 'Bhendi Fry', 'Chicken Afghani', 'Chicken Moghalai', 'Dum-ka-Chicken', 'Butter Chicken', 'Kadai Chicken', 'Chicken Tikka Masala', 'Malai Chicken', 'Methi Chicken', 'Malabar Fish Curry (With Bone)'],
+      'Dals & South Indian (Any 1)': ['Sambar', 'Dal Fry', 'Tomato Dal', 'Palak Dal', 'Dal Tadka', 'Rasam']
     },
-    saladsAndAccompaniments: ['Fresh Garden Salad', 'Boondi Raita', 'Pickles & Papad'],
-    desserts: ['Rasmalai', 'Double Ka Meetha', 'Ice Cream']
-  },
-  {
-    id: 'nonveg-p3',
-    name: 'Premium Nawabi Non-Veg Experience',
-    idealFor: 'Luxury weddings, VIP events, grand celebrations',
-    welcomeDrinks: ['Mocktail Bar', 'Badam Milk', 'Fresh Fruit Juices'],
-    starters: ['Tangdi Kebab', 'Prawns Pepper Fry', 'Tandoori Fish', 'Mutton Galouti Kebab', 'Chicken Afghani'],
-    mainCourse: {
-      northIndian: ['Butter Chicken Deluxe', 'Mutton Rogan Josh', 'Dal Bukhara', 'Kashmiri Pulao', 'Assorted Indian Breads'],
-      southIndian: ['Ambur Mutton Biryani', 'Andhra Kodi Kura', 'Malabar Fish Curry', 'Neer Dosa'],
-      mughlaiSpecial: ['Nihari', 'Chicken Mughlai']
-    },
-    saladsAndAccompaniments: ['Premium Salad Bar', 'Mint Raita', 'Papad, Pickles & Chutneys'],
-    desserts: ['Shahi Tukda', 'Apricot Delight', 'Rabri Jalebi', 'Kulfi Counter']
+    saladsAndAccompaniments: ['Green Salad', 'Papad / Fryums', 'Pickle / Chutney', 'Plain Curd', 'Raitha', 'Mineral Water'],
+    desserts: ['Gulab Jamun', 'Kala Jamun', 'Double-ka-meetha', 'Kaddu-ka-kheer', 'Ice Cream (Vanilla/Strawberry)'],
+    dessertsLabel: 'Dessert (Any 1)'
   }
 ];
 
@@ -168,11 +154,6 @@ const NOTES = [
     icon: 'custom'
   },
   {
-    title: 'Jain Options Available',
-    text: 'Special Jain food options (without onion, garlic, or root vegetables) available on request.',
-    icon: 'jain'
-  },
-  {
     title: 'Separate Kids\' Menu',
     text: 'A customized, kid-friendly menu with milder spices and fun treats can be arranged.',
     icon: 'kids'
@@ -184,10 +165,15 @@ const NOTES = [
   }
 ];
 
-export default function PlansClient() {
+interface PlansClientProps {
+  initialLiveCounters?: Array<{ name: string; desc: string; icon: string }>;
+}
+
+export default function PlansClient({ initialLiveCounters }: PlansClientProps) {
   const [activeTab, setActiveTab] = useState<'veg' | 'nonveg'>('veg');
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
 
+  const addonsList = initialLiveCounters && initialLiveCounters.length > 0 ? initialLiveCounters : ADDONS;
   const packages = activeTab === 'veg' ? VEG_PACKAGES : NON_VEG_PACKAGES;
 
   const toggleCard = (id: string) => {
@@ -206,22 +192,21 @@ export default function PlansClient() {
     if (isVegPkg) return 'veg';
     
     const lower = name.toLowerCase();
-    const nvKeywords = ['chicken', 'mutton', 'fish', 'prawn', 'kebab', 'kabab', 'kora', 'curry', 'biryani', 'kodi', 'murgh', 'nihari', 'rezala', 'rogan josh', 'tikka', 'fry', '65', 'seekh', 'galouti', 'tangdi', 'musallam', 'combo', 'feast', 'experience'];
-    const vegKeywords = ['dal', 'paneer', 'veg', 'pulao', 'bread', 'naan', 'roti', 'kulcha', 'rice', 'dosa', 'appam', 'stew', 'curry veg', 'salad', 'vada', 'chutney', 'sambar', 'kofta', 'corn', 'balls', 'mushroom', 'pongal', 'ghee'];
+    const nvKeywords = ['chicken', 'mutton', 'fish', 'prawn', 'kebab', 'kabab', 'kora', 'curry', 'biryani', 'kodi', 'murgh', 'nihari', 'rezala', 'rogan josh', 'tikka', 'fry', '65', 'seekh', 'galouti', 'tangdi', 'musallam', 'combo', 'feast', 'experience', 'afghani', 'moghalai', 'dum-ka-chicken', 'butter chicken', 'kadai chicken', 'tikka masala', 'malai chicken', 'methi chicken', 'malabar fish'];
+    const vegKeywords = ['dal', 'paneer', 'veg', 'pulao', 'bread', 'naan', 'roti', 'kulcha', 'rice', 'dosa', 'appam', 'stew', 'curry veg', 'salad', 'vada', 'chutney', 'sambar', 'kofta', 'corn', 'balls', 'mushroom', 'pongal', 'ghee', 'poori', 'chappati', 'tandoor roti', 'rumali roti', 'korma', 'aloo', 'baingan', 'gobi', 'bhendi', 'chole'];
     
     if (vegKeywords.some(kw => lower.includes(kw))) return 'veg';
     if (nvKeywords.some(kw => lower.includes(kw))) return 'nonveg';
     
-    return 'nonveg';
+    return 'veg'; // Default to veg for unspecified base items in non-veg packages (like breads)
   };
 
   const renderDishBadge = (name: string, isVegPkg: boolean, courseType: 'drink' | 'starter' | 'main' | 'salad' | 'dessert') => {
     const type = getDishType(name, isVegPkg, courseType);
     let badgeClass = styles.badgeVeg;
-    if (type === 'nonveg') badgeClass = styles.badgeNonVeg;
-    else if (type === 'drink') badgeClass = styles.badgeDrink;
-    else if (type === 'dessert') badgeClass = styles.badgeDessert;
-    else if (type === 'side') badgeClass = styles.badgeSide;
+    if (type === 'nonveg') {
+      badgeClass = styles.badgeNonVeg;
+    }
 
     return (
       <span className={`${styles.dishBadge} ${badgeClass}`}>
@@ -311,23 +296,25 @@ export default function PlansClient() {
               {/* Course Sections */}
               <div className={styles.menuOverview}>
                 {/* Welcome Drinks */}
-                <div className={styles.courseBlock}>
-                  <h4 className={styles.courseHeader}>
-                    <FaWineGlassAlt className={styles.courseIcon} /> Welcome Drinks
-                  </h4>
-                  <div className={styles.badgesWrapper}>
-                    {pkg.welcomeDrinks.map((item, i) => (
-                      <React.Fragment key={i}>
-                        {renderDishBadge(item, activeTab === 'veg', 'drink')}
-                      </React.Fragment>
-                    ))}
+                {pkg.welcomeDrinks.length > 0 && (
+                  <div className={styles.courseBlock}>
+                    <h4 className={styles.courseHeader}>
+                      <FaWineGlassAlt className={styles.courseIcon} /> {pkg.welcomeDrinksLabel || 'Welcome Drinks'}
+                    </h4>
+                    <div className={styles.badgesWrapper}>
+                      {pkg.welcomeDrinks.map((item, i) => (
+                        <React.Fragment key={i}>
+                          {renderDishBadge(item, activeTab === 'veg', 'drink')}
+                        </React.Fragment>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Starters */}
                 <div className={styles.courseBlock}>
                   <h4 className={styles.courseHeader}>
-                    <FaUtensils className={styles.courseIcon} /> Starters
+                    <FaUtensils className={styles.courseIcon} /> {pkg.startersLabel || 'Starters'}
                   </h4>
                   <div className={styles.badgesWrapper}>
                     {pkg.starters.map((item, i) => (
@@ -348,43 +335,25 @@ export default function PlansClient() {
                           <FaUtensils className={styles.courseIcon} /> Main Course
                         </h4>
                         <div className={styles.subCourseContainer}>
-                          <div className={styles.subCourseSection}>
-                            <h5>North Indian</h5>
-                            <div className={styles.badgesWrapper}>
-                              {pkg.mainCourse.northIndian.map((item, i) => (
-                                <React.Fragment key={i}>
-                                  {renderDishBadge(item, activeTab === 'veg', 'main')}
-                                </React.Fragment>
-                              ))}
+                          {Object.entries(pkg.mainCourse).map(([sectionTitle, items]) => (
+                            <div key={sectionTitle} className={styles.subCourseSection}>
+                              <h5>{sectionTitle}</h5>
+                              <div className={styles.badgesWrapper}>
+                                {items.map((item, i) => (
+                                  <React.Fragment key={i}>
+                                    {renderDishBadge(item, activeTab === 'veg', 'main')}
+                                  </React.Fragment>
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                          <div className={styles.subCourseSection}>
-                            <h5>South Indian</h5>
-                            <div className={styles.badgesWrapper}>
-                              {pkg.mainCourse.southIndian.map((item, i) => (
-                                <React.Fragment key={i}>
-                                  {renderDishBadge(item, activeTab === 'veg', 'main')}
-                                </React.Fragment>
-                              ))}
-                            </div>
-                          </div>
-                          <div className={styles.subCourseSection}>
-                            <h5>Mughlai Special</h5>
-                            <div className={styles.badgesWrapper}>
-                              {pkg.mainCourse.mughlaiSpecial.map((item, i) => (
-                                <React.Fragment key={i}>
-                                  {renderDishBadge(item, activeTab === 'veg', 'main')}
-                                </React.Fragment>
-                              ))}
-                            </div>
-                          </div>
+                          ))}
                         </div>
                       </div>
 
                       {/* Salads & Accompaniments */}
                       <div className={styles.courseBlock}>
                         <h4 className={styles.courseHeader}>
-                          <FaInfoCircle className={styles.courseIcon} /> Salads & Accompaniments
+                          <FaInfoCircle className={styles.courseIcon} /> {pkg.saladsLabel || 'Salads & Accompaniments'}
                         </h4>
                         <div className={styles.badgesWrapper}>
                           {pkg.saladsAndAccompaniments.map((item, i) => (
@@ -398,7 +367,7 @@ export default function PlansClient() {
                       {/* Desserts */}
                       <div className={styles.courseBlock}>
                         <h4 className={styles.courseHeader}>
-                          <FaCookie className={styles.courseIcon} /> Desserts
+                          <FaCookie className={styles.courseIcon} /> {pkg.dessertsLabel || 'Desserts'}
                         </h4>
                         <div className={styles.badgesWrapper}>
                           {pkg.desserts.map((item, i) => (
@@ -454,7 +423,7 @@ export default function PlansClient() {
         <h3 className={styles.sectionTitle}>Optional Live Add-on Counters</h3>
         <p className={styles.sectionSubtitle}>Elevate your guest experience with live specialized counters managed by our expert chefs.</p>
         <div className={styles.addonsGrid}>
-          {ADDONS.map((addon, i) => (
+          {addonsList.map((addon, i) => (
             <div key={i} className={styles.addonCard}>
               <div className={styles.addonHeader}>
                 {renderAddonIcon(addon.icon)}

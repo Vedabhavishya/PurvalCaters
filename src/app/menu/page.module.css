@@ -12,11 +12,15 @@
   gap: 2.5rem;
   margin-top: 1.5rem;
   align-items: start;
+  max-width: 1600px !important; /* Stretch to 1600px max on wide monitors */
+  width: 95% !important; /* Occupy 95% of screen width */
+  padding-left: 1rem !important; /* Reduced from 2rem */
+  padding-right: 1rem !important; /* Reduced from 2rem */
 }
 
 @media (min-width: 992px) {
   .menuLayout {
-    grid-template-columns: 1.8fr 1.2fr; /* Two-column grid on desktop - Wider right column */
+    grid-template-columns: 1.5fr 1.5fr; /* Equal width split to maximize Selection card space */
   }
 }
 

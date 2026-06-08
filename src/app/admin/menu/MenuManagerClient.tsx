@@ -39,7 +39,11 @@ const COURSE_DETAILS: Record<string, { title: string }> = {
   'bengali-sweets': { title: 'Bengali Sweets' },
   'milk-cream-desserts': { title: 'Milk & Cream Desserts' },
   'traditional-snacks': { title: 'Traditional Snacks / Sweets' },
-  'live-counters': { title: 'Live Counters' }
+  'live-counters': { title: 'Live Counters' },
+  'Welcome Drinks': { title: 'Welcome Drinks' },
+  'Chat': { title: 'Chat' },
+  'Chineese Soup': { title: 'Chineese Soup' },
+  'Chineese Noodles': { title: 'Chineese Noodles' }
 };
 
 interface MenuManagerClientProps {
