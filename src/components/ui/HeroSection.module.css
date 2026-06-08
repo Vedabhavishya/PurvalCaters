@@ -70,11 +70,11 @@
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   font-weight: 500;
   font-style: italic;
-  color: var(--accent-gold, #d4af37);
-  letter-spacing: 0.04em;
+  color: #f8fafc; /* Premium off-white/cream text for perfect contrast */
+  letter-spacing: 0.05em;
   margin-top: -0.25rem;
   margin-bottom: 1.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(212, 175, 55, 0.4); /* Strong drop shadow with gold ambient glow */
 }
 
 .subtitle {
