@@ -23,37 +23,42 @@
 
 .carouselContainer {
   position: relative;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .sliderViewport {
   overflow: hidden;
-  border-radius: 0;
-  box-shadow: none;
-  background: #000;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  position: relative;
 }
 
 .sliderTrack {
   display: flex;
-  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .slide {
   min-width: 100%;
   flex-shrink: 0;
-  height: 600px;
+  height: 500px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff;
 }
 
 .mediaWrapper {
   width: 100%;
   height: 100%;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slideImg {
@@ -66,7 +71,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #000;
+  background: #fff;
 }
 
 .mediaCaption {
@@ -74,9 +79,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
   color: white;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
   font-size: 1.25rem;
   font-weight: 600;
   text-align: center;
