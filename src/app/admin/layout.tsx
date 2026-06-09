@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { FaUtensils, FaHome, FaEnvelopeOpenText, FaSignOutAlt, FaBoxOpen, FaStar } from 'react-icons/fa';
+import { FaUtensils, FaHome, FaEnvelopeOpenText, FaSignOutAlt, FaBoxOpen, FaStar, FaImages } from 'react-icons/fa';
 import styles from './layout.module.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -28,6 +28,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Menu Management', path: '/admin/menu', icon: <FaUtensils /> },
     { name: 'Inquiries', path: '/admin/inquiries', icon: <FaEnvelopeOpenText /> },
     { name: 'Testimonials', path: '/admin/testimonials', icon: <FaStar /> },
+    { name: 'Media Gallery', path: '/admin/gallery', icon: <FaImages /> },
   ];
 
   return (

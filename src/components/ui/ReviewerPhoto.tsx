@@ -11,10 +11,12 @@ interface ReviewerPhotoProps {
 export default function ReviewerPhoto({ imageUrl, name }: ReviewerPhotoProps) {
   const [error, setError] = useState(false);
 
-  if (!imageUrl || error) {
+  const hasNoImage = !imageUrl || imageUrl === 'null' || imageUrl.trim() === '';
+
+  if (hasNoImage || error) {
     return (
-      <div className={styles.reviewerPhoto}>
-        {name.charAt(0).toUpperCase()}
+      <div className={`${styles.reviewerPhoto} ${styles.reviewerAvatar}`}>
+        {name.trim().charAt(0).toUpperCase()}
       </div>
     );
   }

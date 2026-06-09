@@ -131,6 +131,13 @@
   font-weight: bold;
 }
 
+.reviewerAvatar {
+  background: var(--primary) !important;
+  color: white !important;
+  border: 2px solid white;
+  box-shadow: 0 4px 10px rgba(168, 43, 61, 0.2);
+}
+
 .author {
   font-weight: 600;
   color: var(--text-main);

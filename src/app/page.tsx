@@ -6,12 +6,17 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
 import styles from './page.module.css';
 import prisma from '@/lib/prisma';
 import { FaCrown, FaLeaf, FaHandsHelping, FaStar } from 'react-icons/fa';
+import GallerySection from '@/components/ui/GallerySection';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const testimonials = await prisma.testimonial.findMany({
     where: { isVisible: true },
+  });
+
+  const galleryItems = await prisma.galleryItem.findMany({
+    orderBy: { createdAt: 'desc' },
   });
 
   return (
@@ -24,7 +29,7 @@ export default async function Home() {
       <ScrollReveal>
         <section className={styles.whyUsSection}>
           <div className="container">
-            <h2 className={styles.sectionTitle}>Why Choose Purval’s Caterers?</h2>
+            <h2 className={styles.sectionTitle}>Why Choose Supper Club?</h2>
             <div className={styles.featuresGrid}>
               <div className={styles.featureCard}>
                 <FaCrown className={styles.featureIcon} />
@@ -45,6 +50,9 @@ export default async function Home() {
           </div>
         </section>
       </ScrollReveal>
+
+      {/* Gallery Section */}
+      <GallerySection items={galleryItems} />
 
       {/* Testimonials */}
       <ScrollReveal>
