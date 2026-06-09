@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styles from './Navbar.module.css';
-import { FaUtensils } from 'react-icons/fa';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,10 +38,17 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${isSolid ? styles.scrolled : ''}`}>
       <div className={`container ${styles.navContent}`}>
         <Link href="/" className={styles.logo}>
-          <FaUtensils className={styles.logoIcon} />
+          <Image 
+            src="/images/supperclub_logo.png" 
+            alt="Supper Club Logo" 
+            width={40} 
+            height={40} 
+            className={styles.logoImage}
+            priority
+          />
           <div className={styles.logoTextContainer}>
-            <span className={styles.logoMain}>Supper Club</span>
-            <span className={styles.logoSub}>OF INDIA</span>
+            <span className={styles.logoTitle}>Supper Club</span>
+            <span className={styles.logoSubtitle}>OF INDIA</span>
           </div>
         </Link>
 

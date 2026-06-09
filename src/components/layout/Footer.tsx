@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import styles from './Footer.module.css';
-import { FaUtensils, FaFacebookF, FaInstagram, FaTwitter, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaTwitter, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function Footer() {
   const pathname = usePathname();
@@ -16,7 +17,19 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={`container ${styles.footerContent}`}>
         <div className={styles.brand}>
-          <h3><FaUtensils /> Purval’s Caterers</h3>
+          <div className={styles.logoContainer}>
+            <Image 
+              src="/images/supperclub_logo.png" 
+              alt="Supper Club Logo" 
+              width={40} 
+              height={40} 
+              className={styles.logoImage}
+            />
+            <div className={styles.logoTextContainer}>
+              <span className={styles.logoTitle}>Supper Club</span>
+              <span className={styles.logoSubtitle}>OF INDIA</span>
+            </div>
+          </div>
           <p>Curated Authentic Indian Feast. Providing premium catering services for weddings, corporate events, and parties across the region.</p>
           <div className={styles.social}>
             <a href="#" aria-label="Facebook"><FaFacebookF /></a>
@@ -49,7 +62,7 @@ export default function Footer() {
         </div>
       </div>
       <div className={styles.bottom}>
-        <p>&copy; {new Date().getFullYear()} Purval’s Caterers. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Supper Club of India. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -26,50 +26,36 @@
 }
 
 .logo {
+  color: white;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  text-decoration: none;
-}
-
-.logoIcon {
-  font-size: 1.6rem;
-  color: white;
+  gap: 0.5rem;
   transition: color 0.3s ease;
-}
-
-.scrolled .logoIcon {
-  color: var(--primary);
+  text-decoration: none;
 }
 
 .logoTextContainer {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
-  text-align: left;
+  align-items: center;
+  line-height: 1;
 }
 
-.logoMain {
-  font-size: 1.4rem;
+.logoTitle {
+  font-size: 1.5rem;
   font-weight: 700;
-  color: white;
-  transition: color 0.3s ease;
 }
 
-.scrolled .logoMain {
-  color: var(--primary);
-}
-
-.logoSub {
-  font-size: 0.6rem;
+.logoSubtitle {
+  font-size: 0.55rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
-  color: var(--accent-gold, #d4af37);
-  transition: color 0.3s ease;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
 }
 
-.scrolled .logoSub {
-  color: var(--accent-gold, #c5a028);
+.scrolled .logo {
+  color: var(--primary);
 }
 
 .navLinks {
@@ -120,4 +106,10 @@
   .navLinks {
     display: none;
   }
+}
+
+.logoImage {
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
 }

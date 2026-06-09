@@ -12,12 +12,41 @@
   margin-bottom: 3rem;
 }
 
-.brand h3 {
-  color: var(--text-light);
+.logoContainer {
+  color: white;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+}
+
+.logoTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.logoTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.logoSubtitle {
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+  color: var(--primary-light, #fde68a);
+}
+
+.logoImage {
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .brand p {
