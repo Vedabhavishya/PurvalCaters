@@ -40,7 +40,7 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   margin-top: 0.15rem;
-  color: var(--primary-light, #fde68a);
+  color: white;
 }
 
 .logoImage {
