@@ -39,7 +39,7 @@ export default function Navbar() {
       <div className={`container ${styles.navContent}`}>
         <Link href="/" className={styles.logo}>
           <Image 
-            src="/images/supperclub_logo.png" 
+            src="/images/supperclub_logo_white.png" 
             alt="Supper Club Logo" 
             width={40} 
             height={40} 
