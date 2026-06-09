@@ -2,7 +2,7 @@
 .menuPageContainer {
   min-height: 100vh;
   background-color: #fbf9f6; /* Premium warm cream/off-white background */
-  padding-top: calc(var(--nav-height) + 2rem);
+  padding-top: calc(var(--nav-height) + 0.4rem);
   padding-bottom: 5rem;
 }
 
@@ -10,12 +10,18 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 2.5rem;
-  margin-top: 1.5rem;
+  margin-top: 0.25rem;
   align-items: start;
-  max-width: 90vw !important; /* Scalable maximum footprint to scale layout with screen size */
-  width: 90% !important;
+  max-width: 1200px !important; /* Matches standard container max-width */
+  width: 100% !important;
+  padding: 0 2rem !important; /* Matches standard container padding */
   margin-left: auto !important;
   margin-right: auto !important;
+}
+
+.menuLeft {
+  max-width: 760px;
+  width: 100%;
 }
 
 @media (min-width: 992px) {
@@ -107,11 +113,11 @@
 }
 
 .dietTab {
-  padding: 0.65rem 1.5rem;
+  padding: 0.45rem 0.75rem;
   border-radius: 9999px;
   background: transparent;
   border: none;
-  font-size: 0.95rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
@@ -327,7 +333,7 @@
 
 @media (min-width: 600px) {
   .itemGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 340px);
   }
 }
 
@@ -344,6 +350,8 @@
   position: relative;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.01);
+  max-width: 340px;
+  width: 100%;
 }
 
 .dishCard:hover {
@@ -455,41 +463,48 @@
   flex-direction: column;
   overflow: hidden;
   height: auto;
-  max-height: calc(100vh - var(--nav-height) - 4rem);
+  max-height: calc(100vh - var(--nav-height) - 1.2rem);
   width: 100%;
 }
 
 @media (min-width: 992px) {
   .stickyPanel {
     position: sticky;
-    top: calc(var(--nav-height) + 2rem);
-    max-width: 440px; /* Constrain panel width to prevent overflow on zoom / wide screens */
+    top: calc(var(--nav-height) + 0.4rem);
+    max-width: 480px; /* Constrain panel width to prevent overflow on zoom / wide screens */
     margin-left: auto; /* Keep selection card pinned to right side cleanly */
+    height: auto; /* Dynamic height based on content */
+    max-height: calc(100vh - var(--nav-height) - 2rem); /* Caps at safe viewport height above taskbar */
   }
 }
 
 .panelHeader {
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1.5px solid #f5f2eb;
   flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .panelHeader h2 {
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #1a2a3a;
-  margin-bottom: 0.35rem;
+  margin: 0;
 }
 
 .panelHeader p {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: #7f8c8d;
   font-weight: 600;
   letter-spacing: 0.25px;
+  margin: 0;
 }
 
 .panelContent {
-  padding: 1.5rem;
+  padding: 0.85rem 1.5rem;
   overflow-y: auto;
   flex: 1 1 auto;
   min-height: 0;
@@ -656,7 +671,7 @@
 
 /* Sidebar Footer & Breakdown */
 .panelFooter {
-  padding: 1.25rem 1.5rem;
+  padding: 0.65rem 1.5rem 0.5rem 1.5rem;
   border-top: 1px solid #f5f2eb;
   background: #fcfbfa;
   flex-shrink: 0;
@@ -673,17 +688,19 @@
 }
 
 .statsSummary {
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.5rem;
   font-size: 0.9rem;
 }
 
 .statsRow {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-weight: 700;
   color: var(--text-main);
-  font-size: 0.95rem;
-  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  margin-bottom: 0;
+  white-space: nowrap;
 }
 
 .statsSubRows {
@@ -700,11 +717,13 @@
 .vegText {
   color: #2e7d32;
   font-weight: 600;
+  font-size: 0.8rem;
 }
 
 .nonVegText {
   color: #c62828;
   font-weight: 600;
+  font-size: 0.8rem;
 }
 
 .smallRedDot {

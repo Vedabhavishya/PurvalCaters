@@ -793,16 +793,16 @@ ${Object.entries(selectedItemsByCourse)
                 <div className={styles.statsSummary}>
                   <div className={styles.statsRow}>
                     <span>Total Selected:</span>
-                    <strong>{stats.total} Items</strong>
-                  </div>
-                  <div className={styles.statsSubRows}>
-                    <div className={styles.statsSubRow}>
-                      <span className={styles.vegText}><FaLeaf size={10} style={{ marginRight: '3px' }} /> Veg:</span>
-                      <strong>{stats.veg}</strong>
-                    </div>
-                    <div className={styles.statsSubRow}>
-                      <span className={styles.nonVegText}><span className={styles.smallRedDot} /> Non-Veg:</span>
-                      <strong>{stats.nonveg}</strong>
+                    <div className={styles.statsSubRows} style={{ alignItems: 'center', gap: '0.45rem' }}>
+                      <div className={styles.statsSubRow}>
+                        <span className={styles.vegText}><FaLeaf size={10} style={{ marginRight: '3px' }} /> Veg:</span>
+                        <strong>{stats.veg}</strong>
+                      </div>
+                      <span style={{ color: '#d1d5db' }}>•</span>
+                      <div className={styles.statsSubRow}>
+                        <span className={styles.nonVegText}><span className={styles.smallRedDot} style={{ marginRight: '3px' }} /> Non-Veg:</span>
+                        <strong>{stats.nonveg}</strong>
+                      </div>
                     </div>
                   </div>
                 </div>

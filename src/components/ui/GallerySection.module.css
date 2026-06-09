@@ -1,5 +1,5 @@
 .section {
-  padding: 5rem 0;
+  padding: 3rem 0;
   background-color: var(--bg-main, #fafafa);
   overflow: hidden;
 }
@@ -23,7 +23,7 @@
 
 .carouselContainer {
   position: relative;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -44,7 +44,7 @@
 .slide {
   min-width: 100%;
   flex-shrink: 0;
-  height: 500px;
+  height: 420px;
   position: relative;
   display: flex;
   align-items: center;
