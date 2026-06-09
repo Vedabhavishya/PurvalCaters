@@ -38,7 +38,11 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${isSolid ? styles.scrolled : ''}`}>
       <div className={`container ${styles.navContent}`}>
         <Link href="/" className={styles.logo}>
-          <FaUtensils /> Supper Club
+          <FaUtensils className={styles.logoIcon} />
+          <div className={styles.logoTextContainer}>
+            <span className={styles.logoMain}>Supper Club</span>
+            <span className={styles.logoSub}>OF INDIA</span>
+          </div>
         </Link>
 
         <div className={styles.navLinks}>

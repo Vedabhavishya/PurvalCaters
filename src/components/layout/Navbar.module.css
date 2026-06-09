@@ -26,17 +26,50 @@
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+.logoIcon {
+  font-size: 1.6rem;
+  color: white;
   transition: color 0.3s ease;
 }
 
-.scrolled .logo {
+.scrolled .logoIcon {
   color: var(--primary);
+}
+
+.logoTextContainer {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.logoMain {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.scrolled .logoMain {
+  color: var(--primary);
+}
+
+.logoSub {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--accent-gold, #d4af37);
+  transition: color 0.3s ease;
+}
+
+.scrolled .logoSub {
+  color: var(--accent-gold, #c5a028);
 }
 
 .navLinks {
