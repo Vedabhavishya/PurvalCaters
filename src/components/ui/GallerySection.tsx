@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import styles from './GallerySection.module.css';
 
@@ -18,10 +18,6 @@ interface GallerySectionProps {
 export default function GallerySection({ items }: GallerySectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  if (!items || items.length === 0) {
-    return null;
-  }
-
   const handlePrev = () => {
     setActiveIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
   };
@@ -30,6 +26,28 @@ export default function GallerySection({ items }: GallerySectionProps) {
     setActiveIndex((prev) => (prev === items.length - 1 ? 0 : prev + 1));
   };
 
+  // Autoplay Effect
+  useEffect(() => {
+    if (!items || items.length <= 1) return;
+    
+    const activeItem = items[activeIndex];
+    
+    // Only set a timer if the active item is a PHOTO
+    if (activeItem.type === 'PHOTO') {
+      const timer = setTimeout(() => {
+        handleNext();
+      }, 8000); // 8 seconds for photos
+      
+      return () => clearTimeout(timer);
+    }
+    
+    // For videos, transition is triggered by the onEnded event of the video tag
+  }, [activeIndex, items]);
+
+  if (!items || items.length === 0) {
+    return null;
+  }
+
   return (
     <section className={styles.section}>
       <div className="container">
@@ -37,20 +55,15 @@ export default function GallerySection({ items }: GallerySectionProps) {
         <p className={styles.sectionSubtitle}>
           Take a look at some of our premium event setups, dishes, and culinary presentations.
         </p>
+      </div>
 
-        <div className={styles.carouselContainer}>
-          {items.length > 1 && (
-            <button className={`${styles.navBtn} ${styles.prevBtn}`} onClick={handlePrev} aria-label="Previous slide">
-              <FaChevronLeft />
-            </button>
-          )}
-
+      <div className={styles.carouselContainer}>
           <div className={styles.sliderViewport}>
             <div 
               className={styles.sliderTrack} 
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
             >
-              {items.map((item) => (
+              {items.map((item, idx) => (
                 <div key={item.id} className={styles.slide}>
                   <div className={styles.mediaWrapper}>
                     {item.type === 'PHOTO' ? (
@@ -65,10 +78,21 @@ export default function GallerySection({ items }: GallerySectionProps) {
                         src={item.url} 
                         className={styles.slideVideo}
                         controls
-                        loop
                         muted
                         autoPlay
                         playsInline
+                        onEnded={handleNext}
+                        // Only play the video if it is the active slide
+                        ref={(el) => {
+                          if (el) {
+                            if (idx === activeIndex) {
+                              el.play().catch(() => {});
+                            } else {
+                              el.pause();
+                              el.currentTime = 0;
+                            }
+                          }
+                        }}
                       />
                     )}
                     {item.title && (
@@ -83,12 +107,6 @@ export default function GallerySection({ items }: GallerySectionProps) {
           </div>
 
           {items.length > 1 && (
-            <button className={`${styles.navBtn} ${styles.nextBtn}`} onClick={handleNext} aria-label="Next slide">
-              <FaChevronRight />
-            </button>
-          )}
-
-          {items.length > 1 && (
             <div className={styles.indicators}>
               {items.map((_, index) => (
                 <button
@@ -101,7 +119,6 @@ export default function GallerySection({ items }: GallerySectionProps) {
             </div>
           )}
         </div>
-      </div>
-    </section>
-  );
+      </section>
+    );
 }
