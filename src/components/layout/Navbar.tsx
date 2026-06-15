@@ -41,8 +41,8 @@ export default function Navbar() {
           <Image 
             src="/images/supperclub_logo_white.png" 
             alt="Supper Club Logo" 
-            width={40} 
-            height={40} 
+            width={72} 
+            height={72} 
             className={styles.logoImage}
             priority
           />
