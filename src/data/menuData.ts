@@ -30,8 +30,8 @@ export interface MenuItem {
     // Drinks & Snacks
     | 'Welcome Drinks'
     | 'Chat'
-    | 'Chineese Soup'
-    | 'Chineese Noodles';
+    | 'Chinese Soup'
+    | 'Chinese Noodles';
   subcategory: string;
 }
 
@@ -463,13 +463,13 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'rb-bi-2', name: 'Thai Biryani', isVeg: true, course: 'rice-biryani', subcategory: 'Biryani\'s' },
 
   // Chinese Rice (Veg)
-  { id: 'rb-cr-1', name: 'Swechwan Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chineese Rice' },
-  { id: 'rb-cr-2', name: 'Ginger Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chineese Rice' },
-  { id: 'rb-cr-3', name: 'Garlic Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chineese Rice' },
-  { id: 'rb-cr-4', name: 'Paneer Fried Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chineese Rice' },
-  { id: 'rb-cr-5', name: 'Mushroom Fried Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chineese Rice' },
-  { id: 'rb-cr-6', name: 'Manchuria Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chineese Rice' },
-  { id: 'rb-cr-7', name: 'Veg Fried Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chineese Rice' },
+  { id: 'rb-cr-1', name: 'Swechwan Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chinese Rice' },
+  { id: 'rb-cr-2', name: 'Ginger Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chinese Rice' },
+  { id: 'rb-cr-3', name: 'Garlic Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chinese Rice' },
+  { id: 'rb-cr-4', name: 'Paneer Fried Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chinese Rice' },
+  { id: 'rb-cr-5', name: 'Mushroom Fried Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chinese Rice' },
+  { id: 'rb-cr-6', name: 'Manchuria Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chinese Rice' },
+  { id: 'rb-cr-7', name: 'Veg Fried Rice', isVeg: true, course: 'rice-biryani', subcategory: 'Chinese Rice' },
 
   // 7.4 Biryani's (Non-Veg)
   { id: 'rb-nvbi-1', name: 'Chicken Biryani', isVeg: false, course: 'rice-biryani', subcategory: 'Biryani\'s (Non-Veg)' },
@@ -718,24 +718,24 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'ct-20', name: 'Dry Fruits Kachori', isVeg: true, course: 'Chat', subcategory: 'Chat Items' },
 
   // Chinese Soup Items
-  { id: 'sp-1', name: 'Manchow Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
-  { id: 'sp-2', name: 'Clear Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
-  { id: 'sp-3', name: 'Hot and Sour Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
-  { id: 'sp-4', name: 'Szechwan Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
-  { id: 'sp-5', name: 'Tomato Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
-  { id: 'sp-6', name: 'Sweet Corn Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
-  { id: 'sp-7', name: 'Mushroom Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
-  { id: 'sp-8', name: 'Spinach Soup', isVeg: true, course: 'Chineese Soup', subcategory: 'Soup' },
+  { id: 'sp-1', name: 'Manchow Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
+  { id: 'sp-2', name: 'Clear Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
+  { id: 'sp-3', name: 'Hot and Sour Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
+  { id: 'sp-4', name: 'Szechwan Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
+  { id: 'sp-5', name: 'Tomato Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
+  { id: 'sp-6', name: 'Sweet Corn Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
+  { id: 'sp-7', name: 'Mushroom Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
+  { id: 'sp-8', name: 'Spinach Soup', isVeg: true, course: 'Chinese Soup', subcategory: 'Soup' },
 
   // Chinese Noodle Items
-  { id: 'nd-1', name: 'Swechwan Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-2', name: 'Veg Soft Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-3', name: 'Veg Fried Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-4', name: 'Chilly Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-5', name: 'Chowmein Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-6', name: 'Paneer Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-7', name: 'Mushroom Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-8', name: 'Ginger Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' },
-  { id: 'nd-9', name: 'Garlic Noodles', isVeg: true, course: 'Chineese Noodles', subcategory: 'Noodles' }
+  { id: 'nd-1', name: 'Swechwan Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-2', name: 'Veg Soft Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-3', name: 'Veg Fried Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-4', name: 'Chilly Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-5', name: 'Chowmein Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-6', name: 'Paneer Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-7', name: 'Mushroom Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-8', name: 'Ginger Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' },
+  { id: 'nd-9', name: 'Garlic Noodles', isVeg: true, course: 'Chinese Noodles', subcategory: 'Noodles' }
 ];
 

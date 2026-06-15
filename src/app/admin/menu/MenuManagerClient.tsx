@@ -42,8 +42,8 @@ const COURSE_DETAILS: Record<string, { title: string }> = {
   'live-counters': { title: 'Live Counters' },
   'Welcome Drinks': { title: 'Welcome Drinks' },
   'Chat': { title: 'Chat' },
-  'Chineese Soup': { title: 'Chineese Soup' },
-  'Chineese Noodles': { title: 'Chineese Noodles' }
+  'Chinese Soup': { title: 'Chinese Soup' },
+  'Chinese Noodles': { title: 'Chinese Noodles' }
 };
 
 interface MenuManagerClientProps {

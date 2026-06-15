@@ -71,8 +71,8 @@ const COURSE_DETAILS = {
   'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const },
   'Welcome Drinks': { title: 'Welcome Drinks', icon: FaCoffee, menuType: 'drinks-snacks' as const },
   'Chat': { title: 'Chat', icon: FaUtensils, menuType: 'drinks-snacks' as const },
-  'Chineese Soup': { title: 'Chineese Soup', icon: FaUtensils, menuType: 'drinks-snacks' as const },
-  'Chineese Noodles': { title: 'Chineese Noodles', icon: FaUtensils, menuType: 'main' as const }
+  'Chinese Soup': { title: 'Chinese Soup', icon: FaUtensils, menuType: 'drinks-snacks' as const },
+  'Chinese Noodles': { title: 'Chinese Noodles', icon: FaUtensils, menuType: 'main' as const }
 };
 
 type CourseType = keyof typeof COURSE_DETAILS;
@@ -108,8 +108,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'live-counters': true,
     'Welcome Drinks': true,
     'Chat': true,
-    'Chineese Soup': true,
-    'Chineese Noodles': true
+    'Chinese Soup': true,
+    'Chinese Noodles': true
   });
 
   const [sidebarExpanded, setSidebarExpanded] = useState<Record<string, boolean>>({
@@ -136,8 +136,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
     'live-counters': true,
     'Welcome Drinks': true,
     'Chat': true,
-    'Chineese Soup': true,
-    'Chineese Noodles': true
+    'Chinese Soup': true,
+    'Chinese Noodles': true
   });
 
   // Modal State
@@ -259,8 +259,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'live-counters': {},
       'Welcome Drinks': {},
       'Chat': {},
-      'Chineese Soup': {},
-      'Chineese Noodles': {}
+      'Chinese Soup': {},
+      'Chinese Noodles': {}
     };
 
     visibleItems.forEach(item => {
@@ -317,8 +317,8 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
       'live-counters': [],
       'Welcome Drinks': [],
       'Chat': [],
-      'Chineese Soup': [],
-      'Chineese Noodles': []
+      'Chinese Soup': [],
+      'Chinese Noodles': []
     };
 
     selectedItemsDetails.forEach(item => {
