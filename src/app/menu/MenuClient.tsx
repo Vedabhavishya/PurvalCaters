@@ -216,7 +216,7 @@ export default function MenuClient({ categories, items }: MenuClientProps) {
 
       const matchesDiet = dietFilter === 'all' || 
         (dietFilter === 'veg' && item.isVeg) || 
-        (dietFilter === 'nonveg' && !item.isVeg);
+        (dietFilter === 'nonveg' && (!item.isVeg || item.course === 'accompaniments'));
 
       return matchesSearch && matchesDiet;
     });
