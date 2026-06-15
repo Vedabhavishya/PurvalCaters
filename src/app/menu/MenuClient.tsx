@@ -588,6 +588,7 @@ ${Object.entries(selectedItemsByCourse)
                 const getSortWeight = (key: string, details: any) => {
                   if (details.menuType === 'breakfast') return 10;
                   if (details.menuType === 'main') {
+                    if (key === 'accompaniments') return 45;
                     const group = groupedMenu[key as CourseType];
                     const hasVeg = Object.values(group || {}).some(items => items.some(item => item.isVeg));
                     const hasNonVeg = Object.values(group || {}).some(items => items.some(item => !item.isVeg));
