@@ -317,11 +317,12 @@
 }
 
 .subCategoryTitle {
-  font-size: 1.15rem;
+  font-family: 'Gabriola', 'Outfit', sans-serif;
+  font-size: 1.65rem;
   font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 1rem;
-  text-transform: uppercase;
+  color: #b0842c; /* Premium gold color */
+  margin-bottom: 0.5rem;
+  text-transform: none;
   letter-spacing: 0.5px;
 }
 

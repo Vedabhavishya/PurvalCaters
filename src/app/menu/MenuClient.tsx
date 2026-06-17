@@ -673,7 +673,27 @@ ${Object.entries(selectedItemsByCourse)
 
                     {isExpanded && courseGroup && (
                       <div className={styles.accordionBody}>
-                        {Object.entries(courseGroup).map(([subcat, subcatItems]) => (
+                        {Object.entries(courseGroup)
+                          .sort(([subcatA, itemsA], [subcatB, itemsB]) => {
+                            if (courseKey === 'rice-biryani') {
+                              const getPriority = (subcat: string) => {
+                                const s = subcat.toLowerCase();
+                                if (s === 'rice') return 1;
+                                if (s.includes('fried') || s.includes('chinese')) return 2;
+                                if (s.includes('biryani')) return 3;
+                                return 4;
+                              };
+                              const pA = getPriority(subcatA);
+                              const pB = getPriority(subcatB);
+                              if (pA !== pB) return pA - pB;
+                            }
+                            const hasNonVegA = itemsA.some(item => !item.isVeg);
+                            const hasNonVegB = itemsB.some(item => !item.isVeg);
+                            if (hasNonVegA && !hasNonVegB) return 1;
+                            if (!hasNonVegA && hasNonVegB) return -1;
+                            return 0;
+                          })
+                          .map(([subcat, subcatItems]) => (
                           <div key={subcat} className={styles.subCategoryBlock}>
                             {subcat !== details.title && (
                               <h4 className={styles.subCategoryTitle}>{subcat}</h4>
