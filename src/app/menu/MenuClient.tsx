@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import styles from './page.module.css';
 import { MENU_ITEMS, MenuItem as LocalMenuItem } from '@/data/menuData';
 import { 
@@ -20,7 +21,16 @@ import {
   FaFilePdf, 
   FaCheckCircle,
   FaTimes,
-  FaArrowRight
+  FaArrowRight,
+  FaFire,
+  FaCandyCane,
+  FaMugHot,
+  FaBirthdayCake,
+  FaAppleAlt,
+  FaCookie,
+  FaCookieBite,
+  FaCheese,
+  FaUtensilSpoon
 } from 'react-icons/fa';
 
 type DBCategory = { id: string; name: string; slug: string };
@@ -58,16 +68,16 @@ const COURSE_DETAILS = {
   'breakfast-rice': { title: 'Breakfast Rice Items', icon: FaUtensils, menuType: 'breakfast' as const },
 
   // Desserts Menu
-  'hot-sweets': { title: 'Hot Indian Sweets (Jamun Specials)', icon: FaIceCream, menuType: 'desserts' as const },
-  'halwas': { title: 'Halwas', icon: FaIceCream, menuType: 'desserts' as const },
-  'kheer-payasam': { title: 'Kheer & Payasam', icon: FaIceCream, menuType: 'desserts' as const },
-  'traditional-sweets': { title: 'Traditional Indian Sweets', icon: FaIceCream, menuType: 'desserts' as const },
-  'fruit-desserts': { title: 'Fruit-Based Desserts', icon: FaIceCream, menuType: 'desserts' as const },
-  'custards-puddings': { title: 'Custards & Puddings', icon: FaIceCream, menuType: 'desserts' as const },
+  'hot-sweets': { title: 'Hot Indian Sweets (Jamun Specials)', icon: FaFire, menuType: 'desserts' as const, logoUrl: '/images/hot_indian_sweets.png' },
+  'halwas': { title: 'Halwas', icon: FaCandyCane, menuType: 'desserts' as const, logoUrl: '/images/halwas.png' },
+  'kheer-payasam': { title: 'Kheer & Payasam', icon: FaMugHot, menuType: 'desserts' as const },
+  'traditional-sweets': { title: 'Traditional Indian Sweets', icon: FaCookieBite, menuType: 'desserts' as const },
+  'fruit-desserts': { title: 'Fruit-Based Desserts', icon: FaAppleAlt, menuType: 'desserts' as const },
+  'custards-puddings': { title: 'Custards & Puddings', icon: FaUtensilSpoon, menuType: 'desserts' as const },
   'cold-desserts': { title: 'Cold Desserts', icon: FaIceCream, menuType: 'desserts' as const },
-  'bengali-sweets': { title: 'Bengali Sweets', icon: FaIceCream, menuType: 'desserts' as const },
-  'milk-cream-desserts': { title: 'Milk & Cream Desserts', icon: FaIceCream, menuType: 'desserts' as const },
-  'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaIceCream, menuType: 'desserts' as const },
+  'bengali-sweets': { title: 'Bengali Sweets', icon: FaCandyCane, menuType: 'desserts' as const, logoUrl: '/images/bengali_sweets.png' },
+  'milk-cream-desserts': { title: 'Milk & Cream Desserts', icon: FaCheese, menuType: 'desserts' as const },
+  'traditional-snacks': { title: 'Traditional Snacks / Sweet Items', icon: FaCookie, menuType: 'desserts' as const },
   'live-counters': { title: 'Live Counter Station', icon: FaUtensils, menuType: 'live-counters' as const },
   'Welcome Drinks': { title: 'Welcome Drinks', icon: FaCoffee, menuType: 'drinks-snacks' as const },
   'Chat': { title: 'Chat', icon: FaUtensils, menuType: 'drinks-snacks' as const },
@@ -659,7 +669,17 @@ ${Object.entries(selectedItemsByCourse)
                     >
                       <div className={styles.accordionHeaderLeft}>
                         <span className={`${styles.categoryIconCircle} ${circleStyleClass}`}>
-                          <Icon className={styles.courseIcon} />
+                          {('logoUrl' in details && details.logoUrl) ? (
+                            <Image 
+                              src={details.logoUrl as string} 
+                              alt={details.title}
+                              width={26}
+                              height={26}
+                              className={styles.subcategoryLogo}
+                            />
+                          ) : (
+                            <Icon className={styles.courseIcon} />
+                          )}
                         </span>
                         <div>
                           <h3>{details.title}</h3>

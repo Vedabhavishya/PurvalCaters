@@ -223,6 +223,14 @@
   transition: all 0.3s ease;
 }
 
+.subcategoryLogo {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: invert(1) brightness(100);
+  mix-blend-mode: screen;
+}
+
 .categoryIconCircleVeg {
   background: #e8f5e9; /* Light green box */
   color: #2e7d32;
