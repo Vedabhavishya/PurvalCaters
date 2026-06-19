@@ -32,8 +32,8 @@ export default function Footer() {
           </div>
           <p>Curated Authentic Indian Feast. Providing premium catering services for weddings, corporate events, and parties across the region.</p>
           <div className={styles.social}>
-            <a href="https://www.facebook.com/share/1EZX84YnQW/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
-            <a href="https://www.instagram.com/supperclub__caterers?igsh=OGhodGM1OG4xMGZn&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
+            <a href="https://www.facebook.com/share/1BW3ikjKtZ/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
+            <a href="https://www.instagram.com/supper_club_of_india?utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
           </div>
         </div>
 
