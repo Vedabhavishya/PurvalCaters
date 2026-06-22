@@ -12,17 +12,30 @@ const getStatusStyles = (status: string) => {
   }
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
   const menuItemsCount = await prisma.menuItem.count();
   const packagesCount = await prisma.package.count();
   const inquiriesCount = await prisma.inquiry.count();
   const pendingInquiriesCount = await prisma.inquiry.count({ where: { status: 'PENDING' } });
 
+  let visitorCount = 1000;
+  try {
+    const counter = await prisma.visitorCount.findFirst();
+    if (counter) {
+      visitorCount = counter.count;
+    }
+  } catch (err) {
+    console.error('Failed to fetch visitor count in dashboard:', err);
+  }
+
   const stats = [
     { title: 'Total Menu Items', count: menuItemsCount, icon: <FaUtensils size={32} color="var(--primary)" /> },
     { title: 'Catering Packages', count: packagesCount, icon: <FaBoxOpen size={32} color="var(--accent-gold)" /> },
     { title: 'Total Inquiries', count: inquiriesCount, icon: <FaUsers size={32} color="#3b82f6" /> },
     { title: 'Pending Inquiries', count: pendingInquiriesCount, icon: <FaEnvelopeOpenText size={32} color="var(--accent-error)" /> },
+    { title: 'Website Visitors', count: visitorCount, icon: <FaUsers size={32} color="#10b981" /> },
   ];
 
   const recentInquiries = await prisma.inquiry.findMany({
