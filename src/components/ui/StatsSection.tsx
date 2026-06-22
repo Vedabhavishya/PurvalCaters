@@ -87,15 +87,30 @@ export default function StatsSection({ initialVisitorCount, menuItemsCount }: St
   useEffect(() => {
     const incrementVisitorCount = async () => {
       try {
-        const res = await fetch('/api/visitor-count', { method: 'POST' });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.count) {
-            setVisitorCount(data.count);
+        const hasVisited = sessionStorage.getItem('supperclub_visited');
+        
+        if (hasVisited) {
+          // Fetch current count without incrementing
+          const res = await fetch('/api/visitor-count');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.count) {
+              setVisitorCount(data.count);
+            }
+          }
+        } else {
+          // Mark visited in this session and increment
+          sessionStorage.setItem('supperclub_visited', 'true');
+          const res = await fetch('/api/visitor-count', { method: 'POST' });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.count) {
+              setVisitorCount(data.count);
+            }
           }
         }
       } catch (error) {
-        console.error('Failed to increment visitor count dynamically:', error);
+        console.error('Failed to manage visitor count dynamically:', error);
       }
     };
 
