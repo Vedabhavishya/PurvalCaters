@@ -7,6 +7,7 @@ import styles from './page.module.css';
 import prisma from '@/lib/prisma';
 import { FaCrown, FaLeaf, FaHandsHelping, FaStar } from 'react-icons/fa';
 import GallerySection from '@/components/ui/GallerySection';
+import StatsSection from '@/components/ui/StatsSection';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,6 +19,21 @@ export default async function Home() {
   const galleryItems = await prisma.galleryItem.findMany({
     orderBy: { createdAt: 'desc' },
   });
+
+  const menuItemsCount = await prisma.menuItem.count();
+
+  let initialVisitorCount = 1000;
+  try {
+    let counter = await prisma.visitorCount.findFirst();
+    if (!counter) {
+      counter = await prisma.visitorCount.create({
+        data: { count: 1000 },
+      });
+    }
+    initialVisitorCount = counter.count;
+  } catch (err) {
+    console.error('Failed to get initial visitor count:', err);
+  }
 
   return (
     <>
@@ -82,6 +98,13 @@ export default async function Home() {
             </div>
           </div>
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <StatsSection 
+          initialVisitorCount={initialVisitorCount} 
+          menuItemsCount={menuItemsCount} 
+        />
       </ScrollReveal>
     </>
   );

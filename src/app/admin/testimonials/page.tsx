@@ -17,6 +17,7 @@ type Testimonial = {
 export default function AdminTestimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -24,6 +25,23 @@ export default function AdminTestimonials() {
     imageUrl: '',
     rating: 5,
   });
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setFormData(prev => ({ ...prev, imageUrl: '' }));
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  };
 
   useEffect(() => {
     fetchTestimonials();
@@ -63,15 +81,50 @@ export default function AdminTestimonials() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsUploading(true);
+
+    let uploadedImageUrl = formData.imageUrl;
+
+    if (selectedFile) {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'supperclub';
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default';
+
+      const uploadData = new FormData();
+      uploadData.append('file', selectedFile);
+      uploadData.append('upload_preset', uploadPreset);
+
+      try {
+        const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: uploadData,
+        });
+
+        if (uploadRes.ok) {
+          const resData = await uploadRes.json();
+          uploadedImageUrl = resData.secure_url;
+        } else {
+          throw new Error('Image upload failed');
+        }
+      } catch (err) {
+        console.error('Cloudinary upload error:', err);
+        alert('Failed to upload image to Cloudinary. Saving review without image.');
+        uploadedImageUrl = '';
+      }
+    }
+
     const res = await fetch('/api/testimonials', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ ...formData, imageUrl: uploadedImageUrl, isVisible: true }),
     });
+
+    setIsUploading(false);
 
     if (res.ok) {
       setIsModalOpen(false);
       setFormData({ name: '', role: '', content: '', imageUrl: '', rating: 5 });
+      setSelectedFile(null);
+      setPreviewUrl(null);
       fetchTestimonials();
     }
   };
@@ -165,13 +218,51 @@ export default function AdminTestimonials() {
                 />
               </div>
               <div className={styles.formGroup}>
-                <label>Image URL</label>
-                <input 
-                  type="url" 
-                  value={formData.imageUrl}
-                  onChange={e => setFormData({...formData, imageUrl: e.target.value})}
-                  placeholder="https://example.com/photo.jpg"
-                />
+                <label>Reviewer Image (Upload or URL)</label>
+                {previewUrl || formData.imageUrl ? (
+                  <div className={styles.uploadPreview}>
+                    <img src={previewUrl || formData.imageUrl} alt="Reviewer Preview" />
+                    <div className={styles.uploadPreviewDetails}>
+                      <span>{previewUrl ? 'Local file selected' : 'Image URL specified'}</span>
+                      <button 
+                        type="button" 
+                        className={styles.removePhotoBtn} 
+                        onClick={() => {
+                          handleRemovePhoto();
+                          setFormData(prev => ({ ...prev, imageUrl: '' }));
+                        }}
+                      >
+                        Remove Photo
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.uploadArea}>
+                    <div className={styles.uploadContent}>
+                      <FaPlus className={styles.uploadIcon} />
+                      <span>Choose profile photo</span>
+                      <span className={styles.helperText}>PNG, JPG or WebP (max. 5MB)</span>
+                    </div>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                  </div>
+                )}
+
+                <div style={{ marginTop: '0.75rem' }}>
+                  <span style={{ fontSize: '0.8rem', color: '#6b7280', display: 'block', marginBottom: '0.25rem' }}>Or paste image URL directly:</span>
+                  <input 
+                    type="url" 
+                    value={formData.imageUrl}
+                    onChange={e => {
+                      setFormData({...formData, imageUrl: e.target.value});
+                      handleRemovePhoto();
+                    }}
+                    placeholder="https://example.com/photo.jpg"
+                  />
+                </div>
               </div>
               <div className={styles.formGroup}>
                 <label>Rating (1-5)</label>
@@ -195,11 +286,19 @@ export default function AdminTestimonials() {
               </div>
               
               <div className={styles.modalActions}>
-                <button type="button" className="btn btn-outline" onClick={() => setIsModalOpen(false)}>
+                <button 
+                  type="button" 
+                  className="btn btn-outline" 
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setSelectedFile(null);
+                    setPreviewUrl(null);
+                  }}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  Save Review
+                <button type="submit" disabled={isUploading} className="btn btn-primary">
+                  {isUploading ? 'Uploading Image...' : 'Save Review'}
                 </button>
               </div>
             </form>

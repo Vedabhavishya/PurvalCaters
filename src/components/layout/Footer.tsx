@@ -44,6 +44,7 @@ export default function Footer() {
             <li><Link href="/about">About Us</Link></li>
             <li><Link href="/menu">Menu</Link></li>
             <li><Link href="/plans">Package</Link></li>
+            <li><Link href="/reviews">Reviews</Link></li>
             <li><Link href="/contact">Contact Us</Link></li>
             <li>
               <a href="https://wa.me/919246179757?text=Hi%20i%20need%20to%20book%20a%20catering" target="_blank" rel="noopener noreferrer">

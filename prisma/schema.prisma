@@ -89,3 +89,8 @@ model GalleryItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model VisitorCount {
+  id    String @id @default(cuid())
+  count Int    @default(0)
+}

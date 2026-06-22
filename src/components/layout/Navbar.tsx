@@ -25,6 +25,7 @@ export default function Navbar() {
     { name: 'About Us', path: '/about' },
     { name: 'Menu', path: '/menu' },
     { name: 'Package', path: '/plans' },
+    { name: 'Reviews', path: '/reviews' },
     { name: 'Contact Us', path: '/contact' },
   ];
 
