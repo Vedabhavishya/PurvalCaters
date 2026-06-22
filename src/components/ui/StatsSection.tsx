@@ -102,11 +102,13 @@ export default function StatsSection({ initialVisitorCount, menuItemsCount }: St
     incrementVisitorCount();
   }, []);
 
+  const yearsOfExcellence = new Date().getFullYear() - 1991;
+
   return (
     <section className={styles.statsSection}>
       <div className={styles.statsGrid}>
         <StatCard 
-          target={35} 
+          target={yearsOfExcellence} 
           label="Years Of Excellence" 
           suffix="+" 
           bgImage="/images/about_banner.png" 
@@ -120,7 +122,6 @@ export default function StatsSection({ initialVisitorCount, menuItemsCount }: St
         <StatCard 
           target={visitorCount} 
           label="Happy Visitors" 
-          suffix="+" 
           bgImage="/images/service_corporate.png" 
         />
       </div>
