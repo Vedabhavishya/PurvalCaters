@@ -10,6 +10,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
     
+    let guestCount: number | null = null;
+    if (data.guests) {
+      const parsed = parseInt(data.guests);
+      if (!isNaN(parsed) && parsed > 0 && parsed < 1000000) {
+        guestCount = parsed;
+      }
+    }
+
     try {
       const inquiry = await prisma.inquiry.create({
         data: {
@@ -18,7 +26,7 @@ export async function POST(request: Request) {
           phone: data.phone,
           eventType: data.eventType || null,
           eventDate: data.eventDate ? new Date(data.eventDate) : null,
-          guests: data.guests || null,
+          guests: guestCount,
           message: data.message,
         },
       });

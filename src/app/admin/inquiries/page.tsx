@@ -1,6 +1,8 @@
 import prisma from '@/lib/prisma';
 import InquiriesClient from './InquiriesClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminInquiries() {
   const inquiries = await prisma.inquiry.findMany({
     where: {
